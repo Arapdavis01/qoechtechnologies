@@ -339,37 +339,39 @@ p {
   box-shadow: 0 0 40px var(--primary-glow), inset 0 0 20px var(--primary-soft);
 }
 
-.preloader-mark {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 76px;
-  height: 76px;
-  animation: preloaderPulse 1.8s ease-in-out infinite;
-}
-.preloader-mark svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-  filter: drop-shadow(0 0 20px var(--primary-glow));
-}
-
+/* Preloader wordmark — Q is the SVG, followed by "OECH" */
 .preloader-text {
-  margin-top: 1.5rem;
+  margin-top: 1.6rem;
   font-family: var(--font-display);
   font-size: 1.6rem;
   font-weight: 800;
   letter-spacing: 0.35em;
   color: var(--text-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding-left: 0.35em; /* compensate for trailing letter-spacing */
 }
+
+.preloader-q {
+  height: 1.5em;
+  width: auto;
+  aspect-ratio: 1;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: -0.02em;
+  margin-left: -0.08em;
+  filter: drop-shadow(0 0 16px var(--primary-glow));
+  animation: preloaderPulse 1.8s ease-in-out infinite;
+}
+
 .preloader-text span {
-  color: var(--primary);
-  text-shadow: 0 0 16px var(--primary-glow);
+  color: var(--text-primary);
 }
 
 .preloader-tagline {
-  margin-top: 0.5rem;
+  margin-top: 0.8rem;
   font-size: 0.72rem;
   letter-spacing: 0.28em;
   text-transform: uppercase;
@@ -380,8 +382,8 @@ p {
   100% { transform: rotate(360deg); }
 }
 @keyframes preloaderPulse {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); }
-  50% { transform: translate(-50%, -50%) scale(1.12); }
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
 }
 
 
@@ -466,53 +468,54 @@ p {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
 }
 
-/* Brand */
+/* Brand — Q is the SVG, followed by OECH */
 .brand {
   display: flex;
-  align-items: center;
-  gap: 0.7rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
   text-decoration: none;
+  line-height: 1;
 }
-.brand-mark {
-  width: 42px;
-  height: 42px;
+
+.brand-top {
   display: flex;
   align-items: center;
-  justify-content: center;
+  line-height: 1;
+}
+
+.brand-q {
+  height: 1.35em;
+  width: auto;
+  aspect-ratio: 1;
+  display: block;
+  margin-right: -0.02em;
+  margin-left: -0.06em;
+  filter: drop-shadow(0 0 8px var(--primary-glow));
   transition: var(--transition);
 }
-.brand-mark svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-  filter: drop-shadow(0 0 8px var(--primary-glow));
-}
-.brand:hover .brand-mark {
+
+.brand:hover .brand-q {
   transform: rotate(-8deg) scale(1.06);
-}
-.brand:hover .brand-mark svg {
   filter: drop-shadow(0 0 16px var(--primary-glow));
 }
 
-.brand-text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1;
-}
-.brand-text strong {
+.brand-letters {
   font-family: var(--font-display);
   font-weight: 800;
   font-size: 1.05rem;
   letter-spacing: 0.16em;
   color: var(--text-primary);
+  line-height: 1;
 }
-.brand-text small {
+
+.brand-sub {
   font-family: var(--font-display);
   font-size: 0.55rem;
   font-weight: 500;
   letter-spacing: 0.32em;
   color: var(--primary);
-  margin-top: 2px;
+  margin-left: 0.15em;
 }
 
 /* Nav Menu */
@@ -2594,40 +2597,49 @@ p {
   margin-bottom: 2.5rem;
 }
 
-.footer-brand .footer-logo {
+/* Footer wordmark — Q is the SVG, followed by OECH */
+.footer-logo {
   display: flex;
-  align-items: center;
-  gap: 0.7rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
   margin-bottom: 0.8rem;
 }
-.footer-mark {
-  width: 44px;
-  height: 44px;
+
+.footer-top {
   display: flex;
   align-items: center;
-  justify-content: center;
+  line-height: 1;
 }
-.footer-mark svg {
-  width: 100%;
-  height: 100%;
+
+.footer-q {
+  height: 1.35em;
+  width: auto;
+  aspect-ratio: 1;
   display: block;
+  margin-right: -0.02em;
+  margin-left: -0.06em;
   filter: drop-shadow(0 0 10px var(--primary-glow));
 }
-.footer-brand .footer-logo strong {
+
+.footer-letters {
   font-family: var(--font-display);
+  font-weight: 800;
   font-size: 1rem;
   letter-spacing: 0.16em;
-  display: block;
   color: var(--text-primary);
+  line-height: 1;
 }
-.footer-brand .footer-logo small {
+
+.footer-sub {
   font-family: var(--font-display);
   font-size: 0.55rem;
+  font-weight: 500;
   letter-spacing: 0.3em;
   color: var(--primary);
-  display: block;
-  margin-top: 2px;
+  margin-left: 0.15em;
 }
+
 .footer-brand > p {
   color: var(--primary);
   font-family: var(--font-display);
@@ -2951,12 +2963,14 @@ p {
 /* ============================================================
    26. QOECH SVG MARK SIZING
    ============================================================ */
-/* Universal sizing for all inline SVG marks using #qoech-mark */
-.brand-mark svg,
-.about-card-mark svg,
-.footer-mark svg,
-.preloader-mark svg,
+/* All inline SVG marks using #qoech-mark are sized by their
+   parent containers (.brand-q, .footer-q, .preloader-q,
+   .visual-core-mark, .about-card-mark svg, .eagle-figure svg) */
+.brand-q,
+.footer-q,
+.preloader-q,
 .visual-core-mark,
+.about-card-mark svg,
 .eagle-figure svg {
   display: block;
 }
@@ -3077,9 +3091,15 @@ p {
   .container { padding: 0 1.2rem; }
 
   .navbar { padding: 0 1.2rem; }
-  .brand-text small { display: none; }
-  .brand-text strong { font-size: 0.95rem; letter-spacing: 0.12em; }
-  .brand-mark { width: 36px; height: 36px; }
+
+  /* Brand — smaller on mobile */
+  .brand-letters { font-size: 0.95rem; letter-spacing: 0.12em; }
+  .brand-sub { font-size: 0.5rem; letter-spacing: 0.28em; }
+  .brand-q { height: 1.3em; }
+
+  /* Preloader */
+  .preloader-text { font-size: 1.3rem; }
+  .preloader-q { height: 1.5em; }
 
   .hero { padding: calc(var(--nav-height) + 3rem) 0 4rem; }
   .hero-title { font-size: clamp(1.9rem, 8vw, 2.6rem); }
