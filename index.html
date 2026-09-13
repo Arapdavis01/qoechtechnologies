@@ -45,41 +45,89 @@
   <!-- ============================================================
        QOECH SVG MARK — defined once, reused everywhere
   ============================================================ -->
-  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+  <svg xmlns="http://www.w3.org/2000/svg"
+       width="0"
+       height="0"
+       style="position:absolute;overflow:hidden;pointer-events:none"
+       aria-hidden="true"
+       focusable="false">
     <symbol id="qoech-mark" viewBox="0 0 120 120">
       <defs>
         <linearGradient id="qm-ring" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#9CFF6E"/>
-          <stop offset="45%" stop-color="#39FF14"/>
+          <stop offset="0%"   stop-color="#9CFF6E"/>
+          <stop offset="45%"  stop-color="#39FF14"/>
           <stop offset="100%" stop-color="#008C1E"/>
         </linearGradient>
-        <linearGradient id="qm-gold" x1="0%" y1="0%" x2="30%" y2="100%">
-          <stop offset="0%" stop-color="#FFF3C4"/>
-          <stop offset="45%" stop-color="#D4AF37"/>
+        <linearGradient id="qm-gold" x1="10%" y1="0%" x2="60%" y2="100%">
+          <stop offset="0%"   stop-color="#FFF3C4"/>
+          <stop offset="40%"  stop-color="#E5C558"/>
+          <stop offset="75%"  stop-color="#D4AF37"/>
           <stop offset="100%" stop-color="#8B6914"/>
         </linearGradient>
         <linearGradient id="qm-tail" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#7CFF4D"/>
+          <stop offset="0%"   stop-color="#7CFF4D"/>
           <stop offset="100%" stop-color="#008C1E"/>
         </linearGradient>
       </defs>
 
-      <!-- Q green ring -->
-      <circle cx="60" cy="58" r="40" fill="none" stroke="url(#qm-ring)" stroke-width="10" />
+      <!-- ============================================
+           Q TAIL — emerges from bottom of the ring
+           ============================================ -->
+      <path d="M 78,84
+               C 90,86 102,96 108,110
+               C 110,114 106,118 102,116
+               C 92,108 82,98 74,92
+               C 72,90 73,84 78,84 Z"
+            fill="url(#qm-tail)"/>
 
-      <!-- Q tail -->
-      <path d="M 86,84 C 100,90 108,104 100,114 C 94,106 86,100 80,96 C 78,92 80,86 86,84 Z"
-            fill="url(#qm-tail)" />
+      <!-- ============================================
+           Q RING — the main green ring
+           ============================================ -->
+      <circle cx="60" cy="58" r="40"
+              fill="none"
+              stroke="url(#qm-ring)"
+              stroke-width="11"/>
 
-      <!-- Eagle head -->
-      <path d="M 45,22 C 34,24 28,32 28,44 C 28,56 30,68 38,76 C 42,80 46,81 48,80 C 50,74 50,66 52,60 L 68,50 L 88,42 L 70,38 C 65,35 60,33 58,32 C 54,26 50,22 45,22 Z"
-            fill="url(#qm-gold)" />
+      <!-- ============================================
+           EAGLE HEAD — profile facing right
+           ============================================ -->
+      <path d="M 44,26
+               C 34,27 26,34 24,46
+               C 22,58 24,70 32,78
+               C 36,82 42,84 46,82
+               C 48,78 47,72 48,66
+               C 49,60 52,56 56,54
+               L 62,52
+               L 68,48
+               L 74,44
+               L 76,40
+               L 68,38
+               L 60,36
+               L 56,32
+               C 52,28 48,26 44,26 Z"
+            fill="url(#qm-gold)"/>
 
-      <!-- Eye -->
-      <circle cx="48" cy="40" r="2.4" fill="#0A1628" />
+      <!-- Beak split line (upper/lower beak) -->
+      <path d="M 56,40 L 72,42"
+            stroke="#8B6914"
+            stroke-width="1"
+            stroke-linecap="round"
+            opacity="0.55"
+            fill="none"/>
 
-      <!-- Beak shadow -->
-      <path d="M 72,42 L 88,42 L 72,46 Z" fill="#8B6914" opacity="0.45" />
+      <!-- Brow ridge accent -->
+      <path d="M 44,34 C 48,32 52,33 55,36"
+            stroke="#8B6914"
+            stroke-width="1.2"
+            stroke-linecap="round"
+            opacity="0.4"
+            fill="none"/>
+
+      <!-- ============================================
+           EYE — the single dark accent
+           ============================================ -->
+      <circle cx="40" cy="41" r="2.6" fill="#0A1628"/>
+      <circle cx="39.2" cy="40.2" r="0.7" fill="#FFF3C4" opacity="0.85"/>
     </symbol>
   </svg>
 
