@@ -2960,7 +2960,7 @@ p {
 
 
 /* ============================================================
-   26. QOECH MARK SIZING — adaptive to each container
+   26. QOECH MARK SIZING — zoomed to focus on the Q
    ============================================================ */
 /* Base rules for every Q image */
 .brand-q,
@@ -2970,19 +2970,18 @@ p {
 .about-card-mark img,
 .eagle-figure img {
   display: block;
-  object-fit: contain;
-  object-position: center;
+  object-fit: cover;          /* fills container, crops empty edges */
+  object-position: center;    /* keeps Q centered when cropping */
+  transform-origin: center;
   pointer-events: none;
   -webkit-user-drag: none;
   user-select: none;
-  /* Screen blend hides the black background of the image */
-  mix-blend-mode: screen;
-  /* Smooths edge of the Q mark */
+  mix-blend-mode: screen;     /* hides the black background */
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
 
-/* ---- NAVBAR: sized to match the OECH letters ---- */
+/* ---- NAVBAR: zoomed Q next to OECH ---- */
 .brand-top {
   display: flex;
   align-items: center;
@@ -2990,23 +2989,25 @@ p {
 }
 
 .brand-q {
-  height: 34px;
-  width: 34px;
+  height: 36px;
+  width: 36px;
+  transform: scale(1.35);     /* crop padding around Q */
   margin-right: 0.15rem;
   filter: drop-shadow(0 0 8px var(--primary-glow));
   transition: var(--transition);
 }
 .brand:hover .brand-q {
-  transform: rotate(-8deg) scale(1.06);
+  transform: scale(1.35) rotate(-8deg);
   filter: drop-shadow(0 0 16px var(--primary-glow));
 }
 
-/* ---- PRELOADER: inside the 130px ring ---- */
+/* ---- PRELOADER: zoomed Q inside the 130px ring ---- */
 .preloader-q {
   height: 64px;
   width: 64px;
   display: inline-block;
   vertical-align: middle;
+  transform: scale(1.35);
   margin-right: 0.05em;
   margin-left: -0.05em;
   filter: drop-shadow(0 0 16px var(--primary-glow));
@@ -3020,6 +3021,7 @@ p {
 .visual-core-mark {
   width: 100%;
   height: 100%;
+  transform: scale(1.4);     /* tighter crop → Q fills more */
   filter: drop-shadow(0 0 20px var(--primary-glow));
 }
 
@@ -3030,25 +3032,26 @@ p {
 .about-card-mark img {
   width: 100%;
   height: 100%;
+  transform: scale(1.4);
   filter: drop-shadow(0 0 18px var(--primary-glow));
 }
 
-/* ---- FOOTER: matches the OECH letters ---- */
+/* ---- FOOTER: zoomed Q next to OECH ---- */
 .footer-q {
-  height: 32px;
-  width: 32px;
+  height: 34px;
+  width: 34px;
+  transform: scale(1.35);
   margin-right: 0.15rem;
   filter: drop-shadow(0 0 10px var(--primary-glow));
 }
 
-/* ---- EAGLE MOMENT: fills the 560px watermark ---- */
+/* ---- EAGLE MOMENT: big faint Q watermark ---- */
 .eagle-figure img {
   width: 100%;
   height: 100%;
+  transform: scale(1.1);
   opacity: 0.08;
 }
-
-
 /* ============================================================
    27. RESPONSIVE BREAKPOINTS
    ============================================================ */
@@ -3165,26 +3168,35 @@ p {
 
   .navbar { padding: 0 1.2rem; }
 
-    /* Brand — smaller on mobile */
+  /* Brand — smaller on mobile, keeps zoom */
   .brand-letters { font-size: 0.95rem; letter-spacing: 0.12em; }
   .brand-sub { font-size: 0.5rem; letter-spacing: 0.28em; }
-  .brand-q { height: 28px; width: 28px; }
+  .brand-q { height: 30px; width: 30px; transform: scale(1.3); }
+  .brand:hover .brand-q { transform: scale(1.3) rotate(-8deg); }
 
-  /* Preloader */
+  /* Preloader — smaller Q, keeps zoom */
   .preloader-text { font-size: 1.3rem; }
-  .preloader-q { height: 52px; width: 52px; }
+  .preloader-q { height: 52px; width: 52px; transform: scale(1.3); }
 
+  /* Hero visual core — smaller circle, keeps zoom */
   .hero { padding: calc(var(--nav-height) + 3rem) 0 4rem; }
   .hero-title { font-size: clamp(1.9rem, 8vw, 2.6rem); }
   .hero-description { font-size: 0.92rem; }
   .hero-typing { font-size: 0.85rem; }
   .hero-actions .btn { flex: 1; justify-content: center; }
   .visual-stage { width: 260px; height: 260px; }
-   .visual-core { width: 110px; height: 110px; }
-  .visual-core-mark { width: 100%; height: 100%; }
+  .visual-core { width: 110px; height: 110px; }
+  .visual-core-mark { width: 100%; height: 100%; transform: scale(1.4); }
   .orbit-node { width: 32px; height: 32px; font-size: 0.85rem; }
   .trust-divider { display: none; }
   .hero-trust { gap: 1.5rem; }
+
+  /* About card mark — keeps zoom */
+  .about-card-mark { width: 56px; height: 56px; }
+  .about-card-mark img { transform: scale(1.4); }
+
+  /* Footer Q — smaller, keeps zoom */
+  .footer-q { height: 28px; width: 28px; transform: scale(1.3); }
 
   .section-head { margin-bottom: 2.5rem; }
   .section-label { font-size: 0.6rem; padding: 0.35rem 0.9rem; }
@@ -3208,6 +3220,7 @@ p {
 
   .eagle-section { padding: 5rem 0; }
   .eagle-figure { width: 340px; height: 340px; }
+  .eagle-figure img { transform: scale(1.1); }
 
   .testimonial-carousel { padding: 1.8rem 1.2rem; }
   .testimonial-slide p { font-size: 0.92rem; }
