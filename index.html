@@ -20,8 +20,8 @@
   <meta property="og:url" content="https://qoechtech.com" />
   <meta property="og:image" content="images/logo/qoech-logo.png" />
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="images/logo/favicon.ico" />
+  <!-- Favicon — inline SVG Q/eagle -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Ccircle cx='60' cy='58' r='40' fill='none' stroke='%2339FF14' stroke-width='10'/%3E%3Cpath d='M45,22 C34,24 28,32 28,44 C28,56 30,68 38,76 C42,80 46,81 48,80 C50,74 50,66 52,60 L68,50 L88,42 L70,38 C65,35 60,33 58,32 C54,26 50,22 45,22 Z' fill='%23D4AF37'/%3E%3Ccircle cx='48' cy='40' r='2.4' fill='%230A1628'/%3E%3C/svg%3E" />
 
   <!-- ============================================================
        FONTS
@@ -30,23 +30,58 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
-  <!-- ============================================================
-       FONT AWESOME 6.5.0
-  ============================================================ -->
+  <!-- FONT AWESOME 6.5.0 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-  <!-- ============================================================
-       tsParticles — network background with cursor grab
-  ============================================================ -->
+  <!-- tsParticles -->
   <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js" defer></script>
 
-  <!-- ============================================================
-       MAIN STYLESHEET
-  ============================================================ -->
+  <!-- MAIN STYLESHEET -->
   <link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body>
+
+  <!-- ============================================================
+       QOECH SVG MARK — defined once, reused everywhere
+  ============================================================ -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+    <symbol id="qoech-mark" viewBox="0 0 120 120">
+      <defs>
+        <linearGradient id="qm-ring" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#9CFF6E"/>
+          <stop offset="45%" stop-color="#39FF14"/>
+          <stop offset="100%" stop-color="#008C1E"/>
+        </linearGradient>
+        <linearGradient id="qm-gold" x1="0%" y1="0%" x2="30%" y2="100%">
+          <stop offset="0%" stop-color="#FFF3C4"/>
+          <stop offset="45%" stop-color="#D4AF37"/>
+          <stop offset="100%" stop-color="#8B6914"/>
+        </linearGradient>
+        <linearGradient id="qm-tail" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#7CFF4D"/>
+          <stop offset="100%" stop-color="#008C1E"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Q green ring -->
+      <circle cx="60" cy="58" r="40" fill="none" stroke="url(#qm-ring)" stroke-width="10" />
+
+      <!-- Q tail -->
+      <path d="M 86,84 C 100,90 108,104 100,114 C 94,106 86,100 80,96 C 78,92 80,86 86,84 Z"
+            fill="url(#qm-tail)" />
+
+      <!-- Eagle head -->
+      <path d="M 45,22 C 34,24 28,32 28,44 C 28,56 30,68 38,76 C 42,80 46,81 48,80 C 50,74 50,66 52,60 L 68,50 L 88,42 L 70,38 C 65,35 60,33 58,32 C 54,26 50,22 45,22 Z"
+            fill="url(#qm-gold)" />
+
+      <!-- Eye -->
+      <circle cx="48" cy="40" r="2.4" fill="#0A1628" />
+
+      <!-- Beak shadow -->
+      <path d="M 72,42 L 88,42 L 72,46 Z" fill="#8B6914" opacity="0.45" />
+    </symbol>
+  </svg>
 
   <!-- ============================================================
        PRELOADER
@@ -55,7 +90,9 @@
     <div class="preloader-inner">
       <div class="preloader-ring"></div>
       <div class="preloader-mark">
-        <i class="fas fa-feather-pointed"></i>
+        <svg class="qoech-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <use href="#qoech-mark" />
+        </svg>
       </div>
       <div class="preloader-text">
         <span>Q</span>OECH
@@ -64,19 +101,13 @@
     </div>
   </div>
 
-  <!-- ============================================================
-       SCROLL PROGRESS BAR
-  ============================================================ -->
+  <!-- SCROLL PROGRESS BAR -->
   <div class="scroll-progress" id="scrollProgress"></div>
 
-  <!-- ============================================================
-       CURSOR GLOW
-  ============================================================ -->
+  <!-- CURSOR GLOW -->
   <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
 
-  <!-- ============================================================
-       PARTICLES NETWORK BACKGROUND
-  ============================================================ -->
+  <!-- PARTICLES NETWORK BACKGROUND -->
   <div id="particles-bg" aria-hidden="true"></div>
 
   <!-- ============================================================
@@ -85,7 +116,9 @@
   <header class="navbar" id="navbar">
     <a href="#home" class="brand" aria-label="Qoech Technologies Home">
       <span class="brand-mark">
-        <i class="fas fa-feather-pointed"></i>
+        <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <use href="#qoech-mark" />
+        </svg>
       </span>
       <span class="brand-text">
         <strong>QOECH</strong>
@@ -109,7 +142,6 @@
       </a>
     </nav>
 
-    <!-- Stylish animated hamburger -->
     <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="navMenu">
       <span class="hamburger-ring"></span>
       <span class="hamburger-line"></span>
@@ -130,7 +162,6 @@
 
     <div class="container hero-container">
 
-      <!-- LEFT: Content -->
       <div class="hero-content">
         <div class="hero-badge">
           <i class="fas fa-circle-nodes"></i>
@@ -183,7 +214,6 @@
         </div>
       </div>
 
-      <!-- RIGHT: Visual -->
       <div class="hero-visual">
         <div class="visual-stage">
           <div class="visual-ring visual-ring-outer"></div>
@@ -191,8 +221,9 @@
           <div class="visual-ring visual-ring-inner"></div>
 
           <div class="visual-core">
-            <i class="fas fa-feather-pointed"></i>
-            <span class="visual-core-letter">Q</span>
+            <svg class="visual-core-mark" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <use href="#qoech-mark" />
+            </svg>
           </div>
 
           <div class="orbit orbit-1">
@@ -242,11 +273,12 @@
 
       <div class="about-grid">
 
-        <!-- LEFT: Visual card -->
         <div class="about-visual">
           <div class="about-card">
             <div class="about-card-mark">
-              <i class="fas fa-feather-pointed"></i>
+              <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <use href="#qoech-mark" />
+              </svg>
             </div>
             <h3>Qoech Technologies</h3>
             <p>Technology. Innovation. Impact.</p>
@@ -254,7 +286,7 @@
             <ul class="about-quick">
               <li><i class="fas fa-location-dot"></i><span>Based in Kenya</span></li>
               <li><i class="fas fa-globe"></i><span>Remote Worldwide</span></li>
-              <li><i class="fas fa-briefcase"></i><span>Business & Enterprise</span></li>
+              <li><i class="fas fa-briefcase"></i><span>Business &amp; Enterprise</span></li>
               <li><i class="fas fa-clock"></i><span>Always Available</span></li>
             </ul>
 
@@ -268,7 +300,6 @@
           </div>
         </div>
 
-        <!-- RIGHT: Tabs + Stats -->
         <div class="about-content">
 
           <div class="about-tabs" role="tablist">
@@ -380,7 +411,6 @@
             </div>
           </div>
 
-          <!-- Stats -->
           <div class="stats-grid">
             <div class="stat-card">
               <div class="stat-icon"><i class="fas fa-diagram-project"></i></div>
@@ -440,7 +470,6 @@
 
       <div class="services-grid">
 
-        <!-- 1 -->
         <article class="service-card">
           <div class="service-icon"><i class="fas fa-code"></i></div>
           <h3>Software Development</h3>
@@ -456,7 +485,6 @@
           </button>
         </article>
 
-        <!-- 2 -->
         <article class="service-card">
           <div class="service-icon"><i class="fas fa-globe"></i></div>
           <h3>Web Development</h3>
@@ -472,7 +500,6 @@
           </button>
         </article>
 
-        <!-- 3 -->
         <article class="service-card">
           <div class="service-icon"><i class="fas fa-mobile-alt"></i></div>
           <h3>Mobile Development</h3>
@@ -488,7 +515,6 @@
           </button>
         </article>
 
-        <!-- 4 -->
         <article class="service-card">
           <div class="service-icon"><i class="fas fa-network-wired"></i></div>
           <h3>Networking</h3>
@@ -504,7 +530,6 @@
           </button>
         </article>
 
-        <!-- 5 -->
         <article class="service-card">
           <div class="service-icon"><i class="fas fa-shield-halved"></i></div>
           <h3>Cybersecurity</h3>
@@ -520,7 +545,6 @@
           </button>
         </article>
 
-        <!-- 6 -->
         <article class="service-card">
           <div class="service-icon"><i class="fas fa-database"></i></div>
           <h3>Database Solutions</h3>
@@ -528,7 +552,7 @@
           <ul class="service-points">
             <li><i class="fas fa-check"></i> Schema design</li>
             <li><i class="fas fa-check"></i> Query optimization</li>
-            <li><i class="fas fa-check"></i> Backup & recovery</li>
+            <li><i class="fas fa-check"></i> Backup &amp; recovery</li>
           </ul>
           <button class="service-btn" data-service="database">
             <span>View Details</span>
@@ -536,7 +560,6 @@
           </button>
         </article>
 
-        <!-- 7 -->
         <article class="service-card">
           <div class="service-icon"><i class="fas fa-cloud"></i></div>
           <h3>Cloud Solutions</h3>
@@ -552,7 +575,6 @@
           </button>
         </article>
 
-        <!-- 8 -->
         <article class="service-card">
           <div class="service-icon"><i class="fas fa-robot"></i></div>
           <h3>AI &amp; Automation</h3>
@@ -597,7 +619,7 @@
           <p>Automate operations, manage inventory, customers, sales and employees with systems built for your size.</p>
           <ul class="solution-list">
             <li><i class="fas fa-check"></i> Management systems</li>
-            <li><i class="fas fa-check"></i> Sales & inventory</li>
+            <li><i class="fas fa-check"></i> Sales &amp; inventory</li>
             <li><i class="fas fa-check"></i> Reporting dashboards</li>
           </ul>
         </article>
@@ -639,236 +661,224 @@
     </div>
   </section>
 
- <!-- ============================================================
-     PROJECTS — Selected Work
-============================================================ -->
-<section class="section section-alt" id="projects">
-  <div class="container">
-    <div class="section-head">
-      <span class="section-label">
-        <i class="fas fa-diagram-project"></i>
-        Selected Work
-      </span>
-      <h2 class="section-title">Real Systems. <span class="highlight">Real Businesses.</span></h2>
-      <p class="section-sub">
-        A focused selection of systems and platforms we have designed, built
-        and delivered — for businesses that needed technology to actually work.
-      </p>
-    </div>
-
-    <!-- FEATURED PROJECTS -->
-    <div class="featured-projects-grid">
-
-      <!-- Featured 1: Hardware -->
-      <article class="featured-project-card">
-        <div class="featured-project-thumb">
-          <img src="images/projects/hardware.jpg" alt="Hardware Store Management System" loading="lazy" />
-          <span class="project-status status-live">
-            <i class="fas fa-circle"></i> Live
-          </span>
-          <span class="featured-flag"><i class="fas fa-star"></i> Featured</span>
-        </div>
-        <div class="featured-project-body">
-          <span class="project-category"><i class="fas fa-tools"></i> Business Management</span>
-          <h3>Hardware Store Management System</h3>
-          <p>Inventory, sales and stock control built for the daily realities of hardware retail — from large catalogs to fast-moving stock.</p>
-          <div class="project-stack">
-            <span class="tag"><i class="fab fa-php"></i> PHP</span>
-            <span class="tag"><i class="fas fa-database"></i> MySQL</span>
-            <span class="tag"><i class="fab fa-js"></i> JavaScript</span>
-          </div>
-          <div class="featured-project-actions">
-            <button class="project-btn" data-project="hardware">
-              <span>View Case Study</span>
-              <i class="fas fa-arrow-right"></i>
-            </button>
-            <a href="#" class="project-link-live" data-live-url="hardware" hidden>
-              <i class="fas fa-up-right-from-square"></i>
-              <span>Visit Live</span>
-            </a>
-          </div>
-        </div>
-      </article>
-
-      <!-- Featured 2: Agrovet -->
-      <article class="featured-project-card">
-        <div class="featured-project-thumb">
-          <img src="images/projects/agrovet.jpg" alt="Agrovet Management System" loading="lazy" />
-          <span class="project-status status-live">
-            <i class="fas fa-circle"></i> Live
-          </span>
-          <span class="featured-flag"><i class="fas fa-star"></i> Featured</span>
-        </div>
-        <div class="featured-project-body">
-          <span class="project-category"><i class="fas fa-store"></i> Inventory &amp; Sales</span>
-          <h3>Agrovet Management System</h3>
-          <p>Complete tracking of sales, stock levels, purchases and inventory — built for agrovet businesses that need real-time clarity.</p>
-          <div class="project-stack">
-            <span class="tag"><i class="fab fa-php"></i> PHP</span>
-            <span class="tag"><i class="fas fa-database"></i> MySQL</span>
-            <span class="tag"><i class="fab fa-js"></i> JavaScript</span>
-          </div>
-          <div class="featured-project-actions">
-            <button class="project-btn" data-project="agrovet">
-              <span>View Case Study</span>
-              <i class="fas fa-arrow-right"></i>
-            </button>
-            <a href="#" class="project-link-live" data-live-url="agrovet" hidden>
-              <i class="fas fa-up-right-from-square"></i>
-              <span>Visit Live</span>
-            </a>
-          </div>
-        </div>
-      </article>
-
-      <!-- Featured 3: Riverview Resort -->
-      <article class="featured-project-card">
-        <div class="featured-project-thumb">
-          <img src="images/projects/riverview.jpg" alt="Riverview Resort Website" loading="lazy" />
-          <span class="project-status status-live">
-            <i class="fas fa-circle"></i> Live
-          </span>
-          <span class="featured-flag"><i class="fas fa-star"></i> Featured</span>
-        </div>
-        <div class="featured-project-body">
-          <span class="project-category"><i class="fas fa-hotel"></i> Hospitality &amp; Web</span>
-          <h3>Riverview Resort Website</h3>
-          <p>A modern, mobile-first website for a resort — built to present rooms, amenities and location with clarity and confidence.</p>
-          <div class="project-stack">
-            <span class="tag"><i class="fab fa-html5"></i> HTML5</span>
-            <span class="tag"><i class="fab fa-css3-alt"></i> CSS3</span>
-            <span class="tag"><i class="fab fa-js"></i> JavaScript</span>
-          </div>
-          <div class="featured-project-actions">
-            <button class="project-btn" data-project="riverview">
-              <span>View Case Study</span>
-              <i class="fas fa-arrow-right"></i>
-            </button>
-            <a href="https://soyriverviewresort.com" target="_blank" rel="noopener" class="project-link-live">
-              <i class="fas fa-up-right-from-square"></i>
-              <span>Visit Live</span>
-            </a>
-          </div>
-        </div>
-      </article>
-
-    </div>
-
-    <!-- OTHER SYSTEMS BUILT -->
-    <div class="other-systems">
-      <div class="other-systems-head">
-        <h3>Other Systems We've Built</h3>
-        <p>A selection of internal systems and applications developed for clients and internal use.</p>
+  <!-- ============================================================
+       PROJECTS — Selected Work
+  ============================================================ -->
+  <section class="section section-alt" id="projects">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-label">
+          <i class="fas fa-diagram-project"></i>
+          Selected Work
+        </span>
+        <h2 class="section-title">Real Systems. <span class="highlight">Real Businesses.</span></h2>
+        <p class="section-sub">
+          A focused selection of systems and platforms we have designed, built
+          and delivered — for businesses that needed technology to actually work.
+        </p>
       </div>
 
-      <ul class="other-systems-list">
+      <div class="featured-projects-grid">
 
-        <li class="other-system-item">
-          <div class="other-system-info">
-            <span class="other-system-icon"><i class="fas fa-building"></i></span>
-            <div>
-              <h4>Bandaptai Apartments Management System</h4>
-              <p>Property, tenant, rent and maintenance management for multi-unit apartments.</p>
+        <article class="featured-project-card">
+          <div class="featured-project-thumb">
+            <img src="images/projects/hardware.jpg" alt="Hardware Store Management System" loading="lazy" />
+            <span class="project-status status-live"><i class="fas fa-circle"></i> Live</span>
+            <span class="featured-flag"><i class="fas fa-star"></i> Featured</span>
+          </div>
+          <div class="featured-project-body">
+            <span class="project-category"><i class="fas fa-tools"></i> Business Management</span>
+            <h3>Hardware Store Management System</h3>
+            <p>Inventory, sales and stock control built for the daily realities of hardware retail — from large catalogs to fast-moving stock.</p>
+            <div class="project-stack">
+              <span class="tag"><i class="fab fa-php"></i> PHP</span>
+              <span class="tag"><i class="fas fa-database"></i> MySQL</span>
+              <span class="tag"><i class="fab fa-js"></i> JavaScript</span>
+            </div>
+            <div class="featured-project-actions">
+              <button class="project-btn" data-project="hardware">
+                <span>View Case Study</span>
+                <i class="fas fa-arrow-right"></i>
+              </button>
+              <a href="#" class="project-link-live" data-live-url="hardware" hidden>
+                <i class="fas fa-up-right-from-square"></i>
+                <span>Visit Live</span>
+              </a>
             </div>
           </div>
-          <div class="other-system-meta">
-            <span class="tag"><i class="fab fa-node-js"></i> Node.js</span>
-            <span class="tag"><i class="fas fa-database"></i> PostgreSQL</span>
-            <span class="other-system-status">Completed</span>
-          </div>
-        </li>
+        </article>
 
-        <li class="other-system-item">
-          <div class="other-system-info">
-            <span class="other-system-icon"><i class="fas fa-tractor"></i></span>
-            <div>
-              <h4>Farm Management System</h4>
-              <p>Digitized farm operations, production records and resource tracking.</p>
+        <article class="featured-project-card">
+          <div class="featured-project-thumb">
+            <img src="images/projects/agrovet.jpg" alt="Agrovet Management System" loading="lazy" />
+            <span class="project-status status-live"><i class="fas fa-circle"></i> Live</span>
+            <span class="featured-flag"><i class="fas fa-star"></i> Featured</span>
+          </div>
+          <div class="featured-project-body">
+            <span class="project-category"><i class="fas fa-store"></i> Inventory &amp; Sales</span>
+            <h3>Agrovet Management System</h3>
+            <p>Complete tracking of sales, stock levels, purchases and inventory — built for agrovet businesses that need real-time clarity.</p>
+            <div class="project-stack">
+              <span class="tag"><i class="fab fa-php"></i> PHP</span>
+              <span class="tag"><i class="fas fa-database"></i> MySQL</span>
+              <span class="tag"><i class="fab fa-js"></i> JavaScript</span>
+            </div>
+            <div class="featured-project-actions">
+              <button class="project-btn" data-project="agrovet">
+                <span>View Case Study</span>
+                <i class="fas fa-arrow-right"></i>
+              </button>
+              <a href="#" class="project-link-live" data-live-url="agrovet" hidden>
+                <i class="fas fa-up-right-from-square"></i>
+                <span>Visit Live</span>
+              </a>
             </div>
           </div>
-          <div class="other-system-meta">
-            <span class="tag"><i class="fab fa-php"></i> PHP</span>
-            <span class="tag"><i class="fas fa-database"></i> MySQL</span>
-            <span class="other-system-status">Completed</span>
-          </div>
-        </li>
+        </article>
 
-        <li class="other-system-item">
-          <div class="other-system-info">
-            <span class="other-system-icon"><i class="fab fa-android"></i></span>
-            <div>
-              <h4>Android Task Manager</h4>
-              <p>Lightweight mobile application for tasks, reminders and local storage.</p>
+        <article class="featured-project-card">
+          <div class="featured-project-thumb">
+            <img src="images/projects/riverview.jpg" alt="Riverview Resort Website" loading="lazy" />
+            <span class="project-status status-live"><i class="fas fa-circle"></i> Live</span>
+            <span class="featured-flag"><i class="fas fa-star"></i> Featured</span>
+          </div>
+          <div class="featured-project-body">
+            <span class="project-category"><i class="fas fa-hotel"></i> Hospitality &amp; Web</span>
+            <h3>Riverview Resort Website</h3>
+            <p>A modern, mobile-first website for a resort — built to present rooms, amenities and location with clarity and confidence.</p>
+            <div class="project-stack">
+              <span class="tag"><i class="fab fa-html5"></i> HTML5</span>
+              <span class="tag"><i class="fab fa-css3-alt"></i> CSS3</span>
+              <span class="tag"><i class="fab fa-js"></i> JavaScript</span>
+            </div>
+            <div class="featured-project-actions">
+              <button class="project-btn" data-project="riverview">
+                <span>View Case Study</span>
+                <i class="fas fa-arrow-right"></i>
+              </button>
+              <a href="https://soyriverviewresort.com" target="_blank" rel="noopener" class="project-link-live">
+                <i class="fas fa-up-right-from-square"></i>
+                <span>Visit Live</span>
+              </a>
             </div>
           </div>
-          <div class="other-system-meta">
-            <span class="tag"><i class="fab fa-java"></i> Java</span>
-            <span class="tag"><i class="fas fa-database"></i> SQLite</span>
-            <span class="other-system-status status-dev">In Development</span>
-          </div>
-        </li>
+        </article>
 
-        <li class="other-system-item">
-          <div class="other-system-info">
-            <span class="other-system-icon"><i class="fas fa-cubes"></i></span>
-            <div>
-              <h4>Additional Client &amp; Internal Systems</h4>
-              <p>Several other business systems, utilities and web projects delivered or in progress.</p>
-            </div>
-          </div>
-          <div class="other-system-meta">
-            <span class="tag"><i class="fas fa-code"></i> Multiple Stacks</span>
-            <span class="other-system-status">Various</span>
-          </div>
-        </li>
-
-      </ul>
-    </div>
-
-    <!-- WHAT WE CAN BUILD -->
-    <div class="capabilities">
-      <div class="capabilities-head">
-        <h3>What We Can Build For You</h3>
-        <p>Whether you need something we've built before or something entirely new, these are the systems we specialise in.</p>
       </div>
 
-      <div class="capabilities-grid">
-        <div class="capability-item">
-          <i class="fas fa-briefcase"></i>
-          <span>Business Management Systems</span>
+      <div class="other-systems">
+        <div class="other-systems-head">
+          <h3>Other Systems We've Built</h3>
+          <p>A selection of internal systems and applications developed for clients and internal use.</p>
         </div>
-        <div class="capability-item">
-          <i class="fas fa-shopping-cart"></i>
-          <span>E-Commerce Platforms</span>
+
+        <ul class="other-systems-list">
+
+          <li class="other-system-item">
+            <div class="other-system-info">
+              <span class="other-system-icon"><i class="fas fa-building"></i></span>
+              <div>
+                <h4>Bandaptai Apartments Management System</h4>
+                <p>Property, tenant, rent and maintenance management for multi-unit apartments.</p>
+              </div>
+            </div>
+            <div class="other-system-meta">
+              <span class="tag"><i class="fab fa-node-js"></i> Node.js</span>
+              <span class="tag"><i class="fas fa-database"></i> PostgreSQL</span>
+              <span class="other-system-status">Completed</span>
+            </div>
+          </li>
+
+          <li class="other-system-item">
+            <div class="other-system-info">
+              <span class="other-system-icon"><i class="fas fa-tractor"></i></span>
+              <div>
+                <h4>Farm Management System</h4>
+                <p>Digitized farm operations, production records and resource tracking.</p>
+              </div>
+            </div>
+            <div class="other-system-meta">
+              <span class="tag"><i class="fab fa-php"></i> PHP</span>
+              <span class="tag"><i class="fas fa-database"></i> MySQL</span>
+              <span class="other-system-status">Completed</span>
+            </div>
+          </li>
+
+          <li class="other-system-item">
+            <div class="other-system-info">
+              <span class="other-system-icon"><i class="fab fa-android"></i></span>
+              <div>
+                <h4>Android Task Manager</h4>
+                <p>Lightweight mobile application for tasks, reminders and local storage.</p>
+              </div>
+            </div>
+            <div class="other-system-meta">
+              <span class="tag"><i class="fab fa-java"></i> Java</span>
+              <span class="tag"><i class="fas fa-database"></i> SQLite</span>
+              <span class="other-system-status status-dev">In Development</span>
+            </div>
+          </li>
+
+          <li class="other-system-item">
+            <div class="other-system-info">
+              <span class="other-system-icon"><i class="fas fa-cubes"></i></span>
+              <div>
+                <h4>Additional Client &amp; Internal Systems</h4>
+                <p>Several other business systems, utilities and web projects delivered or in progress.</p>
+              </div>
+            </div>
+            <div class="other-system-meta">
+              <span class="tag"><i class="fas fa-code"></i> Multiple Stacks</span>
+              <span class="other-system-status">Various</span>
+            </div>
+          </li>
+
+        </ul>
+      </div>
+
+      <div class="capabilities">
+        <div class="capabilities-head">
+          <h3>What We Can Build For You</h3>
+          <p>Whether you need something we've built before or something entirely new, these are the systems we specialise in.</p>
         </div>
-        <div class="capability-item">
-          <i class="fas fa-window-maximize"></i>
-          <span>Web Applications</span>
+
+        <div class="capabilities-grid">
+          <div class="capability-item">
+            <i class="fas fa-briefcase"></i>
+            <span>Business Management Systems</span>
+          </div>
+          <div class="capability-item">
+            <i class="fas fa-shopping-cart"></i>
+            <span>E-Commerce Platforms</span>
+          </div>
+          <div class="capability-item">
+            <i class="fas fa-window-maximize"></i>
+            <span>Web Applications</span>
+          </div>
+          <div class="capability-item">
+            <i class="fas fa-plug"></i>
+            <span>REST APIs</span>
+          </div>
+          <div class="capability-item">
+            <i class="fas fa-database"></i>
+            <span>Database Solutions</span>
+          </div>
+          <div class="capability-item">
+            <i class="fab fa-android"></i>
+            <span>Android Applications</span>
+          </div>
         </div>
-        <div class="capability-item">
-          <i class="fas fa-plug"></i>
-          <span>REST APIs</span>
-        </div>
-        <div class="capability-item">
-          <i class="fas fa-database"></i>
-          <span>Database Solutions</span>
-        </div>
-        <div class="capability-item">
-          <i class="fab fa-android"></i>
-          <span>Android Applications</span>
+
+        <div class="capabilities-cta">
+          <a href="#contact" class="btn btn-primary">
+            <i class="fas fa-rocket"></i>
+            <span>Start a Project</span>
+          </a>
         </div>
       </div>
 
-      <div class="capabilities-cta">
-        <a href="#contact" class="btn btn-primary">
-          <i class="fas fa-rocket"></i>
-          <span>Start a Project</span>
-        </a>
-      </div>
     </div>
-
-  </div>
-</section>
+  </section>
 
   <!-- ============================================================
        TECHNOLOGIES
@@ -1104,7 +1114,9 @@
   <section class="eagle-section" id="eagle">
     <div class="eagle-bg" aria-hidden="true"></div>
     <div class="eagle-figure" aria-hidden="true">
-      <i class="fas fa-feather-pointed"></i>
+      <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <use href="#qoech-mark" />
+      </svg>
     </div>
     <div class="container eagle-content">
       <span class="section-label">
@@ -1196,7 +1208,6 @@
 
       <div class="contact-grid">
 
-        <!-- LEFT: Info -->
         <div class="contact-info">
 
           <a href="mailto:qoechtech@gmail.com" class="contact-card">
@@ -1244,7 +1255,6 @@
 
         </div>
 
-        <!-- RIGHT: Form -->
         <div class="contact-form-wrap">
           <div class="form-head">
             <h3><i class="fas fa-paper-plane"></i> Send Us a Message</h3>
@@ -1314,7 +1324,11 @@
 
         <div class="footer-brand">
           <div class="footer-logo">
-            <span class="footer-mark"><i class="fas fa-feather-pointed"></i></span>
+            <span class="footer-mark">
+              <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <use href="#qoech-mark" />
+              </svg>
+            </span>
             <div>
               <strong>QOECH</strong>
               <small>TECHNOLOGIES</small>
@@ -1378,16 +1392,12 @@
     </div>
   </footer>
 
-  <!-- ============================================================
-       BACK TO TOP
-  ============================================================ -->
+  <!-- BACK TO TOP -->
   <button class="back-to-top" id="backToTop" aria-label="Back to top">
     <i class="fas fa-arrow-up"></i>
   </button>
 
-  <!-- ============================================================
-       SERVICE MODAL
-  ============================================================ -->
+  <!-- SERVICE MODAL -->
   <div class="modal" id="serviceModal" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal-overlay" data-close></div>
     <div class="modal-content">
@@ -1398,9 +1408,7 @@
     </div>
   </div>
 
-  <!-- ============================================================
-       PROJECT MODAL
-  ============================================================ -->
+  <!-- PROJECT MODAL -->
   <div class="modal" id="projectModal" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal-overlay" data-close></div>
     <div class="modal-content">
@@ -1411,9 +1419,7 @@
     </div>
   </div>
 
-  <!-- ============================================================
-       SCRIPTS
-  ============================================================ -->
+  <!-- SCRIPTS -->
   <script src="js/main.js" defer></script>
 
 </body>
