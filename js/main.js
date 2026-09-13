@@ -665,90 +665,71 @@
   });
 
 
-  /* ============================================================
+    /* ============================================================
      14. PROJECT DATA + MODAL
      ============================================================ */
   const projectData = {
-    bandaptai: {
-      title: 'Bandaptai Apartments Management System',
-      category: 'Property Management',
+    hardware: {
+      title: 'Hardware Store Management System',
+      category: 'Business Management',
       status: 'Live',
       statusClass: 'status-live',
-      image: 'images/projects/bandaptai.jpg',
-      overview: 'A web-based platform designed to help landlords and caretakers manage apartments, tenants, rent, maintenance, staff tasks and property operations from one centralized system.',
-      problem: 'Managing multiple apartments manually was time-consuming and error-prone. Landlords needed a centralized way to track tenants, rent payments, maintenance requests and staff responsibilities.',
-      solution: 'We designed and developed a comprehensive management system with role-based access for landlords, caretakers and staff. The system includes automated rent tracking, maintenance management and task assignment.',
+      image: 'images/projects/hardware.jpg',
+      liveUrl: '', // ← add live URL here if available
+      overview: 'A management system built for hardware stores that need to manage large product catalogs, track sales and monitor stock levels without spreadsheets.',
+      problem: 'Hardware stores deal with hundreds of products, varying units and fast-moving stock. Manual tracking leads to stockouts, overstocking and difficulty knowing what is actually selling.',
+      solution: 'We built a system that handles inventory tracking, sales processing, purchase recording and business reporting — designed around how hardware stores actually operate.',
       features: [
-        'Landlord dashboard with property overview',
-        'Caretaker and tenant management',
-        'Automated rent tracking and reminders',
-        'Maintenance request workflow',
-        'Staff and task management',
-        'Role-based authentication and permissions',
-        'Detailed reports and analytics'
+        'Inventory management for large catalogs',
+        'Fast sales processing and receipts',
+        'Low-stock alerts and reorder tracking',
+        'Purchase and supplier records',
+        'Daily, weekly and monthly business reports'
       ],
-      tech: ['HTML', 'CSS', 'JavaScript', 'Node.js', 'Express', 'PostgreSQL', 'REST API', 'JWT'],
-      outcome: 'The system successfully manages multiple apartments, streamlines rent collection and improves communication between landlords, caretakers and tenants.'
+      tech: ['HTML', 'CSS', 'JavaScript', 'PHP', 'MySQL'],
+      outcome: 'Improved inventory accuracy and gave owners a clear view of stock and sales for better decisions.'
     },
+
     agrovet: {
       title: 'Agrovet Management System',
       category: 'Inventory & Sales',
       status: 'Live',
       statusClass: 'status-live',
       image: 'images/projects/agrovet.jpg',
-      overview: 'A comprehensive system for tracking sales, stock levels, purchases and inventory in agrovet businesses.',
-      problem: 'Agrovet businesses struggled with manual inventory tracking, leading to stockouts, overstocking and difficulty tracking sales and purchases.',
-      solution: 'We developed a complete inventory management system with real-time stock tracking, sales recording, purchase management and reporting features.',
+      liveUrl: '', // ← add live URL here if available
+      overview: 'A complete system for tracking sales, stock levels, purchases and inventory in agrovet businesses.',
+      problem: 'Agrovet businesses struggled with manual inventory tracking, leading to stockouts, overstocking and difficulty reconciling sales and purchases.',
+      solution: 'We developed a full inventory management system with real-time stock tracking, sales recording, purchase management and reporting.',
       features: [
-        'Real-time sales tracking',
-        'Stock level management',
-        'Purchase recording',
+        'Real-time sales and stock tracking',
+        'Purchase and supplier management',
         'Low-stock alerts',
-        'Sales and inventory reports',
-        'Supplier management',
-        'Product categorization'
+        'Product categorization',
+        'Sales and inventory reports'
       ],
       tech: ['HTML', 'CSS', 'JavaScript', 'PHP', 'MySQL'],
-      outcome: 'The system tracks all inventory movements, provides real-time stock levels and generates reports for better business decisions.'
+      outcome: 'The system now tracks all inventory movements and provides real-time stock visibility for better business decisions.'
     },
-    hardware: {
-      title: 'Hardware Store Management System',
-      category: 'Business Management',
-      status: 'Completed',
-      statusClass: 'status-completed',
-      image: 'images/projects/hardware.jpg',
-      overview: 'A system designed for hardware store operations, inventory and sales management.',
-      problem: 'Hardware stores needed a system to manage diverse inventory, track sales and monitor stock levels efficiently.',
-      solution: 'We created a management system that handles inventory tracking, sales processing and business reporting for hardware stores.',
+
+    riverview: {
+      title: 'Riverview Resort Website',
+      category: 'Hospitality & Web',
+      status: 'Live',
+      statusClass: 'status-live',
+      image: 'images/projects/riverview.jpg',
+      liveUrl: 'https://soyriverviewresort.com',
+      overview: 'A modern, mobile-first website designed to present the resort, its rooms, amenities and location with clarity.',
+      problem: 'The resort needed a professional online presence that matched the experience of the property itself — and that worked flawlessly on mobile, where most guests browse.',
+      solution: 'We designed and built a clean, fast, responsive website focused on visuals, clarity and easy navigation.',
       features: [
-        'Inventory management',
-        'Sales processing',
-        'Stock alerts',
-        'Purchase tracking',
-        'Business reports',
-        'Multi-user access'
+        'Mobile-first responsive layout',
+        'Clean presentation of rooms and amenities',
+        'Photo and content sections',
+        'Location and contact information',
+        'Fast loading performance'
       ],
-      tech: ['HTML', 'CSS', 'JavaScript', 'PHP', 'MySQL'],
-      outcome: 'The system improves inventory accuracy and provides insights for better stock management.'
-    },
-    farm: {
-      title: 'Farm Management System',
-      category: 'Agriculture',
-      status: 'Completed',
-      statusClass: 'status-completed',
-      image: 'images/projects/farm.jpg',
-      overview: 'A system for managing farm operations, records and production tracking.',
-      problem: 'Farm managers needed a digital system to track production, manage resources and maintain accurate records.',
-      solution: 'We developed a farm management system that digitizes farm operations, tracks production data and provides insights for better farm management.',
-      features: [
-        'Farm operations tracking',
-        'Production records',
-        'Resource management',
-        'Inventory tracking',
-        'Reporting tools'
-      ],
-      tech: ['HTML', 'CSS', 'JavaScript', 'PHP', 'MySQL'],
-      outcome: 'The system streamlines farm operations and provides valuable data for decision-making.'
+      tech: ['HTML5', 'CSS3', 'JavaScript'],
+      outcome: 'A professional online presence that reflects the resort\'s brand and works across all devices.'
     }
   };
 
@@ -758,6 +739,13 @@
   const openProjectModal = (key) => {
     const data = projectData[key];
     if (!data || !projectModal || !projectModalBody) return;
+
+    const liveLinkHTML = data.liveUrl
+      ? `<a href="${data.liveUrl}" target="_blank" rel="noopener" class="btn btn-outline">
+           <i class="fas fa-up-right-from-square"></i>
+           <span>Visit Live Site</span>
+         </a>`
+      : '';
 
     projectModalBody.innerHTML = `
       <img src="${data.image}" alt="${data.title}" onerror="this.style.display='none'" />
@@ -806,6 +794,7 @@
           <i class="fas fa-comments"></i>
           <span>Discuss a Similar Project</span>
         </a>
+        ${liveLinkHTML}
       </div>
     `;
 
@@ -818,8 +807,6 @@
       openProjectModal(key);
     });
   });
-
-
   /* ============================================================
      15. MODAL HELPERS
      ============================================================ */
@@ -1011,28 +998,7 @@
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
 
-  /* ============================================================
-     20. PROJECT FILTERS
-     ============================================================ */
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  const projectCards = document.querySelectorAll('.project-card');
-
-  filterBtns.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const filter = btn.getAttribute('data-filter');
-
-      filterBtns.forEach((b) => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      projectCards.forEach((card) => {
-        const category = card.getAttribute('data-category') || '';
-        const match = filter === 'all' || category === filter;
-        card.classList.toggle('hidden', !match);
-      });
-    });
-  });
-
-
+ 
   /* ============================================================
      21. PARALLAX-ISH HERO SCROLL (subtle)
      ============================================================ */
