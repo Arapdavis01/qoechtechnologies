@@ -27,7 +27,7 @@
    23. Back to Top
    24. Modals (Service + Project)
    25. Fade-up Scroll Animations
-   26. Qoech SVG Mark Sizing
+   26. Qoech Mark Sizing (image version)
    27. Responsive Breakpoints
    ============================================================ */
 
@@ -339,7 +339,7 @@ p {
   box-shadow: 0 0 40px var(--primary-glow), inset 0 0 20px var(--primary-soft);
 }
 
-/* Preloader wordmark — Q is the SVG, followed by "OECH" */
+/* Preloader wordmark — Q is the image, followed by "OECH" */
 .preloader-text {
   margin-top: 1.6rem;
   font-family: var(--font-display);
@@ -357,7 +357,6 @@ p {
 .preloader-q {
   height: 1.5em;
   width: auto;
-  aspect-ratio: 1;
   display: inline-block;
   vertical-align: middle;
   margin-right: -0.02em;
@@ -468,7 +467,7 @@ p {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
 }
 
-/* Brand — Q is the SVG, followed by OECH */
+/* Brand — Q is the image, followed by OECH */
 .brand {
   display: flex;
   flex-direction: column;
@@ -487,7 +486,6 @@ p {
 .brand-q {
   height: 1.35em;
   width: auto;
-  aspect-ratio: 1;
   display: block;
   margin-right: -0.02em;
   margin-left: -0.06em;
@@ -1126,9 +1124,10 @@ p {
   justify-content: center;
   margin-bottom: 1.2rem;
 }
-.about-card-mark svg {
+.about-card-mark img {
   width: 100%;
   height: 100%;
+  object-fit: contain;
   display: block;
   filter: drop-shadow(0 0 18px var(--primary-glow));
 }
@@ -2193,13 +2192,14 @@ p {
   width: 560px;
   height: 560px;
   pointer-events: none;
-  opacity: 0.06;
   animation: eagleDrift 12s ease-in-out infinite;
 }
-.eagle-figure svg {
+.eagle-figure img {
   width: 100%;
   height: 100%;
+  object-fit: contain;
   display: block;
+  opacity: 0.06;
 }
 @keyframes eagleDrift {
   0%, 100% { transform: translate(-50%, -50%) rotate(-3deg) scale(1); }
@@ -2597,7 +2597,7 @@ p {
   margin-bottom: 2.5rem;
 }
 
-/* Footer wordmark — Q is the SVG, followed by OECH */
+/* Footer wordmark — Q is the image, followed by OECH */
 .footer-logo {
   display: flex;
   flex-direction: column;
@@ -2615,7 +2615,6 @@ p {
 .footer-q {
   height: 1.35em;
   width: auto;
-  aspect-ratio: 1;
   display: block;
   margin-right: -0.02em;
   margin-left: -0.06em;
@@ -2961,18 +2960,20 @@ p {
 
 
 /* ============================================================
-   26. QOECH SVG MARK SIZING
+   26. QOECH MARK SIZING (image version)
    ============================================================ */
-/* All inline SVG marks using #qoech-mark are sized by their
-   parent containers (.brand-q, .footer-q, .preloader-q,
-   .visual-core-mark, .about-card-mark svg, .eagle-figure svg) */
+/* All Q mark images share these base rules */
 .brand-q,
 .footer-q,
 .preloader-q,
 .visual-core-mark,
-.about-card-mark svg,
-.eagle-figure svg {
+.about-card-mark img,
+.eagle-figure img {
   display: block;
+  object-fit: contain;
+  pointer-events: none;
+  -webkit-user-drag: none;
+  user-select: none;
 }
 
 
