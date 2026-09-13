@@ -21,6 +21,7 @@
    17. Contact Form (Formspree AJAX)
    18. Back to Top
    19. Footer Year
+   20. Hero Parallax (subtle)
    ============================================================ */
 
 (function () {
@@ -338,7 +339,13 @@
   /* ============================================================
      10. FADE-UP SCROLL ANIMATIONS
      ============================================================ */
-  const fadeEls = document.querySelectorAll('.fade-up, .section-head, .service-card, .solution-card, .project-card, .tech-category, .why-card, .process-step, .stat-card');
+  const fadeEls = document.querySelectorAll(
+    '.fade-up, .section-head, .service-card, .solution-card, ' +
+    '.featured-project-card, .other-system-item, .capability-item, ' +
+    '.tech-category, .why-card, .process-step, .stat-card, ' +
+    '.value-item, .contact-card, .testimonial-carousel'
+  );
+
   if ('IntersectionObserver' in window) {
     const fadeObserver = new IntersectionObserver(
       (entries) => {
@@ -665,7 +672,7 @@
   });
 
 
-    /* ============================================================
+  /* ============================================================
      14. PROJECT DATA + MODAL
      ============================================================ */
   const projectData = {
@@ -675,7 +682,7 @@
       status: 'Live',
       statusClass: 'status-live',
       image: 'images/projects/hardware.jpg',
-      liveUrl: '', // ← add live URL here if available
+      liveUrl: '', // ← paste live URL here when available
       overview: 'A management system built for hardware stores that need to manage large product catalogs, track sales and monitor stock levels without spreadsheets.',
       problem: 'Hardware stores deal with hundreds of products, varying units and fast-moving stock. Manual tracking leads to stockouts, overstocking and difficulty knowing what is actually selling.',
       solution: 'We built a system that handles inventory tracking, sales processing, purchase recording and business reporting — designed around how hardware stores actually operate.',
@@ -696,7 +703,7 @@
       status: 'Live',
       statusClass: 'status-live',
       image: 'images/projects/agrovet.jpg',
-      liveUrl: '', // ← add live URL here if available
+      liveUrl: '', // ← paste live URL here when available
       overview: 'A complete system for tracking sales, stock levels, purchases and inventory in agrovet businesses.',
       problem: 'Agrovet businesses struggled with manual inventory tracking, leading to stockouts, overstocking and difficulty reconciling sales and purchases.',
       solution: 'We developed a full inventory management system with real-time stock tracking, sales recording, purchase management and reporting.',
@@ -807,12 +814,14 @@
       openProjectModal(key);
     });
   });
+
+
   /* ============================================================
      15. MODAL HELPERS
      ============================================================ */
   let lastFocusedEl = null;
 
-  const openModal = (modal) => {
+  function openModal(modal) {
     if (!modal) return;
     lastFocusedEl = document.activeElement;
     modal.classList.add('open');
@@ -822,9 +831,9 @@
     // Focus first focusable element
     const focusable = modal.querySelector('button, [href], input, select, textarea');
     if (focusable) setTimeout(() => focusable.focus(), 80);
-  };
+  }
 
-  const closeModal = (modal) => {
+  function closeModal(modal) {
     if (!modal) return;
     modal.classList.remove('open');
     modal.setAttribute('aria-hidden', 'true');
@@ -834,7 +843,7 @@
     if (!anyOpen) document.body.style.overflow = '';
 
     if (lastFocusedEl && lastFocusedEl.focus) lastFocusedEl.focus();
-  };
+  }
 
   // Close buttons inside modals (data-close attribute)
   document.querySelectorAll('.modal').forEach((modal) => {
@@ -998,9 +1007,8 @@
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
 
- 
   /* ============================================================
-     21. PARALLAX-ISH HERO SCROLL (subtle)
+     20. HERO PARALLAX (subtle, desktop only)
      ============================================================ */
   const hero = document.querySelector('.hero');
   if (hero && hasFinePointer) {
