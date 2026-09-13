@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#050B14" />
+
+  <!-- ============================================================
+       SEO META
+  ============================================================ -->
+  <title>Qoech Technologies | Building the Future Through Technology</title>
+  <meta name="description" content="Qoech Technologies delivers innovative software, digital and ICT solutions that help businesses operate smarter, faster and more efficiently. Software Development, Web Development, Mobile Apps, Networking, Cybersecurity, Database, Cloud and AI Solutions." />
+  <meta name="keywords" content="Qoech Technologies, ICT Company Kenya, Software Development, Web Development, Mobile Apps, Networking, Cybersecurity, Database Solutions, Cloud Solutions, AI Automation" />
+  <meta name="author" content="Qoech Technologies" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Qoech Technologies | Building the Future Through Technology" />
+  <meta property="og:description" content="Innovative software, digital and ICT solutions for businesses, organizations, startups and individuals." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://qoechtech.com" />
+  <meta property="og:image" content="images/logo/qoech-logo.png" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="images/logo/favicon.ico" />
+
+  <!-- ============================================================
+       FONTS
+  ============================================================ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- ============================================================
+       FONT AWESOME 6.5.0
+  ============================================================ -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- ============================================================
+       tsParticles — network background with cursor grab
+  ============================================================ -->
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js" defer></script>
+
+  <!-- ============================================================
+       MAIN STYLESHEET
+  ============================================================ -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+  <!-- ============================================================
+       PRELOADER
+  ============================================================ -->
+  <div class="preloader" id="preloader">
+    <div class="preloader-inner">
+      <div class="preloader-ring"></div>
+      <div class="preloader-mark">
+        <i class="fas fa-feather-pointed"></i>
+      </div>
+      <div class="preloader-text">
+        <span>Q</span>OECH
+      </div>
+      <p class="preloader-tagline">Technology. Innovation. Impact.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SCROLL PROGRESS BAR
+  ============================================================ -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <!-- ============================================================
+       CURSOR GLOW
+  ============================================================ -->
+  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
+  <!-- ============================================================
+       PARTICLES NETWORK BACKGROUND
+  ============================================================ -->
+  <div id="particles-bg" aria-hidden="true"></div>
+
+  <!-- ============================================================
+       NAVBAR
+  ============================================================ -->
+  <header class="navbar" id="navbar">
+    <a href="#home" class="brand" aria-label="Qoech Technologies Home">
+      <span class="brand-mark">
+        <i class="fas fa-feather-pointed"></i>
+      </span>
+      <span class="brand-text">
+        <strong>QOECH</strong>
+        <small>TECHNOLOGIES</small>
+      </span>
+    </a>
+
+    <nav class="nav-menu" id="navMenu" aria-label="Primary">
+      <ul class="nav-links">
+        <li><a href="#home" class="nav-link active">Home</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#services" class="nav-link">Services</a></li>
+        <li><a href="#solutions" class="nav-link">Solutions</a></li>
+        <li><a href="#projects" class="nav-link">Projects</a></li>
+        <li><a href="#technologies" class="nav-link">Technologies</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+      </ul>
+      <a href="#contact" class="nav-cta">
+        <i class="fas fa-rocket"></i>
+        <span>Start a Project</span>
+      </a>
+    </nav>
+
+    <!-- Stylish animated hamburger -->
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="navMenu">
+      <span class="hamburger-ring"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+  </header>
+
+  <!-- Mobile overlay -->
+  <div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
+
+  <!-- ============================================================
+       HERO
+  ============================================================ -->
+  <section class="hero" id="home">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="hero-grid" aria-hidden="true"></div>
+
+    <div class="container hero-container">
+
+      <!-- LEFT: Content -->
+      <div class="hero-content">
+        <div class="hero-badge">
+          <i class="fas fa-circle-nodes"></i>
+          <span>ICT · SOFTWARE · DIGITAL SOLUTIONS</span>
+        </div>
+
+        <h1 class="hero-title">
+          Building the Future Through <span class="highlight">Technology.</span>
+        </h1>
+
+        <div class="hero-typing">
+          <span class="typing-prefix">We deliver</span>
+          <span id="typed-text" class="typed-text"></span>
+          <span class="typed-cursor">|</span>
+        </div>
+
+        <p class="hero-description">
+          Qoech Technologies delivers innovative software, digital and ICT
+          solutions that help businesses operate smarter, faster and more
+          efficiently. From concept to deployment, we build technology that
+          scales with your vision.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#contact" class="btn btn-primary">
+            <i class="fas fa-rocket"></i>
+            <span>Start a Project</span>
+          </a>
+          <a href="#services" class="btn btn-outline">
+            <i class="fas fa-layer-group"></i>
+            <span>Explore Services</span>
+          </a>
+        </div>
+
+        <div class="hero-trust">
+          <div class="trust-item">
+            <strong>10+</strong>
+            <span>Projects Delivered</span>
+          </div>
+          <div class="trust-divider"></div>
+          <div class="trust-item">
+            <strong>5+</strong>
+            <span>Technology Areas</span>
+          </div>
+          <div class="trust-divider"></div>
+          <div class="trust-item">
+            <strong>100%</strong>
+            <span>Commitment</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Visual -->
+      <div class="hero-visual">
+        <div class="visual-stage">
+          <div class="visual-ring visual-ring-outer"></div>
+          <div class="visual-ring visual-ring-mid"></div>
+          <div class="visual-ring visual-ring-inner"></div>
+
+          <div class="visual-core">
+            <i class="fas fa-feather-pointed"></i>
+            <span class="visual-core-letter">Q</span>
+          </div>
+
+          <div class="orbit orbit-1">
+            <span class="orbit-node" title="HTML5"><i class="fab fa-html5"></i></span>
+          </div>
+          <div class="orbit orbit-2">
+            <span class="orbit-node" title="Node.js"><i class="fab fa-node-js"></i></span>
+          </div>
+          <div class="orbit orbit-3">
+            <span class="orbit-node" title="Database"><i class="fas fa-database"></i></span>
+          </div>
+          <div class="orbit orbit-4">
+            <span class="orbit-node" title="Cloud"><i class="fas fa-cloud"></i></span>
+          </div>
+          <div class="orbit orbit-5">
+            <span class="orbit-node" title="Cybersecurity"><i class="fas fa-shield-halved"></i></span>
+          </div>
+
+          <div class="visual-pulse"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <a href="#about" class="scroll-down" aria-label="Scroll to About">
+      <i class="fas fa-chevron-down"></i>
+    </a>
+  </section>
+
+  <!-- ============================================================
+       ABOUT
+  ============================================================ -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-label">
+          <i class="fas fa-circle-info"></i>
+          About Qoech
+        </span>
+        <h2 class="section-title">Technology With <span class="highlight">Purpose.</span></h2>
+        <p class="section-sub">
+          We are an ICT and digital solutions company focused on developing
+          innovative, reliable and scalable technology for businesses,
+          organizations and individuals.
+        </p>
+      </div>
+
+      <div class="about-grid">
+
+        <!-- LEFT: Visual card -->
+        <div class="about-visual">
+          <div class="about-card">
+            <div class="about-card-mark">
+              <i class="fas fa-feather-pointed"></i>
+            </div>
+            <h3>Qoech Technologies</h3>
+            <p>Technology. Innovation. Impact.</p>
+
+            <ul class="about-quick">
+              <li><i class="fas fa-location-dot"></i><span>Based in Kenya</span></li>
+              <li><i class="fas fa-globe"></i><span>Remote Worldwide</span></li>
+              <li><i class="fas fa-briefcase"></i><span>Business & Enterprise</span></li>
+              <li><i class="fas fa-clock"></i><span>Always Available</span></li>
+            </ul>
+
+            <div class="about-card-badges">
+              <span class="chip"><i class="fas fa-code"></i> Software</span>
+              <span class="chip"><i class="fas fa-globe"></i> Web</span>
+              <span class="chip"><i class="fas fa-mobile-alt"></i> Mobile</span>
+              <span class="chip"><i class="fas fa-cloud"></i> Cloud</span>
+              <span class="chip"><i class="fas fa-shield-halved"></i> Security</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Tabs + Stats -->
+        <div class="about-content">
+
+          <div class="about-tabs" role="tablist">
+            <button class="tab-btn active" data-tab="story" role="tab">
+              <i class="fas fa-book-open"></i>
+              <span>Story</span>
+            </button>
+            <button class="tab-btn" data-tab="mission" role="tab">
+              <i class="fas fa-bullseye"></i>
+              <span>Mission</span>
+            </button>
+            <button class="tab-btn" data-tab="values" role="tab">
+              <i class="fas fa-gem"></i>
+              <span>Values</span>
+            </button>
+            <button class="tab-btn" data-tab="approach" role="tab">
+              <i class="fas fa-route"></i>
+              <span>Approach</span>
+            </button>
+          </div>
+
+          <div class="about-tab-contents">
+            <div class="tab-content active" id="story-content">
+              <p>
+                Qoech Technologies was founded on a simple belief — that
+                technology should solve real problems, not create new ones.
+                We build software, systems and digital infrastructure that
+                help businesses operate with clarity, speed and confidence.
+              </p>
+              <p>
+                From custom management systems to modern web platforms and
+                cloud deployments, every solution we deliver is designed
+                around the people who use it, the data it manages, and the
+                future it must scale into.
+              </p>
+            </div>
+
+            <div class="tab-content" id="mission-content">
+              <p>
+                Our mission is to empower businesses, organizations, startups
+                and individuals with reliable, scalable and secure technology
+                that drives measurable results.
+              </p>
+              <p>
+                We combine engineering discipline with design thinking — so
+                our solutions are not only functional, but intuitive,
+                maintainable and built to grow.
+              </p>
+            </div>
+
+            <div class="tab-content" id="values-content">
+              <div class="values-grid">
+                <div class="value-item">
+                  <i class="fas fa-eye"></i>
+                  <div>
+                    <h4>Vision</h4>
+                    <p>We think beyond today's problems.</p>
+                  </div>
+                </div>
+                <div class="value-item">
+                  <i class="fas fa-bolt"></i>
+                  <div>
+                    <h4>Innovation</h4>
+                    <p>We use modern technologies to create better solutions.</p>
+                  </div>
+                </div>
+                <div class="value-item">
+                  <i class="fas fa-shield-halved"></i>
+                  <div>
+                    <h4>Reliability</h4>
+                    <p>We build systems clients can depend on.</p>
+                  </div>
+                </div>
+                <div class="value-item">
+                  <i class="fas fa-chart-line"></i>
+                  <div>
+                    <h4>Scalability</h4>
+                    <p>Our solutions grow with your business.</p>
+                  </div>
+                </div>
+                <div class="value-item">
+                  <i class="fas fa-handshake"></i>
+                  <div>
+                    <h4>Partnership</h4>
+                    <p>We work with clients, not just for them.</p>
+                  </div>
+                </div>
+                <div class="value-item">
+                  <i class="fas fa-award"></i>
+                  <div>
+                    <h4>Quality</h4>
+                    <p>We deliver work we are proud to sign.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-content" id="approach-content">
+              <p>
+                We follow a disciplined process — understand the problem,
+                design the right solution, build it carefully, test it
+                rigorously, deploy it confidently, and support it long-term.
+              </p>
+              <p>
+                Every project begins with listening. We ask questions, map
+                workflows, and translate business needs into technical
+                architecture before a single line of code is written.
+              </p>
+            </div>
+          </div>
+
+          <!-- Stats -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon"><i class="fas fa-diagram-project"></i></div>
+              <div class="stat-info">
+                <span class="stat-number" data-target="10" data-suffix="+">0</span>
+                <span class="stat-label">Projects</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon"><i class="fas fa-layer-group"></i></div>
+              <div class="stat-info">
+                <span class="stat-number" data-target="5" data-suffix="+">0</span>
+                <span class="stat-label">Technology Areas</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon"><i class="fas fa-heart"></i></div>
+              <div class="stat-info">
+                <span class="stat-number" data-target="100" data-suffix="%">0</span>
+                <span class="stat-label">Commitment</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="about-actions">
+            <a href="#contact" class="btn btn-primary">
+              <i class="fas fa-handshake"></i>
+              <span>Work With Us</span>
+            </a>
+            <a href="#services" class="btn btn-outline">
+              <i class="fas fa-arrow-right"></i>
+              <span>Our Services</span>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SERVICES
+  ============================================================ -->
+  <section class="section section-alt" id="services">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-label">
+          <i class="fas fa-cogs"></i>
+          Our Services
+        </span>
+        <h2 class="section-title">What We <span class="highlight">Deliver.</span></h2>
+        <p class="section-sub">
+          End-to-end technology services designed to build, secure and scale
+          your digital operations.
+        </p>
+      </div>
+
+      <div class="services-grid">
+
+        <!-- 1 -->
+        <article class="service-card">
+          <div class="service-icon"><i class="fas fa-code"></i></div>
+          <h3>Software Development</h3>
+          <p>Custom business systems and applications built around your exact workflows.</p>
+          <ul class="service-points">
+            <li><i class="fas fa-check"></i> Custom business logic</li>
+            <li><i class="fas fa-check"></i> Scalable architecture</li>
+            <li><i class="fas fa-check"></i> API integrations</li>
+          </ul>
+          <button class="service-btn" data-service="software">
+            <span>View Details</span>
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </article>
+
+        <!-- 2 -->
+        <article class="service-card">
+          <div class="service-icon"><i class="fas fa-globe"></i></div>
+          <h3>Web Development</h3>
+          <p>Modern websites, e-commerce platforms and web applications that perform.</p>
+          <ul class="service-points">
+            <li><i class="fas fa-check"></i> Responsive design</li>
+            <li><i class="fas fa-check"></i> SEO optimized</li>
+            <li><i class="fas fa-check"></i> Fast performance</li>
+          </ul>
+          <button class="service-btn" data-service="web">
+            <span>View Details</span>
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </article>
+
+        <!-- 3 -->
+        <article class="service-card">
+          <div class="service-icon"><i class="fas fa-mobile-alt"></i></div>
+          <h3>Mobile Development</h3>
+          <p>Android and cross-platform mobile applications built for real users.</p>
+          <ul class="service-points">
+            <li><i class="fas fa-check"></i> Native Android</li>
+            <li><i class="fas fa-check"></i> Cross-platform</li>
+            <li><i class="fas fa-check"></i> Offline-first</li>
+          </ul>
+          <button class="service-btn" data-service="mobile">
+            <span>View Details</span>
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </article>
+
+        <!-- 4 -->
+        <article class="service-card">
+          <div class="service-icon"><i class="fas fa-network-wired"></i></div>
+          <h3>Networking</h3>
+          <p>Network installation, configuration and infrastructure for growing teams.</p>
+          <ul class="service-points">
+            <li><i class="fas fa-check"></i> LAN / WAN setup</li>
+            <li><i class="fas fa-check"></i> WiFi optimization</li>
+            <li><i class="fas fa-check"></i> Monitoring</li>
+          </ul>
+          <button class="service-btn" data-service="networking">
+            <span>View Details</span>
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </article>
+
+        <!-- 5 -->
+        <article class="service-card">
+          <div class="service-icon"><i class="fas fa-shield-halved"></i></div>
+          <h3>Cybersecurity</h3>
+          <p>Security solutions, system hardening and digital protection for your data.</p>
+          <ul class="service-points">
+            <li><i class="fas fa-check"></i> Security audits</li>
+            <li><i class="fas fa-check"></i> System hardening</li>
+            <li><i class="fas fa-check"></i> Threat monitoring</li>
+          </ul>
+          <button class="service-btn" data-service="security">
+            <span>View Details</span>
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </article>
+
+        <!-- 6 -->
+        <article class="service-card">
+          <div class="service-icon"><i class="fas fa-database"></i></div>
+          <h3>Database Solutions</h3>
+          <p>Database design, management and integration for reliable data operations.</p>
+          <ul class="service-points">
+            <li><i class="fas fa-check"></i> Schema design</li>
+            <li><i class="fas fa-check"></i> Query optimization</li>
+            <li><i class="fas fa-check"></i> Backup & recovery</li>
+          </ul>
+          <button class="service-btn" data-service="database">
+            <span>View Details</span>
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </article>
+
+        <!-- 7 -->
+        <article class="service-card">
+          <div class="service-icon"><i class="fas fa-cloud"></i></div>
+          <h3>Cloud Solutions</h3>
+          <p>Cloud deployment, hosting and digital infrastructure that scales with you.</p>
+          <ul class="service-points">
+            <li><i class="fas fa-check"></i> Cloud deployment</li>
+            <li><i class="fas fa-check"></i> DevOps pipelines</li>
+            <li><i class="fas fa-check"></i> Cost optimization</li>
+          </ul>
+          <button class="service-btn" data-service="cloud">
+            <span>View Details</span>
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </article>
+
+        <!-- 8 -->
+        <article class="service-card">
+          <div class="service-icon"><i class="fas fa-robot"></i></div>
+          <h3>AI &amp; Automation</h3>
+          <p>Intelligent solutions and business automation that save time and reduce cost.</p>
+          <ul class="service-points">
+            <li><i class="fas fa-check"></i> Workflow automation</li>
+            <li><i class="fas fa-check"></i> Smart integrations</li>
+            <li><i class="fas fa-check"></i> Data insights</li>
+          </ul>
+          <button class="service-btn" data-service="ai">
+            <span>View Details</span>
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SOLUTIONS
+  ============================================================ -->
+  <section class="section" id="solutions">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-label">
+          <i class="fas fa-lightbulb"></i>
+          Solutions
+        </span>
+        <h2 class="section-title">Built For <span class="highlight">Every Stage.</span></h2>
+        <p class="section-sub">
+          Whether you are scaling an enterprise or launching an idea, we have
+          a solution shaped for you.
+        </p>
+      </div>
+
+      <div class="solutions-grid">
+
+        <article class="solution-card">
+          <div class="solution-icon"><i class="fas fa-briefcase"></i></div>
+          <h3>For Businesses</h3>
+          <p>Automate operations, manage inventory, customers, sales and employees with systems built for your size.</p>
+          <ul class="solution-list">
+            <li><i class="fas fa-check"></i> Management systems</li>
+            <li><i class="fas fa-check"></i> Sales & inventory</li>
+            <li><i class="fas fa-check"></i> Reporting dashboards</li>
+          </ul>
+        </article>
+
+        <article class="solution-card">
+          <div class="solution-icon"><i class="fas fa-building-columns"></i></div>
+          <h3>For Organizations</h3>
+          <p>Secure digital systems that simplify daily operations for schools, NGOs, churches and institutions.</p>
+          <ul class="solution-list">
+            <li><i class="fas fa-check"></i> Secure portals</li>
+            <li><i class="fas fa-check"></i> Role-based access</li>
+            <li><i class="fas fa-check"></i> Data protection</li>
+          </ul>
+        </article>
+
+        <article class="solution-card">
+          <div class="solution-icon"><i class="fas fa-rocket"></i></div>
+          <h3>For Startups</h3>
+          <p>Turn ideas into functional websites, applications and digital products — fast, lean and ready to grow.</p>
+          <ul class="solution-list">
+            <li><i class="fas fa-check"></i> MVPs</li>
+            <li><i class="fas fa-check"></i> Product design</li>
+            <li><i class="fas fa-check"></i> Launch support</li>
+          </ul>
+        </article>
+
+        <article class="solution-card">
+          <div class="solution-icon"><i class="fas fa-user"></i></div>
+          <h3>For Individuals</h3>
+          <p>Professional websites, portfolios, technical support and digital solutions for personal brands.</p>
+          <ul class="solution-list">
+            <li><i class="fas fa-check"></i> Portfolios</li>
+            <li><i class="fas fa-check"></i> Personal sites</li>
+            <li><i class="fas fa-check"></i> Tech support</li>
+          </ul>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PROJECTS
+  ============================================================ -->
+  <section class="section section-alt" id="projects">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-label">
+          <i class="fas fa-diagram-project"></i>
+          Featured Projects
+        </span>
+        <h2 class="section-title">Turning Ideas Into <span class="highlight">Working Systems.</span></h2>
+        <p class="section-sub">
+          A selection of systems and platforms we have designed, built and
+          delivered.
+        </p>
+      </div>
+
+      <div class="project-filters" id="projectFilters">
+        <button class="filter-btn active" data-filter="all">
+          <i class="fas fa-th-large"></i><span>All</span>
+        </button>
+        <button class="filter-btn" data-filter="management">
+          <i class="fas fa-cogs"></i><span>Management</span>
+        </button>
+        <button class="filter-btn" data-filter="ecommerce">
+          <i class="fas fa-shopping-cart"></i><span>E-Commerce</span>
+        </button>
+        <button class="filter-btn" data-filter="mobile">
+          <i class="fas fa-mobile-alt"></i><span>Mobile</span>
+        </button>
+      </div>
+
+      <div class="projects-grid">
+
+        <!-- Project 1 -->
+        <article class="project-card" data-category="management">
+          <div class="project-thumb">
+            <img src="images/projects/bandaptai.jpg" alt="Bandaptai Apartments Management System" loading="lazy" />
+            <span class="project-status status-live">
+              <i class="fas fa-circle"></i> Live
+            </span>
+          </div>
+          <div class="project-body">
+            <span class="project-category"><i class="fas fa-building"></i> Property Management</span>
+            <h3>Bandaptai Apartments Management System</h3>
+            <p>A web-based platform for managing apartments, tenants, rent, maintenance and staff tasks from a single dashboard.</p>
+            <div class="project-stack">
+              <span class="tag"><i class="fab fa-node-js"></i> Node.js</span>
+              <span class="tag"><i class="fas fa-database"></i> PostgreSQL</span>
+              <span class="tag"><i class="fas fa-plug"></i> REST API</span>
+            </div>
+            <button class="project-btn" data-project="bandaptai">
+              <span>View Case Study</span>
+              <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </article>
+
+        <!-- Project 2 -->
+        <article class="project-card" data-category="management">
+          <div class="project-thumb">
+            <img src="images/projects/agrovet.jpg" alt="Agrovet Management System" loading="lazy" />
+            <span class="project-status status-live">
+              <i class="fas fa-circle"></i> Live
+            </span>
+          </div>
+          <div class="project-body">
+            <span class="project-category"><i class="fas fa-store"></i> Inventory &amp; Sales</span>
+            <h3>Agrovet Management System</h3>
+            <p>A complete system for tracking sales, stock levels, purchases and inventory in agrovet businesses.</p>
+            <div class="project-stack">
+              <span class="tag"><i class="fab fa-php"></i> PHP</span>
+              <span class="tag"><i class="fas fa-database"></i> MySQL</span>
+              <span class="tag"><i class="fab fa-js"></i> JavaScript</span>
+            </div>
+            <button class="project-btn" data-project="agrovet">
+              <span>View Case Study</span>
+              <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </article>
+
+        <!-- Project 3 -->
+        <article class="project-card" data-category="management">
+          <div class="project-thumb">
+            <img src="images/projects/hardware.jpg" alt="Hardware Store Management System" loading="lazy" />
+            <span class="project-status status-completed">
+              <i class="fas fa-circle-check"></i> Completed
+            </span>
+          </div>
+          <div class="project-body">
+            <span class="project-category"><i class="fas fa-tools"></i> Business Management</span>
+            <h3>Hardware Store Management System</h3>
+            <p>Inventory, sales and stock control built for the realities of hardware store operations.</p>
+            <div class="project-stack">
+              <span class="tag"><i class="fab fa-php"></i> PHP</span>
+              <span class="tag"><i class="fas fa-database"></i> MySQL</span>
+              <span class="tag"><i class="fas fa-chart-simple"></i> Reporting</span>
+            </div>
+            <button class="project-btn" data-project="hardware">
+              <span>View Case Study</span>
+              <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </article>
+
+        <!-- Project 4 -->
+        <article class="project-card" data-category="management">
+          <div class="project-thumb">
+            <img src="images/projects/farm.jpg" alt="Farm Management System" loading="lazy" />
+            <span class="project-status status-completed">
+              <i class="fas fa-circle-check"></i> Completed
+            </span>
+          </div>
+          <div class="project-body">
+            <span class="project-category"><i class="fas fa-tractor"></i> Agriculture</span>
+            <h3>Farm Management System</h3>
+            <p>Digitized farm operations, production records and resource tracking for modern agriculture.</p>
+            <div class="project-stack">
+              <span class="tag"><i class="fab fa-php"></i> PHP</span>
+              <span class="tag"><i class="fas fa-database"></i> MySQL</span>
+              <span class="tag"><i class="fas fa-seedling"></i> AgriTech</span>
+            </div>
+            <button class="project-btn" data-project="farm">
+              <span>View Case Study</span>
+              <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       TECHNOLOGIES
+  ============================================================ -->
+  <section class="section" id="technologies">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-label">
+          <i class="fas fa-microchip"></i>
+          Technologies
+        </span>
+        <h2 class="section-title">Powered by <span class="highlight">Modern Technology.</span></h2>
+        <p class="section-sub">
+          We work with tools and frameworks chosen for reliability, speed and
+          long-term maintainability.
+        </p>
+      </div>
+
+      <div class="tech-grid">
+        <div class="tech-category">
+          <div class="tech-category-head">
+            <i class="fas fa-palette"></i>
+            <h3>Frontend</h3>
+          </div>
+          <div class="tech-list">
+            <span class="tech-chip"><i class="fab fa-html5"></i> HTML5</span>
+            <span class="tech-chip"><i class="fab fa-css3-alt"></i> CSS3</span>
+            <span class="tech-chip"><i class="fab fa-js"></i> JavaScript</span>
+            <span class="tech-chip"><i class="fab fa-react"></i> React</span>
+          </div>
+        </div>
+
+        <div class="tech-category">
+          <div class="tech-category-head">
+            <i class="fas fa-server"></i>
+            <h3>Backend</h3>
+          </div>
+          <div class="tech-list">
+            <span class="tech-chip"><i class="fab fa-php"></i> PHP</span>
+            <span class="tech-chip"><i class="fab fa-node-js"></i> Node.js</span>
+            <span class="tech-chip"><i class="fas fa-bolt"></i> Express</span>
+            <span class="tech-chip"><i class="fas fa-plug"></i> REST APIs</span>
+          </div>
+        </div>
+
+        <div class="tech-category">
+          <div class="tech-category-head">
+            <i class="fas fa-database"></i>
+            <h3>Databases</h3>
+          </div>
+          <div class="tech-list">
+            <span class="tech-chip"><i class="fas fa-database"></i> MySQL</span>
+            <span class="tech-chip"><i class="fas fa-database"></i> PostgreSQL</span>
+            <span class="tech-chip"><i class="fas fa-cloud"></i> Supabase</span>
+            <span class="tech-chip"><i class="fas fa-fire"></i> Firebase</span>
+          </div>
+        </div>
+
+        <div class="tech-category">
+          <div class="tech-category-head">
+            <i class="fas fa-mobile-alt"></i>
+            <h3>Mobile</h3>
+          </div>
+          <div class="tech-list">
+            <span class="tech-chip"><i class="fab fa-android"></i> Android</span>
+            <span class="tech-chip"><i class="fab fa-java"></i> Java</span>
+            <span class="tech-chip"><i class="fas fa-code"></i> Kotlin</span>
+            <span class="tech-chip"><i class="fas fa-mobile-screen"></i> Cross-Platform</span>
+          </div>
+        </div>
+
+        <div class="tech-category">
+          <div class="tech-category-head">
+            <i class="fas fa-cloud"></i>
+            <h3>Cloud &amp; DevOps</h3>
+          </div>
+          <div class="tech-list">
+            <span class="tech-chip"><i class="fab fa-aws"></i> AWS</span>
+            <span class="tech-chip"><i class="fas fa-cloud"></i> Vercel</span>
+            <span class="tech-chip"><i class="fab fa-docker"></i> Docker</span>
+            <span class="tech-chip"><i class="fab fa-git-alt"></i> Git</span>
+          </div>
+        </div>
+
+        <div class="tech-category">
+          <div class="tech-category-head">
+            <i class="fas fa-wrench"></i>
+            <h3>Tools</h3>
+          </div>
+          <div class="tech-list">
+            <span class="tech-chip"><i class="fab fa-github"></i> GitHub</span>
+            <span class="tech-chip"><i class="fas fa-code"></i> VS Code</span>
+            <span class="tech-chip"><i class="fab fa-figma"></i> Figma</span>
+            <span class="tech-chip"><i class="fas fa-terminal"></i> Postman</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       HOW WE WORK
+  ============================================================ -->
+  <section class="section section-alt" id="process">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-label">
+          <i class="fas fa-route"></i>
+          How We Work
+        </span>
+        <h2 class="section-title">A Process Built on <span class="highlight">Clarity.</span></h2>
+        <p class="section-sub">
+          Six disciplined stages — from first conversation to long-term
+          support.
+        </p>
+      </div>
+
+      <div class="process-timeline">
+
+        <div class="process-step">
+          <div class="process-number">01</div>
+          <div class="process-card">
+            <div class="process-icon"><i class="fas fa-magnifying-glass"></i></div>
+            <h3>Discover</h3>
+            <p>We understand your problem, your users and your goals before anything else.</p>
+          </div>
+        </div>
+
+        <div class="process-step">
+          <div class="process-number">02</div>
+          <div class="process-card">
+            <div class="process-icon"><i class="fas fa-pen-ruler"></i></div>
+            <h3>Design</h3>
+            <p>We map the architecture, data flow and user experience into a clear plan.</p>
+          </div>
+        </div>
+
+        <div class="process-step">
+          <div class="process-number">03</div>
+          <div class="process-card">
+            <div class="process-icon"><i class="fas fa-code"></i></div>
+            <h3>Develop</h3>
+            <p>We build the system carefully — frontend, backend and database together.</p>
+          </div>
+        </div>
+
+        <div class="process-step">
+          <div class="process-number">04</div>
+          <div class="process-card">
+            <div class="process-icon"><i class="fas fa-vial"></i></div>
+            <h3>Test</h3>
+            <p>We test functionality, security and edge cases until everything works.</p>
+          </div>
+        </div>
+
+        <div class="process-step">
+          <div class="process-number">05</div>
+          <div class="process-card">
+            <div class="process-icon"><i class="fas fa-rocket"></i></div>
+            <h3>Deploy</h3>
+            <p>We launch the solution into production with monitoring and backups in place.</p>
+          </div>
+        </div>
+
+        <div class="process-step">
+          <div class="process-number">06</div>
+          <div class="process-card">
+            <div class="process-icon"><i class="fas fa-headset"></i></div>
+            <h3>Support</h3>
+            <p>We stay with you — maintaining, improving and scaling the system over time.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       WHY QOECH
+  ============================================================ -->
+  <section class="section" id="why">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-label">
+          <i class="fas fa-star"></i>
+          Why Qoech
+        </span>
+        <h2 class="section-title">Reasons Clients <span class="highlight">Choose Us.</span></h2>
+        <p class="section-sub">
+          We don't just deliver software — we deliver confidence.
+        </p>
+      </div>
+
+      <div class="why-grid">
+
+        <article class="why-card">
+          <div class="why-icon"><i class="fas fa-eye"></i></div>
+          <h3>Vision</h3>
+          <p>We think beyond today's problems and design for where your business is going.</p>
+        </article>
+
+        <article class="why-card">
+          <div class="why-icon"><i class="fas fa-bolt"></i></div>
+          <h3>Innovation</h3>
+          <p>We use modern technologies and approaches to create better solutions, faster.</p>
+        </article>
+
+        <article class="why-card">
+          <div class="why-icon"><i class="fas fa-shield-halved"></i></div>
+          <h3>Reliability</h3>
+          <p>We build systems clients can depend on — stable, secure and thoroughly tested.</p>
+        </article>
+
+        <article class="why-card">
+          <div class="why-icon"><i class="fas fa-chart-line"></i></div>
+          <h3>Scalability</h3>
+          <p>Our solutions are designed to grow with your business, not hold it back.</p>
+        </article>
+
+        <article class="why-card">
+          <div class="why-icon"><i class="fas fa-handshake"></i></div>
+          <h3>Partnership</h3>
+          <p>We work with clients throughout the lifecycle, not just deliver and disappear.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       EAGLE MOMENT
+  ============================================================ -->
+  <section class="eagle-section" id="eagle">
+    <div class="eagle-bg" aria-hidden="true"></div>
+    <div class="eagle-figure" aria-hidden="true">
+      <i class="fas fa-feather-pointed"></i>
+    </div>
+    <div class="container eagle-content">
+      <span class="section-label">
+        <i class="fas fa-feather-pointed"></i>
+        The Qoech Vision
+      </span>
+      <h2 class="eagle-title">
+        <span>SEE FURTHER.</span>
+        <span>BUILD SMARTER.</span>
+        <span>GO HIGHER.</span>
+      </h2>
+      <p class="eagle-sub">That is the Qoech vision.</p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       TESTIMONIALS
+  ============================================================ -->
+  <section class="section section-alt" id="testimonials">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-label">
+          <i class="fas fa-comments"></i>
+          Testimonials
+        </span>
+        <h2 class="section-title">What Clients <span class="highlight">Say.</span></h2>
+        <p class="section-sub">
+          Relationships built on delivery, trust and long-term support.
+        </p>
+      </div>
+
+      <div class="testimonial-carousel" id="testimonialCarousel">
+        <div class="testimonial-track" id="testimonialTrack">
+
+          <div class="testimonial-slide active">
+            <div class="testimonial-quote"><i class="fas fa-quote-left"></i></div>
+            <p>Qoech Technologies delivered a system that completely changed how we manage our apartments. Rent tracking, maintenance and staff tasks are now in one place.</p>
+            <div class="testimonial-client">
+              <strong>Property Manager</strong>
+              <span>Bandaptai Apartments</span>
+            </div>
+          </div>
+
+          <div class="testimonial-slide">
+            <div class="testimonial-quote"><i class="fas fa-quote-left"></i></div>
+            <p>Our inventory is finally under control. Stockouts dropped, reporting is instant, and the team actually enjoys using the system.</p>
+            <div class="testimonial-client">
+              <strong>Business Owner</strong>
+              <span>Agrovet Enterprise</span>
+            </div>
+          </div>
+
+          <div class="testimonial-slide">
+            <div class="testimonial-quote"><i class="fas fa-quote-left"></i></div>
+            <p>Professional, responsive and technically strong. Qoech Technologies is the team we trust with our systems.</p>
+            <div class="testimonial-client">
+              <strong>Operations Lead</strong>
+              <span>Hardware Retailer</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="testimonial-dots" id="testimonialDots">
+          <button class="dot active" data-index="0" aria-label="Testimonial 1"></button>
+          <button class="dot" data-index="1" aria-label="Testimonial 2"></button>
+          <button class="dot" data-index="2" aria-label="Testimonial 3"></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CONTACT
+  ============================================================ -->
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-label">
+          <i class="fas fa-paper-plane"></i>
+          Contact
+        </span>
+        <h2 class="section-title">Have an Idea? <span class="highlight">Let's Build It.</span></h2>
+        <p class="section-sub">
+          Reach out through any channel below, or send us a message and we
+          will get back to you within 24 hours.
+        </p>
+      </div>
+
+      <div class="contact-grid">
+
+        <!-- LEFT: Info -->
+        <div class="contact-info">
+
+          <a href="mailto:qoechtech@gmail.com" class="contact-card">
+            <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+            <div class="contact-body">
+              <h4>Email</h4>
+              <p>qoechtech@gmail.com</p>
+            </div>
+            <i class="fas fa-arrow-right contact-arrow"></i>
+          </a>
+
+          <a href="https://wa.me/254702900005" target="_blank" rel="noopener" class="contact-card contact-whatsapp">
+            <div class="contact-icon"><i class="fab fa-whatsapp"></i></div>
+            <div class="contact-body">
+              <h4>WhatsApp</h4>
+              <p>+254 702 900 005</p>
+            </div>
+            <i class="fas fa-arrow-right contact-arrow"></i>
+          </a>
+
+          <a href="tel:+254702900005" class="contact-card">
+            <div class="contact-icon"><i class="fas fa-phone"></i></div>
+            <div class="contact-body">
+              <h4>Phone</h4>
+              <p>+254 702 900 005</p>
+            </div>
+            <i class="fas fa-arrow-right contact-arrow"></i>
+          </a>
+
+          <div class="contact-card contact-static">
+            <div class="contact-icon"><i class="fas fa-location-dot"></i></div>
+            <div class="contact-body">
+              <h4>Location</h4>
+              <p>Kenya — Remote Worldwide</p>
+            </div>
+          </div>
+
+          <div class="contact-card contact-static">
+            <div class="contact-icon"><i class="fas fa-clock"></i></div>
+            <div class="contact-body">
+              <h4>Response Time</h4>
+              <p>Within 24 hours</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT: Form -->
+        <div class="contact-form-wrap">
+          <div class="form-head">
+            <h3><i class="fas fa-paper-plane"></i> Send Us a Message</h3>
+            <p>Tell us about your project and we'll get back to you shortly.</p>
+          </div>
+
+          <!-- Formspree — replace YOUR_FORM_ID with your actual Formspree form ID -->
+          <form id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name"><i class="fas fa-user"></i> Full Name *</label>
+                <input type="text" id="name" name="name" placeholder="John Doe" required />
+              </div>
+              <div class="form-group">
+                <label for="email"><i class="fas fa-envelope"></i> Email Address *</label>
+                <input type="email" id="email" name="email" placeholder="john@example.com" required />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="phone"><i class="fas fa-phone"></i> Phone Number</label>
+                <input type="tel" id="phone" name="phone" placeholder="+254 700 000 000" />
+              </div>
+              <div class="form-group">
+                <label for="service"><i class="fas fa-cogs"></i> Service Required</label>
+                <select id="service" name="service">
+                  <option value="">Select a service</option>
+                  <option value="software">Software Development</option>
+                  <option value="web">Web Development</option>
+                  <option value="mobile">Mobile Development</option>
+                  <option value="networking">Networking</option>
+                  <option value="security">Cybersecurity</option>
+                  <option value="database">Database Solutions</option>
+                  <option value="cloud">Cloud Solutions</option>
+                  <option value="ai">AI &amp; Automation</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="message"><i class="fas fa-comment"></i> Tell Us About Your Project *</label>
+              <textarea id="message" name="message" rows="6" placeholder="Describe your project, goals or challenge..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-submit" id="formSubmit">
+              <i class="fas fa-paper-plane"></i>
+              <span>Send Message</span>
+            </button>
+
+            <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <span class="footer-mark"><i class="fas fa-feather-pointed"></i></span>
+            <div>
+              <strong>QOECH</strong>
+              <small>TECHNOLOGIES</small>
+            </div>
+          </div>
+          <p>Technology. Innovation. Impact.</p>
+          <p class="footer-desc">
+            Innovative software, digital and ICT solutions for businesses,
+            organizations, startups and individuals.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="#services">Software</a></li>
+            <li><a href="#services">Web Development</a></li>
+            <li><a href="#services">Mobile Apps</a></li>
+            <li><a href="#services">Networking</a></li>
+            <li><a href="#services">Cybersecurity</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Connect</h4>
+          <div class="footer-social">
+            <a href="https://instagram.com/qoechtech" target="_blank" rel="noopener" aria-label="Instagram">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://facebook.com/qoechtech" target="_blank" rel="noopener" aria-label="Facebook">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://tiktok.com/@qoechtech" target="_blank" rel="noopener" aria-label="TikTok">
+              <i class="fab fa-tiktok"></i>
+            </a>
+            <a href="https://x.com/qoechtech" target="_blank" rel="noopener" aria-label="X">
+              <i class="fab fa-x-twitter"></i>
+            </a>
+            <a href="https://wa.me/254702900005" target="_blank" rel="noopener" aria-label="WhatsApp">
+              <i class="fab fa-whatsapp"></i>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; <span id="year">2026</span> Qoech Technologies. All rights reserved.</p>
+        <p class="footer-tagline">Technology. Innovation. Impact.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       BACK TO TOP
+  ============================================================ -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <!-- ============================================================
+       SERVICE MODAL
+  ============================================================ -->
+  <div class="modal" id="serviceModal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-overlay" data-close></div>
+    <div class="modal-content">
+      <button class="modal-close" data-close aria-label="Close">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="modal-body" id="serviceModalBody"></div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       PROJECT MODAL
+  ============================================================ -->
+  <div class="modal" id="projectModal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-overlay" data-close></div>
+    <div class="modal-content">
+      <button class="modal-close" data-close aria-label="Close">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="modal-body" id="projectModalBody"></div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SCRIPTS
+  ============================================================ -->
+  <script src="js/main.js" defer></script>
+
+</body>
+</html>
