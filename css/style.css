@@ -3274,7 +3274,7 @@ p {
   }
 }
 /* ============================================================
-   26b. CONTACT WIZARD
+   28. CONTACT WIZARD
    ============================================================ */
 
 /* ---------- Progress indicator ---------- */
@@ -3381,7 +3381,6 @@ p {
   display: none;
   opacity: 0;
   transform: translateX(24px);
-  animation: none;
 }
 .wizard-step.active {
   display: block;
@@ -3441,7 +3440,6 @@ p {
   height: 1px;
   opacity: 0;
   pointer-events: none;
-  tabindex: -1;
 }
 
 /* ---------- Field errors ---------- */
@@ -3464,7 +3462,6 @@ p {
   letter-spacing: 0.02em;
 }
 
-/* Invalid input state */
 .form-group input.invalid,
 .form-group select.invalid,
 .form-group textarea.invalid {
@@ -3624,7 +3621,6 @@ p {
 
 /* ---------- Wizard — mobile ---------- */
 @media (max-width: 640px) {
-  /* Progress — collapse to a thin bar */
   .progress-track {
     top: 12px;
     left: 0;
@@ -3643,7 +3639,6 @@ p {
   .wizard-step-head h4 { font-size: 1.05rem; }
   .wizard-step-head p  { font-size: 0.78rem; }
 
-  /* Nav buttons full width */
   .wizard-nav {
     flex-direction: column-reverse;
     gap: 0.6rem;
@@ -3658,7 +3653,6 @@ p {
   }
   .wizard-nav > span:empty { display: none; }
 
-  /* Success */
   .success-chip { font-size: 0.92rem; padding: 0.6rem 1.2rem; }
   .wizard-success h3 { font-size: 1.15rem; }
   .success-reset { width: 100%; }
