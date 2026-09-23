@@ -920,68 +920,380 @@
   }
 
 
-  /* ============================================================
-     17. CONTACT FORM (Formspree AJAX)
+   /* ============================================================
+     17. CONTACT WIZARD — Request a System
      ============================================================ */
-  const contactForm = document.getElementById('contactForm');
-  const formStatus = document.getElementById('formStatus');
-  const formSubmit = document.getElementById('formSubmit');
+  const WIZARD_API = 'https://eaglevision-api.onrender.com/api/public/system-requests';
+  const STORAGE_KEY = 'qoech_wizard_v1';
 
-  if (contactForm) {
-    contactForm.addEventListener('submit', async (e) => {
+  const wizardForm    = document.getElementById('requestForm');
+  const wizardProgress = document.getElementById('wizardProgress');
+  const progressFill  = document.getElementById('progressFill');
+  const wizardSteps   = wizardForm ? wizardForm.querySelectorAll('.wizard-step') : [];
+  const progressSteps = wizardForm ? document.querySelectorAll('.progress-step') : [];
+  const wizardStatus  = document.getElementById('wizardStatus');
+  const wizardSubmit  = document.getElementById('wizardSubmit');
+  const wizardSuccess = document.getElementById('wizardSuccess');
+  const successRefCode = document.getElementById('successRefCode');
+  const successReset  = document.getElementById('successReset');
+  const hpWebsite     = document.getElementById('hpWebsite');
+
+  let currentStep = 1;
+  const TOTAL_STEPS = 4;
+
+  if (wizardForm) {
+
+    /* ---------- Field map for restore ---------- */
+    const fieldNames = [
+      'full_name', 'email', 'phone', 'company', 'location',
+      'system_type', 'title', 'description',
+      'features', 'target_users', 'budget_range', 'timeline',
+      'reference_urls', 'source'
+    ];
+
+    /* ---------- Save / Restore via sessionStorage ---------- */
+    const saveDraft = () => {
+      try {
+        const data = {};
+        fieldNames.forEach((n) => {
+          const el = wizardForm.elements[n];
+          if (el) data[n] = el.value;
+        });
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      } catch (_) { /* ignore */ }
+    };
+
+    const restoreDraft = () => {
+      try {
+        const raw = sessionStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        fieldNames.forEach((n) => {
+          const el = wizardForm.elements[n];
+          if (el && typeof data[n] === 'string') el.value = data[n];
+        });
+      } catch (_) { /* ignore */ }
+    };
+
+    const clearDraft = () => {
+      try { sessionStorage.removeItem(STORAGE_KEY); } catch (_) { /* ignore */ }
+    };
+
+    /* ---------- UI helpers ---------- */
+    const showStep = (step, direction) => {
+      wizardSteps.forEach((el) => {
+        const s = parseInt(el.dataset.step, 10);
+        el.classList.remove('active', 'leaving-back');
+        if (s === step) {
+          el.setAttribute('aria-hidden', 'false');
+          void el.offsetWidth; // reflow to restart animation
+          el.classList.add('active');
+          if (direction === 'back') el.classList.add('leaving-back');
+        } else {
+          el.setAttribute('aria-hidden', 'true');
+        }
+      });
+
+      progressSteps.forEach((el) => {
+        const s = parseInt(el.dataset.step, 10);
+        el.classList.toggle('active', s === step);
+        el.classList.toggle('complete', s < step);
+      });
+
+      if (progressFill) {
+        const pct = ((step - 1) / (TOTAL_STEPS - 1)) * 100;
+        progressFill.style.width = pct + '%';
+      }
+
+      if (wizardProgress) wizardProgress.setAttribute('aria-valuenow', String(step));
+
+      // Focus first input on step change
+      const activeEl = wizardForm.querySelector('.wizard-step.active');
+      if (activeEl) {
+        const firstInput = activeEl.querySelector('input:not(.hp-field), select, textarea');
+        if (firstInput) setTimeout(() => firstInput.focus(), 120);
+      }
+
+      // Scroll form top into view
+      const formWrap = wizardForm.closest('.contact-form-wrap');
+      if (formWrap) {
+        const top = formWrap.getBoundingClientRect().top + window.pageYOffset - 100;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    };
+
+    /* ---------- Error helpers ---------- */
+    const setFieldError = (name, message) => {
+      const input = wizardForm.elements[name];
+      const errEl = wizardForm.querySelector(`.field-error[data-error-for="${name}"]`);
+      if (input) input.classList.add('invalid');
+      if (errEl) {
+        errEl.textContent = message || '';
+        errEl.classList.toggle('visible', !!message);
+      }
+    };
+
+    const clearFieldError = (name) => {
+      const input = wizardForm.elements[name];
+      const errEl = wizardForm.querySelector(`.field-error[data-error-for="${name}"]`);
+      if (input) input.classList.remove('invalid');
+      if (errEl) {
+        errEl.textContent = '';
+        errEl.classList.remove('visible');
+      }
+    };
+
+    const clearAllErrors = () => {
+      fieldNames.forEach(clearFieldError);
+      if (wizardStatus) {
+        wizardStatus.className = 'form-status';
+        wizardStatus.textContent = '';
+      }
+    };
+
+    /* ---------- Validation ---------- */
+    const isValidEmail = (v) =>
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v).trim());
+
+    const validateStep = (step) => {
+      let ok = true;
+
+      if (step === 1) {
+        const name = wizardForm.elements['full_name'].value.trim();
+        const email = wizardForm.elements['email'].value.trim();
+
+        clearFieldError('full_name');
+        clearFieldError('email');
+
+        if (!name) {
+          setFieldError('full_name', 'Please enter your full name.');
+          ok = false;
+        }
+        if (!email) {
+          setFieldError('email', 'Please enter your email address.');
+          ok = false;
+        } else if (!isValidEmail(email)) {
+          setFieldError('email', 'Please enter a valid email address.');
+          ok = false;
+        }
+      }
+
+      if (step === 2) {
+        const type = wizardForm.elements['system_type'].value;
+        const title = wizardForm.elements['title'].value.trim();
+        const desc = wizardForm.elements['description'].value.trim();
+
+        clearFieldError('system_type');
+        clearFieldError('title');
+        clearFieldError('description');
+
+        if (!type) {
+          setFieldError('system_type', 'Please select a system type.');
+          ok = false;
+        }
+        if (!title) {
+          setFieldError('title', 'Please give your project a title.');
+          ok = false;
+        }
+        if (!desc) {
+          setFieldError('description', 'Please describe your project.');
+          ok = false;
+        } else if (desc.length < 20) {
+          setFieldError('description', `Please add at least ${20 - desc.length} more character${(20 - desc.length) === 1 ? '' : 's'}.`);
+          ok = false;
+        }
+      }
+
+      return ok;
+    };
+
+    /* ---------- Step navigation ---------- */
+    wizardForm.addEventListener('click', (e) => {
+      const nextBtn = e.target.closest('.wizard-next');
+      const backBtn = e.target.closest('.wizard-back');
+
+      if (nextBtn) {
+        if (!validateStep(currentStep)) return;
+        currentStep = Math.min(currentStep + 1, TOTAL_STEPS);
+        showStep(currentStep, 'forward');
+        saveDraft();
+      }
+
+      if (backBtn) {
+        currentStep = Math.max(currentStep - 1, 1);
+        showStep(currentStep, 'back');
+      }
+    });
+
+    /* ---------- Persist on change ---------- */
+    wizardForm.addEventListener('input', saveDraft);
+    wizardForm.addEventListener('change', saveDraft);
+
+    /* ---------- Submit ---------- */
+    const buildPayload = () => {
+      const get = (n) => {
+        const el = wizardForm.elements[n];
+        return el ? String(el.value || '').trim() : '';
+      };
+      return {
+        full_name: get('full_name'),
+        email: get('email'),
+        phone: get('phone') || null,
+        company: get('company') || null,
+        location: get('location') || null,
+        system_type: get('system_type'),
+        title: get('title'),
+        description: get('description'),
+        features: get('features') || null,
+        target_users: get('target_users') || null,
+        budget_range: get('budget_range') || null,
+        timeline: get('timeline') || null,
+        reference_urls: get('reference_urls') || null,
+        attachment_url: null,
+        source: 'website'
+      };
+    };
+
+    const setSubmitting = (isSubmitting) => {
+      if (!wizardSubmit) return;
+      wizardSubmit.disabled = isSubmitting;
+      const original = wizardSubmit.dataset.originalHtml || wizardSubmit.innerHTML;
+      wizardSubmit.dataset.originalHtml = original;
+
+      if (isSubmitting) {
+        wizardSubmit.innerHTML =
+          '<i class="fas fa-spinner fa-spin"></i><span>Submitting...</span>';
+      } else {
+        wizardSubmit.innerHTML =
+          '<i class="fas fa-paper-plane"></i><span>Submit Request</span>';
+      }
+
+      // Disable all inputs during submit
+      wizardForm.querySelectorAll('input, select, textarea, button').forEach((el) => {
+        if (el === wizardSubmit) return;
+        if (el.classList.contains('wizard-back') || el.classList.contains('wizard-next')) {
+          el.disabled = isSubmitting;
+        }
+      });
+    };
+
+    const showStatus = (type, message) => {
+      if (!wizardStatus) return;
+      wizardStatus.className = 'form-status ' + type;
+      wizardStatus.textContent = message;
+    };
+
+    const showSuccess = (referenceCode) => {
+      // Hide steps + progress
+      wizardSteps.forEach((el) => {
+        el.classList.remove('active');
+        el.setAttribute('aria-hidden', 'true');
+      });
+      const progress = document.getElementById('wizardProgress');
+      if (progress) progress.style.display = 'none';
+
+      // Fill reference and show success
+      if (successRefCode) successRefCode.textContent = referenceCode || 'SYS-0000-0000';
+      if (wizardSuccess) {
+        wizardSuccess.hidden = false;
+        wizardSuccess.setAttribute('aria-hidden', 'false');
+      }
+
+      // Scroll top of success into view
+      const formWrap = wizardForm.closest('.contact-form-wrap');
+      if (formWrap) {
+        const top = formWrap.getBoundingClientRect().top + window.pageYOffset - 100;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    };
+
+    wizardForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      if (!formStatus || !formSubmit) return;
+      clearAllErrors();
 
-      // Reset status
-      formStatus.className = 'form-status';
-      formStatus.textContent = '';
-
-      const formData = new FormData(contactForm);
-      const name = (formData.get('name') || '').toString().trim();
-      const email = (formData.get('email') || '').toString().trim();
-      const message = (formData.get('message') || '').toString().trim();
-
-      if (!name || !email || !message) {
-        formStatus.classList.add('error');
-        formStatus.textContent = 'Please fill in all required fields.';
+      // Honeypot check — if a bot filled it, silently "succeed" without calling API
+      if (hpWebsite && hpWebsite.value.trim() !== '') {
+        showSuccess('SYS-0000-0000');
         return;
       }
 
-      const originalHTML = formSubmit.innerHTML;
-      formSubmit.disabled = true;
-      formSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Sending...</span>';
+      // Validate all steps
+      for (let s = 1; s <= TOTAL_STEPS; s++) {
+        if (!validateStep(s)) {
+          currentStep = s;
+          showStep(s, 'forward');
+          showStatus('error', 'Please fix the highlighted fields before submitting.');
+          return;
+        }
+      }
+
+      setSubmitting(true);
 
       try {
-        const response = await fetch(contactForm.action, {
+        const response = await fetch(WIZARD_API, {
           method: 'POST',
-          body: formData,
-          headers: { Accept: 'application/json' }
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(buildPayload())
         });
 
-        if (response.ok) {
-          formStatus.classList.add('success');
-          formStatus.textContent = 'Message sent successfully. We will get back to you shortly.';
-          contactForm.reset();
-        } else {
+        if (response.status === 201) {
           const data = await response.json().catch(() => ({}));
-          const errorMsg =
-            (data && data.errors && data.errors.map((er) => er.message).join(', ')) ||
-            'Something went wrong. Please try again or email us at qoechtech@gmail.com.';
-          formStatus.classList.add('error');
-          formStatus.textContent = errorMsg;
+          clearDraft();
+          showSuccess(data.reference_code || 'SYS-0000-0000');
+          return;
         }
+
+        if (response.status === 429) {
+          showStatus('error', 'Too many requests. Please try again later or contact us directly.');
+          return;
+        }
+
+        if (response.status === 400) {
+          const data = await response.json().catch(() => ({}));
+          const msg = data.message || data.error ||
+            'Some required information is missing or invalid. Please review your entries.';
+          showStatus('error', msg);
+          return;
+        }
+
+        // Any other status
+        showStatus('error', 'Something went wrong. Please try again or email qoechtech@gmail.com.');
       } catch (err) {
-        formStatus.classList.add('error');
-        formStatus.textContent = 'Network error. Please try again or email us at qoechtech@gmail.com.';
+        showStatus('error', 'Network error. Please try again or email qoechtech@gmail.com.');
       } finally {
-        formSubmit.disabled = false;
-        formSubmit.innerHTML = originalHTML;
+        setSubmitting(false);
       }
     });
+
+    /* ---------- Reset to step 1 ---------- */
+    if (successReset) {
+      successReset.addEventListener('click', () => {
+        // Clear fields
+        wizardForm.reset();
+        clearAllErrors();
+        clearDraft();
+
+        // Hide success, restore progress + step 1
+        if (wizardSuccess) {
+          wizardSuccess.hidden = true;
+          wizardSuccess.setAttribute('aria-hidden', 'true');
+        }
+        const progress = document.getElementById('wizardProgress');
+        if (progress) progress.style.display = '';
+
+        currentStep = 1;
+        showStep(1, 'back');
+      });
+    }
+
+    /* ---------- Restore on load ---------- */
+    restoreDraft();
+    showStep(1, 'forward');
   }
-
-
   /* ============================================================
      18. BACK TO TOP
      ============================================================ */
