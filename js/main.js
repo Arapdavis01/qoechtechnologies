@@ -919,31 +919,30 @@
     startAutoplay();
   }
 
-
-   /* ============================================================
+  /* ============================================================
      17. CONTACT WIZARD — Request a System
      ============================================================ */
   const WIZARD_API = 'https://eaglevision-api.onrender.com/api/public/system-requests';
   const STORAGE_KEY = 'qoech_wizard_v1';
+  const TOTAL_STEPS = 4;
 
-  const wizardForm    = document.getElementById('requestForm');
+  const wizardForm     = document.getElementById('requestForm');
   const wizardProgress = document.getElementById('wizardProgress');
-  const progressFill  = document.getElementById('progressFill');
-  const wizardSteps   = wizardForm ? wizardForm.querySelectorAll('.wizard-step') : [];
-  const progressSteps = wizardForm ? document.querySelectorAll('.progress-step') : [];
-  const wizardStatus  = document.getElementById('wizardStatus');
-  const wizardSubmit  = document.getElementById('wizardSubmit');
-  const wizardSuccess = document.getElementById('wizardSuccess');
+  const progressFill   = document.getElementById('progressFill');
+  const wizardSteps    = wizardForm ? wizardForm.querySelectorAll('.wizard-step') : [];
+  const progressSteps  = wizardForm ? document.querySelectorAll('.progress-step') : [];
+  const wizardStatus   = document.getElementById('wizardStatus');
+  const wizardSubmit   = document.getElementById('wizardSubmit');
+  const wizardSuccess  = document.getElementById('wizardSuccess');
   const successRefCode = document.getElementById('successRefCode');
-  const successReset  = document.getElementById('successReset');
-  const hpWebsite     = document.getElementById('hpWebsite');
+  const successReset   = document.getElementById('successReset');
+  const hpWebsite      = document.getElementById('hpWebsite');
 
   let currentStep = 1;
-  const TOTAL_STEPS = 4;
 
   if (wizardForm) {
 
-    /* ---------- Field map for restore ---------- */
+    /* ---------- Fields list for save/restore ---------- */
     const fieldNames = [
       'full_name', 'email', 'phone', 'company', 'location',
       'system_type', 'title', 'description',
@@ -951,7 +950,7 @@
       'reference_urls', 'source'
     ];
 
-    /* ---------- Save / Restore via sessionStorage ---------- */
+    /* ---------- sessionStorage draft ---------- */
     const saveDraft = () => {
       try {
         const data = {};
@@ -960,7 +959,7 @@
           if (el) data[n] = el.value;
         });
         sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-      } catch (_) { /* ignore */ }
+      } catch (_) {}
     };
 
     const restoreDraft = () => {
@@ -972,21 +971,21 @@
           const el = wizardForm.elements[n];
           if (el && typeof data[n] === 'string') el.value = data[n];
         });
-      } catch (_) { /* ignore */ }
+      } catch (_) {}
     };
 
     const clearDraft = () => {
-      try { sessionStorage.removeItem(STORAGE_KEY); } catch (_) { /* ignore */ }
+      try { sessionStorage.removeItem(STORAGE_KEY); } catch (_) {}
     };
 
-    /* ---------- UI helpers ---------- */
+    /* ---------- Step navigation ---------- */
     const showStep = (step, direction) => {
       wizardSteps.forEach((el) => {
         const s = parseInt(el.dataset.step, 10);
         el.classList.remove('active', 'leaving-back');
         if (s === step) {
           el.setAttribute('aria-hidden', 'false');
-          void el.offsetWidth; // reflow to restart animation
+          void el.offsetWidth; // restart animation
           el.classList.add('active');
           if (direction === 'back') el.classList.add('leaving-back');
         } else {
@@ -1007,7 +1006,7 @@
 
       if (wizardProgress) wizardProgress.setAttribute('aria-valuenow', String(step));
 
-      // Focus first input on step change
+      // Focus first field on step change
       const activeEl = wizardForm.querySelector('.wizard-step.active');
       if (activeEl) {
         const firstInput = activeEl.querySelector('input:not(.hp-field), select, textarea');
@@ -1059,7 +1058,7 @@
       let ok = true;
 
       if (step === 1) {
-        const name = wizardForm.elements['full_name'].value.trim();
+        const name  = wizardForm.elements['full_name'].value.trim();
         const email = wizardForm.elements['email'].value.trim();
 
         clearFieldError('full_name');
@@ -1079,9 +1078,9 @@
       }
 
       if (step === 2) {
-        const type = wizardForm.elements['system_type'].value;
+        const type  = wizardForm.elements['system_type'].value;
         const title = wizardForm.elements['title'].value.trim();
-        const desc = wizardForm.elements['description'].value.trim();
+        const desc  = wizardForm.elements['description'].value.trim();
 
         clearFieldError('system_type');
         clearFieldError('title');
@@ -1098,16 +1097,13 @@
         if (!desc) {
           setFieldError('description', 'Please describe your project.');
           ok = false;
-        } else if (desc.length < 20) {
-          setFieldError('description', `Please add at least ${20 - desc.length} more character${(20 - desc.length) === 1 ? '' : 's'}.`);
-          ok = false;
         }
       }
 
       return ok;
     };
 
-    /* ---------- Step navigation ---------- */
+    /* ---------- Step buttons ---------- */
     wizardForm.addEventListener('click', (e) => {
       const nextBtn = e.target.closest('.wizard-next');
       const backBtn = e.target.closest('.wizard-back');
@@ -1125,40 +1121,40 @@
       }
     });
 
-    /* ---------- Persist on change ---------- */
+    /* ---------- Persist input changes ---------- */
     wizardForm.addEventListener('input', saveDraft);
     wizardForm.addEventListener('change', saveDraft);
 
-    /* ---------- Submit ---------- */
+    /* ---------- Build payload ---------- */
     const buildPayload = () => {
       const get = (n) => {
         const el = wizardForm.elements[n];
         return el ? String(el.value || '').trim() : '';
       };
       return {
-        full_name: get('full_name'),
-        email: get('email'),
-        phone: get('phone') || null,
-        company: get('company') || null,
-        location: get('location') || null,
-        system_type: get('system_type'),
-        title: get('title'),
-        description: get('description'),
-        features: get('features') || null,
-        target_users: get('target_users') || null,
-        budget_range: get('budget_range') || null,
-        timeline: get('timeline') || null,
+        full_name:      get('full_name'),
+        email:          get('email'),
+        phone:          get('phone')          || null,
+        company:        get('company')        || null,
+        location:       get('location')       || null,
+        system_type:    get('system_type'),
+        title:          get('title'),
+        description:    get('description'),
+        features:       get('features')       || null,
+        target_users:   get('target_users')   || null,
+        budget_range:   get('budget_range')   || null,
+        timeline:       get('timeline')       || null,
         reference_urls: get('reference_urls') || null,
         attachment_url: null,
-        source: 'website'
+        source:         'website'
       };
     };
 
+    /* ---------- Submit loading state ---------- */
     const setSubmitting = (isSubmitting) => {
       if (!wizardSubmit) return;
+
       wizardSubmit.disabled = isSubmitting;
-      const original = wizardSubmit.dataset.originalHtml || wizardSubmit.innerHTML;
-      wizardSubmit.dataset.originalHtml = original;
 
       if (isSubmitting) {
         wizardSubmit.innerHTML =
@@ -1168,13 +1164,15 @@
           '<i class="fas fa-paper-plane"></i><span>Submit Request</span>';
       }
 
-      // Disable all inputs during submit
-      wizardForm.querySelectorAll('input, select, textarea, button').forEach((el) => {
-        if (el === wizardSubmit) return;
-        if (el.classList.contains('wizard-back') || el.classList.contains('wizard-next')) {
-          el.disabled = isSubmitting;
-        }
-      });
+      wizardForm
+        .querySelectorAll('input, select, textarea, button')
+        .forEach((el) => {
+          if (el === wizardSubmit) return;
+          if (el.classList.contains('wizard-back') ||
+              el.classList.contains('wizard-next')) {
+            el.disabled = isSubmitting;
+          }
+        });
     };
 
     const showStatus = (type, message) => {
@@ -1183,23 +1181,23 @@
       wizardStatus.textContent = message;
     };
 
+    /* ---------- Success screen ---------- */
     const showSuccess = (referenceCode) => {
-      // Hide steps + progress
       wizardSteps.forEach((el) => {
         el.classList.remove('active');
         el.setAttribute('aria-hidden', 'true');
       });
-      const progress = document.getElementById('wizardProgress');
-      if (progress) progress.style.display = 'none';
 
-      // Fill reference and show success
-      if (successRefCode) successRefCode.textContent = referenceCode || 'SYS-0000-0000';
+      if (wizardProgress) wizardProgress.style.display = 'none';
+
+      if (successRefCode) {
+        successRefCode.textContent = referenceCode || 'SYS-0000-0000';
+      }
       if (wizardSuccess) {
         wizardSuccess.hidden = false;
         wizardSuccess.setAttribute('aria-hidden', 'false');
       }
 
-      // Scroll top of success into view
       const formWrap = wizardForm.closest('.contact-form-wrap');
       if (formWrap) {
         const top = formWrap.getBoundingClientRect().top + window.pageYOffset - 100;
@@ -1207,18 +1205,18 @@
       }
     };
 
+    /* ---------- Submit handler ---------- */
     wizardForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-
       clearAllErrors();
 
-      // Honeypot check — if a bot filled it, silently "succeed" without calling API
+      // Honeypot
       if (hpWebsite && hpWebsite.value.trim() !== '') {
         showSuccess('SYS-0000-0000');
         return;
       }
 
-      // Validate all steps
+      // Validate every step
       for (let s = 1; s <= TOTAL_STEPS; s++) {
         if (!validateStep(s)) {
           currentStep = s;
@@ -1260,10 +1258,11 @@
           return;
         }
 
-        // Any other status
-        showStatus('error', 'Something went wrong. Please try again or email qoechtech@gmail.com.');
+        showStatus('error',
+          'Something went wrong. Please try again or email qoechtech@gmail.com.');
       } catch (err) {
-        showStatus('error', 'Network error. Please try again or email qoechtech@gmail.com.');
+        showStatus('error',
+          'Network error. Please try again or email qoechtech@gmail.com.');
       } finally {
         setSubmitting(false);
       }
@@ -1272,25 +1271,22 @@
     /* ---------- Reset to step 1 ---------- */
     if (successReset) {
       successReset.addEventListener('click', () => {
-        // Clear fields
         wizardForm.reset();
         clearAllErrors();
         clearDraft();
 
-        // Hide success, restore progress + step 1
         if (wizardSuccess) {
           wizardSuccess.hidden = true;
           wizardSuccess.setAttribute('aria-hidden', 'true');
         }
-        const progress = document.getElementById('wizardProgress');
-        if (progress) progress.style.display = '';
+        if (wizardProgress) wizardProgress.style.display = '';
 
         currentStep = 1;
         showStep(1, 'back');
       });
     }
 
-    /* ---------- Restore on load ---------- */
+    /* ---------- Init ---------- */
     restoreDraft();
     showStep(1, 'forward');
   }
