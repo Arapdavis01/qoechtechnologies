@@ -1124,90 +1124,135 @@
       </div>
     </div>
   </section>
+<!-- ============================================================
+     CONTACT
+============================================================ -->
+<section class="section" id="contact">
+  <div class="container">
+    <div class="section-head">
+      <span class="section-label">
+        <i class="fas fa-paper-plane"></i>
+        Contact
+      </span>
+      <h2 class="section-title">Have an Idea? <span class="highlight">Let's Build It.</span></h2>
+      <p class="section-sub">
+        Reach out through any channel below, or tell us about your project and we
+        will get back to you within 24 hours.
+      </p>
+    </div>
 
-  <!-- ============================================================
-       CONTACT
-  ============================================================ -->
-  <section class="section" id="contact">
-    <div class="container">
-      <div class="section-head">
-        <span class="section-label">
-          <i class="fas fa-paper-plane"></i>
-          Contact
-        </span>
-        <h2 class="section-title">Have an Idea? <span class="highlight">Let's Build It.</span></h2>
-        <p class="section-sub">
-          Reach out through any channel below, or send us a message and we
-          will get back to you within 24 hours.
-        </p>
-      </div>
+    <div class="contact-grid">
 
-      <div class="contact-grid">
+      <!-- ============================================================
+           CONTACT INFO SIDEBAR
+      ============================================================ -->
+      <div class="contact-info">
 
-        <div class="contact-info">
-
-          <a href="mailto:qoechtech@gmail.com" class="contact-card">
-            <div class="contact-icon"><i class="fas fa-envelope"></i></div>
-            <div class="contact-body">
-              <h4>Email</h4>
-              <p>qoechtech@gmail.com</p>
-            </div>
-            <i class="fas fa-arrow-right contact-arrow"></i>
-          </a>
-
-          <a href="https://wa.me/254702900005" target="_blank" rel="noopener" class="contact-card contact-whatsapp">
-            <div class="contact-icon"><i class="fab fa-whatsapp"></i></div>
-            <div class="contact-body">
-              <h4>WhatsApp</h4>
-              <p>+254 702 900 005</p>
-            </div>
-            <i class="fas fa-arrow-right contact-arrow"></i>
-          </a>
-
-          <a href="tel:+254702900005" class="contact-card">
-            <div class="contact-icon"><i class="fas fa-phone"></i></div>
-            <div class="contact-body">
-              <h4>Phone</h4>
-              <p>+254 702 900 005</p>
-            </div>
-            <i class="fas fa-arrow-right contact-arrow"></i>
-          </a>
-
-          <div class="contact-card contact-static">
-            <div class="contact-icon"><i class="fas fa-location-dot"></i></div>
-            <div class="contact-body">
-              <h4>Location</h4>
-              <p>Kenya — Remote Worldwide</p>
-            </div>
+        <a href="mailto:qoechtech@gmail.com" class="contact-card">
+          <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+          <div class="contact-body">
+            <h4>Email</h4>
+            <p>qoechtech@gmail.com</p>
           </div>
+          <i class="fas fa-arrow-right contact-arrow"></i>
+        </a>
 
-          <div class="contact-card contact-static">
-            <div class="contact-icon"><i class="fas fa-clock"></i></div>
-            <div class="contact-body">
-              <h4>Response Time</h4>
-              <p>Within 24 hours</p>
-            </div>
+        <a href="https://wa.me/254702900005" target="_blank" rel="noopener" class="contact-card contact-whatsapp">
+          <div class="contact-icon"><i class="fab fa-whatsapp"></i></div>
+          <div class="contact-body">
+            <h4>WhatsApp</h4>
+            <p>+254 702 900 005</p>
           </div>
+          <i class="fas fa-arrow-right contact-arrow"></i>
+        </a>
 
+        <a href="tel:+254702900005" class="contact-card">
+          <div class="contact-icon"><i class="fas fa-phone"></i></div>
+          <div class="contact-body">
+            <h4>Phone</h4>
+            <p>+254 702 900 005</p>
+          </div>
+          <i class="fas fa-arrow-right contact-arrow"></i>
+        </a>
+
+        <div class="contact-card contact-static">
+          <div class="contact-icon"><i class="fas fa-location-dot"></i></div>
+          <div class="contact-body">
+            <h4>Location</h4>
+            <p>Kenya — Remote Worldwide</p>
+          </div>
         </div>
 
-        <div class="contact-form-wrap">
-          <div class="form-head">
-            <h3><i class="fas fa-paper-plane"></i> Send Us a Message</h3>
-            <p>Tell us about your project and we'll get back to you shortly.</p>
+        <div class="contact-card contact-static">
+          <div class="contact-icon"><i class="fas fa-clock"></i></div>
+          <div class="contact-body">
+            <h4>Response Time</h4>
+            <p>Within 24 hours</p>
           </div>
+        </div>
 
-          <!-- Formspree — replace YOUR_FORM_ID with your actual Formspree form ID -->
-          <form id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate>
+      </div>
+
+      <!-- ============================================================
+           REQUEST A SYSTEM — 4-STEP WIZARD
+      ============================================================ -->
+      <div class="contact-form-wrap">
+        <div class="form-head">
+          <h3><i class="fas fa-paper-plane"></i> Request a System</h3>
+          <p>Tell us what you need — takes about 2 minutes.</p>
+        </div>
+
+        <!-- ---------- Progress indicator ---------- -->
+        <div class="wizard-progress" id="wizardProgress" role="progressbar"
+             aria-valuemin="1" aria-valuemax="4" aria-valuenow="1" aria-label="Form progress">
+          <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+          <ol class="progress-steps">
+            <li class="progress-step active" data-step="1">
+              <span class="progress-dot"><i class="fas fa-user"></i></span>
+              <span class="progress-label">About You</span>
+            </li>
+            <li class="progress-step" data-step="2">
+              <span class="progress-dot"><i class="fas fa-cube"></i></span>
+              <span class="progress-label">What You Need</span>
+            </li>
+            <li class="progress-step" data-step="3">
+              <span class="progress-dot"><i class="fas fa-list-check"></i></span>
+              <span class="progress-label">Scope</span>
+            </li>
+            <li class="progress-step" data-step="4">
+              <span class="progress-dot"><i class="fas fa-flag-checkered"></i></span>
+              <span class="progress-label">Final</span>
+            </li>
+          </ol>
+        </div>
+
+        <!-- ---------- Wizard form ---------- -->
+        <form id="requestForm" class="wizard-form" novalidate autocomplete="on">
+
+          <!-- Honeypot -->
+          <input type="text" name="website" id="hpWebsite" class="hp-field"
+                 tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+          <!-- ========================================================
+               STEP 1 — About You
+          ======================================================== -->
+          <div class="wizard-step active" data-step="1" aria-hidden="false">
+            <div class="wizard-step-head">
+              <span class="wizard-step-num">Step 1 of 4</span>
+              <h4>About You</h4>
+              <p>Let's start with the basics so we know who we're talking to.</p>
+            </div>
 
             <div class="form-row">
               <div class="form-group">
-                <label for="name"><i class="fas fa-user"></i> Full Name *</label>
-                <input type="text" id="name" name="name" placeholder="John Doe" required />
+                <label for="full_name"><i class="fas fa-user"></i> Full Name *</label>
+                <input type="text" id="full_name" name="full_name" placeholder="John Doe" required />
+                <small class="field-error" data-error-for="full_name"></small>
               </div>
               <div class="form-group">
                 <label for="email"><i class="fas fa-envelope"></i> Email Address *</label>
                 <input type="email" id="email" name="email" placeholder="john@example.com" required />
+                <small class="field-error" data-error-for="email"></small>
               </div>
             </div>
 
@@ -1217,40 +1262,213 @@
                 <input type="tel" id="phone" name="phone" placeholder="+254 700 000 000" />
               </div>
               <div class="form-group">
-                <label for="service"><i class="fas fa-cogs"></i> Service Required</label>
-                <select id="service" name="service">
-                  <option value="">Select a service</option>
-                  <option value="software">Software Development</option>
-                  <option value="web">Web Development</option>
-                  <option value="mobile">Mobile Development</option>
-                  <option value="networking">Networking</option>
-                  <option value="security">Cybersecurity</option>
-                  <option value="database">Database Solutions</option>
-                  <option value="cloud">Cloud Solutions</option>
-                  <option value="ai">AI &amp; Automation</option>
-                  <option value="other">Other</option>
-                </select>
+                <label for="company"><i class="fas fa-building"></i> Company</label>
+                <input type="text" id="company" name="company" placeholder="Acme Ltd" />
               </div>
             </div>
 
             <div class="form-group">
-              <label for="message"><i class="fas fa-comment"></i> Tell Us About Your Project *</label>
-              <textarea id="message" name="message" rows="6" placeholder="Describe your project, goals or challenge..." required></textarea>
+              <label for="location"><i class="fas fa-location-dot"></i> Location</label>
+              <input type="text" id="location" name="location" placeholder="Nairobi, Kenya" />
             </div>
 
-            <button type="submit" class="btn btn-primary btn-submit" id="formSubmit">
-              <i class="fas fa-paper-plane"></i>
-              <span>Send Message</span>
+            <div class="wizard-nav">
+              <span></span>
+              <button type="button" class="btn btn-primary wizard-next" aria-label="Go to step 2">
+                <span>Next</span>
+                <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- ========================================================
+               STEP 2 — What You Need
+          ======================================================== -->
+          <div class="wizard-step" data-step="2" aria-hidden="true">
+            <div class="wizard-step-head">
+              <span class="wizard-step-num">Step 2 of 4</span>
+              <h4>What You Need</h4>
+              <p>Tell us what kind of system you're looking for.</p>
+            </div>
+
+            <div class="form-group">
+              <label for="system_type"><i class="fas fa-layer-group"></i> System Type *</label>
+              <select id="system_type" name="system_type" required>
+                <option value="">Select a system type</option>
+                <option value="Website">Website</option>
+                <option value="Web Application">Web Application</option>
+                <option value="Mobile App">Mobile App</option>
+                <option value="Desktop App">Desktop App</option>
+                <option value="API / Backend">API / Backend</option>
+                <option value="E-commerce">E-commerce</option>
+                <option value="Business Management System">Business Management System</option>
+                <option value="Other">Other</option>
+              </select>
+              <small class="field-error" data-error-for="system_type"></small>
+            </div>
+
+            <div class="form-group">
+              <label for="title"><i class="fas fa-tag"></i> Project Title *</label>
+              <input type="text" id="title" name="title" placeholder="e.g. Inventory Management System" required />
+              <small class="field-error" data-error-for="title"></small>
+            </div>
+
+            <div class="form-group">
+              <label for="description"><i class="fas fa-comment"></i> Description *</label>
+              <textarea id="description" name="description" rows="5"
+                        placeholder="Describe what the system should do, who it's for, and the problem it solves..." required></textarea>
+              <small class="field-hint">Minimum 20 characters</small>
+              <small class="field-error" data-error-for="description"></small>
+            </div>
+
+            <div class="wizard-nav">
+              <button type="button" class="btn btn-outline wizard-back" aria-label="Go back to step 1">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back</span>
+              </button>
+              <button type="button" class="btn btn-primary wizard-next" aria-label="Go to step 3">
+                <span>Next</span>
+                <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- ========================================================
+               STEP 3 — Scope & Details
+          ======================================================== -->
+          <div class="wizard-step" data-step="3" aria-hidden="true">
+            <div class="wizard-step-head">
+              <span class="wizard-step-num">Step 3 of 4</span>
+              <h4>Scope &amp; Details</h4>
+              <p>All optional — but the more you share, the better our proposal.</p>
+            </div>
+
+            <div class="form-group">
+              <label for="features"><i class="fas fa-list-check"></i> Features You Want</label>
+              <textarea id="features" name="features" rows="4"
+                        placeholder="e.g. User roles, reports, SMS notifications, M-Pesa integration..."></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="target_users"><i class="fas fa-users"></i> Target Users</label>
+              <input type="text" id="target_users" name="target_users"
+                     placeholder="e.g. Admins, cashiers, warehouse staff" />
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="budget_range"><i class="fas fa-coins"></i> Budget Range</label>
+                <select id="budget_range" name="budget_range">
+                  <option value="">Select a range</option>
+                  <option value="Under 1000">Under 1,000</option>
+                  <option value="1000-5000">1,000 – 5,000</option>
+                  <option value="5000-10000">5,000 – 10,000</option>
+                  <option value="10000-50000">10,000 – 50,000</option>
+                  <option value="50000+">50,000+</option>
+                  <option value="Not sure">Not sure</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="timeline"><i class="fas fa-clock"></i> Timeline</label>
+                <select id="timeline" name="timeline">
+                  <option value="">Select a timeline</option>
+                  <option value="ASAP">ASAP</option>
+                  <option value="1-3 months">1 – 3 months</option>
+                  <option value="3-6 months">3 – 6 months</option>
+                  <option value="6+ months">6+ months</option>
+                  <option value="Not sure">Not sure</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="wizard-nav">
+              <button type="button" class="btn btn-outline wizard-back" aria-label="Go back to step 2">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back</span>
+              </button>
+              <button type="button" class="btn btn-primary wizard-next" aria-label="Go to step 4">
+                <span>Next</span>
+                <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- ========================================================
+               STEP 4 — Final Touches
+          ======================================================== -->
+          <div class="wizard-step" data-step="4" aria-hidden="true">
+            <div class="wizard-step-head">
+              <span class="wizard-step-num">Step 4 of 4</span>
+              <h4>Final Touches</h4>
+              <p>Last two questions — then you're done.</p>
+            </div>
+
+            <div class="form-group">
+              <label for="reference_urls"><i class="fas fa-link"></i> Reference URLs</label>
+              <textarea id="reference_urls" name="reference_urls" rows="3"
+                        placeholder="Links to systems you like or want to model after (comma separated)"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="source"><i class="fas fa-bullhorn"></i> How did you hear about us?</label>
+              <select id="source" name="source">
+                <option value="">Select an option</option>
+                <option value="Referral">Referral</option>
+                <option value="Google Search">Google Search</option>
+                <option value="Social Media">Social Media</option>
+                <option value="Saw a previous project">Saw a previous project</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div class="form-status" id="wizardStatus" role="status" aria-live="polite"></div>
+
+            <div class="wizard-nav">
+              <button type="button" class="btn btn-outline wizard-back" aria-label="Go back to step 3">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back</span>
+              </button>
+              <button type="submit" class="btn btn-primary wizard-submit" id="wizardSubmit"
+                      aria-label="Submit request">
+                <i class="fas fa-paper-plane"></i>
+                <span>Submit Request</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- ========================================================
+               SUCCESS SCREEN
+          ======================================================== -->
+          <div class="wizard-success" id="wizardSuccess" hidden aria-hidden="true">
+            <div class="success-icon">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>Request Received</h3>
+            <p class="success-sub">Your reference code is</p>
+            <div class="success-chip" id="successRefCode">SYS-0000-0000</div>
+            <p class="success-msg">Thank you. Our team will reach out within 24 hours.</p>
+
+            <div class="success-next">
+              <h4><i class="fas fa-route"></i> What happens next?</h4>
+              <ol>
+                <li>Our team reviews your request</li>
+                <li>We schedule a discovery call</li>
+                <li>You receive a proposal</li>
+              </ol>
+            </div>
+
+            <button type="button" class="btn btn-outline success-reset" id="successReset">
+              <i class="fas fa-rotate-right"></i>
+              <span>Submit Another Request</span>
             </button>
+          </div>
 
-            <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
-          </form>
-        </div>
-
+        </form>
       </div>
-    </div>
-  </section>
 
+    </div>
+  </div>
+</section>
   <!-- ============================================================
        FOOTER
   ============================================================ -->
