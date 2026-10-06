@@ -697,11 +697,9 @@ p {
 @media (max-width: 1024px) {
   .hamburger { display: flex; }
 
-  /* Hide the hamburger when the menu is open */
+  /* Hide the hamburger COMPLETELY when the menu is open */
   .hamburger.open {
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease;
+    display: none !important;
   }
 
   .nav-menu {
