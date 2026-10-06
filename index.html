@@ -65,21 +65,22 @@
   <!-- tsParticles -->
   <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js" defer></script>
 
-  <!-- MAIN STYLESHEET -->
-  <link rel="stylesheet" href="css/style.css" />
+  <!-- MAIN STYLESHEET (versioned for cache-busting) -->
+  <link rel="stylesheet" href="css/style.css?v=4" />
 </head>
 
 <body>
 
   <!-- ============================================================
-       PRELOADER
+       PRELOADER — Q logo sits inside the spinning ring
   ============================================================ -->
   <div class="preloader" id="preloader">
     <div class="preloader-inner">
-      <div class="preloader-ring"></div>
-      <div class="preloader-text">
-        <img class="preloader-q" src="images/logo/qoech-q.jpg" alt="" /><span>OECH</span>
+      <div class="preloader-ring-wrap">
+        <div class="preloader-ring"></div>
+        <img class="preloader-q" src="images/logo/qoech-q.jpg" alt="Qoech" />
       </div>
+      <div class="preloader-text">QOECH</div>
       <p class="preloader-tagline">Technology. Innovation. Impact.</p>
     </div>
   </div>
@@ -93,7 +94,7 @@
   <!-- PARTICLES NETWORK BACKGROUND -->
   <div id="particles-bg" aria-hidden="true"></div>
 
-    <!-- ============================================================
+  <!-- ============================================================
        NAVBAR
   ============================================================ -->
   <header class="navbar" id="navbar">
@@ -135,6 +136,7 @@
 
   <!-- Mobile overlay -->
   <div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
+
   <!-- ============================================================
        HERO
   ============================================================ -->
@@ -1538,7 +1540,7 @@
             <a href="https://x.com/qoechtech" target="_blank" rel="noopener" aria-label="X">
               <i class="fab fa-x-twitter"></i>
             </a>
-            <a href="https://wa.me/@qoechtech" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <a href="https://wa.me/254702900005" target="_blank" rel="noopener" aria-label="WhatsApp">
               <i class="fab fa-whatsapp"></i>
             </a>
           </div>
@@ -1580,8 +1582,8 @@
     </div>
   </div>
 
-  <!-- SCRIPTS -->
-  <script src="js/main.js" defer></script>
+  <!-- SCRIPTS (versioned for cache-busting) -->
+  <script src="js/main.js?v=4" defer></script>
 
 </body>
 </html>
