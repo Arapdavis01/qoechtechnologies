@@ -182,7 +182,7 @@
   onNavScroll();
 
 
-   /* ============================================================
+     /* ============================================================
      06. MOBILE MENU + ANIMATED HAMBURGER
      ============================================================ */
   const hamburger   = document.getElementById('hamburger');
@@ -195,6 +195,7 @@
     hamburger.classList.add('open');
     navMenu.classList.add('open');
     navOverlay.classList.add('open');
+    document.body.classList.add('menu-open');       /* ⭐ NEW */
     hamburger.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
   };
@@ -203,6 +204,7 @@
     hamburger.classList.remove('open');
     navMenu.classList.remove('open');
     navOverlay.classList.remove('open');
+    document.body.classList.remove('menu-open');    /* ⭐ NEW */
     hamburger.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
   };
