@@ -5,6 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#050B14" />
 
+  <!-- ⭐ Force start at Home — kills stale hash + scroll restoration -->
+  <script>
+    (function () {
+      if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+      }
+      if (window.location.hash) {
+        history.replaceState(
+          null,
+          '',
+          window.location.pathname + window.location.search
+        );
+      }
+      window.scrollTo(0, 0);
+    })();
+  </script>
+
   <!-- ============================================================
        SEO META
   ============================================================ -->
