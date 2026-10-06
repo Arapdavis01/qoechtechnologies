@@ -330,12 +330,12 @@ p {
 }
 
 /* ------------------------------------------------------------
-   The wrapper holds both the spinning ring AND the Q logo
+   Wrapper — holds both the spinning ring and the Q logo
    ------------------------------------------------------------ */
 .preloader-ring-wrap {
   position: relative;
-  width: 140px;
-  height: 140px;
+  width: 160px;
+  height: 160px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -348,7 +348,7 @@ p {
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  border: 2px solid transparent;
+  border: 3px solid transparent;
   border-top-color: var(--primary);
   border-right-color: var(--gold);
   animation: preloaderSpin 1.4s linear infinite;
@@ -356,13 +356,13 @@ p {
 }
 
 /* ------------------------------------------------------------
-   The Q logo — sits STILL at the center, gently pulsing
+   The Q logo — sized to fit neatly inside the ring
    ------------------------------------------------------------ */
 .preloader-q {
   position: relative;
   z-index: 1;
-  height: 96px;
-  width: 96px;
+  height: 130px;
+  width: 130px;
   object-fit: cover;
   border-radius: 50%;
   mix-blend-mode: screen;
@@ -374,7 +374,7 @@ p {
    Text below the ring — "QOECH"
    ------------------------------------------------------------ */
 .preloader-text {
-  margin-top: 1.8rem;
+  margin-top: 2rem;
   font-family: var(--font-display);
   font-size: 1.6rem;
   font-weight: 800;
@@ -401,7 +401,7 @@ p {
 
 @keyframes preloaderPulse {
   0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.06); }
+  50% { transform: scale(1.04); }
 }
 /* ============================================================
    06. SCROLL PROGRESS BAR
