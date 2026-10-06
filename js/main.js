@@ -924,7 +924,7 @@
 
     startAutoplay();
   }
-  /* ============================================================
+    /* ============================================================
      17. CONTACT WIZARD — Request a System
      ============================================================ */
   const WIZARD_API = 'https://eaglevision-api.onrender.com/api/public/system-requests';
@@ -984,7 +984,8 @@
     };
 
     /* ---------- Step navigation ----------
-       ⭐ scroll parameter: true = scroll to form, false = don't
+       scroll = true  → scroll to the form (user navigated)
+       scroll = false → don't scroll (initial page load)
     ----------------------------------------- */
     const showStep = (step, direction, scroll = true) => {
       wizardSteps.forEach((el) => {
@@ -1013,14 +1014,15 @@
 
       if (wizardProgress) wizardProgress.setAttribute('aria-valuenow', String(step));
 
-      // Focus first field on step change
+      // ⭐ Focus first field on step change — preventScroll stops the browser
+      //    from jumping the page to the input on initial load
       const activeEl = wizardForm.querySelector('.wizard-step.active');
       if (activeEl) {
         const firstInput = activeEl.querySelector('input:not(.hp-field), select, textarea');
-        if (firstInput) setTimeout(() => firstInput.focus(), 120);
+        if (firstInput) setTimeout(() => firstInput.focus({ preventScroll: true }), 120);
       }
 
-      // ⭐ Scroll form top into view — ONLY when user navigates steps
+      // Scroll form top into view — ONLY when user navigates steps
       if (scroll) {
         const formWrap = wizardForm.closest('.contact-form-wrap');
         if (formWrap) {
@@ -1296,7 +1298,7 @@
     }
 
     /* ---------- Init ----------
-       ⭐ scroll = false → don't auto-scroll to the form on page load
+       scroll = false → don't auto-scroll to the form on page load
     ------------------------------- */
     restoreDraft();
     showStep(1, 'forward', false);
