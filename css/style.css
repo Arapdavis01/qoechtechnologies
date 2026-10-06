@@ -689,8 +689,20 @@ p {
   visibility: visible;
 }
 
+/* Close button — hidden on desktop, shown inside mobile menu */
+.nav-close {
+  display: none;
+}
+
 @media (max-width: 1024px) {
   .hamburger { display: flex; }
+
+  /* Hide the hamburger when the menu is open */
+  .hamburger.open {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
 
   .nav-menu {
     position: fixed;
@@ -714,6 +726,33 @@ p {
   }
   .nav-menu.open {
     transform: translateX(0);
+  }
+
+  /* Close button — top-right of the panel */
+  .nav-close {
+    display: flex;
+    position: absolute;
+    top: 1.2rem;
+    right: 1.2rem;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    border: 1px solid var(--border-dim);
+    color: var(--text-primary);
+    font-size: 1rem;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    z-index: 2;
+  }
+  .nav-close:hover {
+    background: var(--primary);
+    color: #04120A;
+    border-color: var(--primary);
+    transform: rotate(90deg);
+    box-shadow: 0 0 22px var(--primary-glow);
   }
 
   .nav-links {
@@ -760,8 +799,6 @@ p {
     font-size: 0.78rem;
   }
 }
-
-
 /* ============================================================
    11. HERO
    ============================================================ */
