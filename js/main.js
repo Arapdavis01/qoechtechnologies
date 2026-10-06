@@ -182,12 +182,13 @@
   onNavScroll();
 
 
-  /* ============================================================
+   /* ============================================================
      06. MOBILE MENU + ANIMATED HAMBURGER
      ============================================================ */
-  const hamburger = document.getElementById('hamburger');
-  const navMenu = document.getElementById('navMenu');
-  const navOverlay = document.getElementById('navOverlay');
+  const hamburger   = document.getElementById('hamburger');
+  const navMenu     = document.getElementById('navMenu');
+  const navOverlay  = document.getElementById('navOverlay');
+  const navClose    = document.getElementById('navClose');
   const navLinksAll = document.querySelectorAll('.nav-link');
 
   const openMenu = () => {
@@ -213,6 +214,11 @@
     });
   }
 
+  // Close button inside the mobile menu panel
+  if (navClose) {
+    navClose.addEventListener('click', closeMenu);
+  }
+
   if (navOverlay) {
     navOverlay.addEventListener('click', closeMenu);
   }
@@ -234,8 +240,6 @@
       closeMenu();
     }
   });
-
-
   /* ============================================================
      07. ACTIVE NAV LINK ON SCROLL
      ============================================================ */
