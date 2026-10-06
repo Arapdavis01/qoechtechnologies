@@ -679,6 +679,7 @@ p {
   inset: 0;
   background: rgba(5, 11, 20, 0.7);
   backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   opacity: 0;
   visibility: hidden;
   transition: var(--transition);
@@ -687,6 +688,17 @@ p {
 .nav-overlay.open {
   opacity: 1;
   visibility: visible;
+}
+
+/* ⭐ LIFT THE NAVBAR ABOVE THE OVERLAY WHEN MENU IS OPEN
+   This prevents the overlay's backdrop-filter from blurring the menu panel */
+body.menu-open .navbar {
+  z-index: 1002;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: transparent;
+  border-bottom-color: transparent;
+  box-shadow: none;
 }
 
 /* Close button — hidden on desktop, shown inside mobile menu */
