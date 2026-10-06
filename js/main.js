@@ -924,7 +924,6 @@
 
     startAutoplay();
   }
-
   /* ============================================================
      17. CONTACT WIZARD — Request a System
      ============================================================ */
@@ -984,8 +983,10 @@
       try { sessionStorage.removeItem(STORAGE_KEY); } catch (_) {}
     };
 
-    /* ---------- Step navigation ---------- */
-    const showStep = (step, direction) => {
+    /* ---------- Step navigation ----------
+       ⭐ scroll parameter: true = scroll to form, false = don't
+    ----------------------------------------- */
+    const showStep = (step, direction, scroll = true) => {
       wizardSteps.forEach((el) => {
         const s = parseInt(el.dataset.step, 10);
         el.classList.remove('active', 'leaving-back');
@@ -1019,11 +1020,13 @@
         if (firstInput) setTimeout(() => firstInput.focus(), 120);
       }
 
-      // Scroll form top into view
-      const formWrap = wizardForm.closest('.contact-form-wrap');
-      if (formWrap) {
-        const top = formWrap.getBoundingClientRect().top + window.pageYOffset - 100;
-        window.scrollTo({ top, behavior: 'smooth' });
+      // ⭐ Scroll form top into view — ONLY when user navigates steps
+      if (scroll) {
+        const formWrap = wizardForm.closest('.contact-form-wrap');
+        if (formWrap) {
+          const top = formWrap.getBoundingClientRect().top + window.pageYOffset - 100;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
       }
     };
 
@@ -1117,13 +1120,13 @@
       if (nextBtn) {
         if (!validateStep(currentStep)) return;
         currentStep = Math.min(currentStep + 1, TOTAL_STEPS);
-        showStep(currentStep, 'forward');
+        showStep(currentStep, 'forward');   // scrolls (default true)
         saveDraft();
       }
 
       if (backBtn) {
         currentStep = Math.max(currentStep - 1, 1);
-        showStep(currentStep, 'back');
+        showStep(currentStep, 'back');      // scrolls (default true)
       }
     });
 
@@ -1292,9 +1295,11 @@
       });
     }
 
-    /* ---------- Init ---------- */
+    /* ---------- Init ----------
+       ⭐ scroll = false → don't auto-scroll to the form on page load
+    ------------------------------- */
     restoreDraft();
-    showStep(1, 'forward');
+    showStep(1, 'forward', false);
   }
   /* ============================================================
      18. BACK TO TOP
