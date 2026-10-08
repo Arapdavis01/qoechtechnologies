@@ -3,25 +3,24 @@
    ============================================================
    Table of Contents
    01. Preloader
-   02. Scroll Progress Bar
-   03. Cursor Glow
-   04. Particles Network (tsParticles + cursor grab)
-   05. Navbar Scroll State
-   06. Mobile Menu + Animated Hamburger
-   07. Active Nav Link on Scroll
-   08. Smooth Scroll for Anchor Links
-   09. Hero Typing Effect
-   10. Fade-up Scroll Animations
-   11. Stats Counter Animation
-   12. About Tabs
-   13. Service Data + Modal
-   14. Project Data + Modal
-   15. Modal Helpers (close, escape, overlay)
-   16. Testimonial Carousel
-   17. Contact Form (Formspree AJAX)
-   18. Back to Top
-   19. Footer Year
-   20. Hero Parallax (subtle)
+   02. Cursor Glow
+   03. Particles Network (tsParticles + cursor grab)
+   04. Mobile Menu + Animated Hamburger
+   05. Smooth Scroll for Anchor Links
+   06. Hero Typing Effect
+   07. Fade-up Scroll Animations
+   08. About Tabs
+   09. Service Data + Modal
+   10. Project Data + Modal
+   11. Modal Helpers (close, escape, overlay, delegation)
+   12. Testimonial Carousel
+   13. Contact Wizard (Request a System)
+   14. Footer Year
+   15. Image Modal — full-screen gallery viewer
+   16. Terminal Modal — code sample viewer
+   17. Public API (window.QOECH)
+   18. Unified Scroll Loop — progress bar, navbar state,
+       active link, back-to-top, hero parallax, stats counter
    ============================================================ */
 
 (function () {
@@ -39,22 +38,7 @@
 
 
   /* ============================================================
-     02. SCROLL PROGRESS BAR
-     ============================================================ */
-  const scrollProgress = document.getElementById('scrollProgress');
-  const updateProgress = () => {
-    if (!scrollProgress) return;
-    const scrollTop = window.scrollY;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-    scrollProgress.style.width = pct + '%';
-  };
-  window.addEventListener('scroll', updateProgress, { passive: true });
-  updateProgress();
-
-
-  /* ============================================================
-     03. CURSOR GLOW (desktop only)
+     02. CURSOR GLOW (desktop only)
      ============================================================ */
   const cursorGlow = document.getElementById('cursorGlow');
   const hasFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -74,7 +58,6 @@
       cursorGlow.style.opacity = '0.85';
     });
 
-    // Smooth follow with requestAnimationFrame
     const animateCursor = () => {
       cx += (tx - cx) * 0.22;
       cy += (ty - cy) * 0.22;
@@ -87,7 +70,7 @@
 
 
   /* ============================================================
-     04. PARTICLES NETWORK — tsParticles with cursor grab
+     03. PARTICLES NETWORK — tsParticles with cursor grab
      ============================================================ */
   const initParticles = () => {
     if (typeof tsParticles === 'undefined') return;
@@ -98,25 +81,25 @@
     tsParticles.load('particles-bg', {
       particles: {
         number: {
-          value: isMobile ? 35 : 75,
-          density: { enable: true, area: 900 }
+          value: isMobile ? 22 : 55,
+          density: { enable: true, area: 1100 }
         },
         color: {
-          value: ['#39FF14', '#D4AF37', '#00FF88']
+          value: ['#22C55E', '#B8935A', '#9CA3AF']
         },
         shape: { type: 'circle' },
         opacity: {
-          value: 0.35,
+          value: 0.22,
           random: true,
-          anim: { enable: true, speed: 0.4, min: 0.1, sync: false }
+          anim: { enable: true, speed: 0.25, min: 0.06, sync: false }
         },
         size: {
-          value: { min: 1, max: 3 },
+          value: { min: 0.6, max: 1.8 },
           random: true
         },
         move: {
           enable: true,
-          speed: 0.45,
+          speed: 0.3,
           direction: 'none',
           random: true,
           straight: false,
@@ -124,9 +107,9 @@
         },
         line_linked: {
           enable: true,
-          distance: 150,
-          color: '#39FF14',
-          opacity: 0.15,
+          distance: 140,
+          color: '#22C55E',
+          opacity: 0.08,
           width: 1
         }
       },
@@ -138,8 +121,8 @@
             mode: 'grab',
             parallax: {
               enable: true,
-              force: 35,
-              smooth: 20
+              force: 22,
+              smooth: 25
             }
           },
           onClick: {
@@ -150,10 +133,10 @@
         },
         modes: {
           grab: {
-            distance: 200,
-            line_linked: { opacity: 0.5 }
+            distance: 190,
+            line_linked: { opacity: 0.26 }
           },
-          push: { quantity: 3 }
+          push: { quantity: 2 }
         }
       },
       background: { color: 'transparent' },
@@ -161,7 +144,6 @@
     });
   };
 
-  // Wait for tsParticles to be available (loaded with defer)
   if (typeof tsParticles !== 'undefined') {
     initParticles();
   } else {
@@ -170,20 +152,7 @@
 
 
   /* ============================================================
-     05. NAVBAR SCROLL STATE
-     ============================================================ */
-  const navbar = document.getElementById('navbar');
-  const onNavScroll = () => {
-    if (!navbar) return;
-    if (window.scrollY > 40) navbar.classList.add('scrolled');
-    else navbar.classList.remove('scrolled');
-  };
-  window.addEventListener('scroll', onNavScroll, { passive: true });
-  onNavScroll();
-
-
-     /* ============================================================
-     06. MOBILE MENU + ANIMATED HAMBURGER
+     04. MOBILE MENU + ANIMATED HAMBURGER
      ============================================================ */
   const hamburger   = document.getElementById('hamburger');
   const navMenu     = document.getElementById('navMenu');
@@ -192,19 +161,21 @@
   const navLinksAll = document.querySelectorAll('.nav-link');
 
   const openMenu = () => {
+    if (!hamburger || !navMenu) return;
     hamburger.classList.add('open');
     navMenu.classList.add('open');
-    navOverlay.classList.add('open');
-    document.body.classList.add('menu-open');       /* ⭐ NEW */
+    if (navOverlay) navOverlay.classList.add('open');
+    document.body.classList.add('menu-open');
     hamburger.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
   };
 
   const closeMenu = () => {
+    if (!hamburger || !navMenu) return;
     hamburger.classList.remove('open');
     navMenu.classList.remove('open');
-    navOverlay.classList.remove('open');
-    document.body.classList.remove('menu-open');    /* ⭐ NEW */
+    if (navOverlay) navOverlay.classList.remove('open');
+    document.body.classList.remove('menu-open');
     hamburger.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
   };
@@ -216,7 +187,6 @@
     });
   }
 
-  // Close button inside the mobile menu panel
   if (navClose) {
     navClose.addEventListener('click', closeMenu);
   }
@@ -229,50 +199,23 @@
     link.addEventListener('click', closeMenu);
   });
 
-  // Close on Escape
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && hamburger && hamburger.classList.contains('open')) {
       closeMenu();
     }
   });
 
-  // Close on resize above breakpoint
   window.addEventListener('resize', () => {
     if (window.innerWidth > 1024 && hamburger && hamburger.classList.contains('open')) {
       closeMenu();
     }
   });
-  /* ============================================================
-     07. ACTIVE NAV LINK ON SCROLL
-     ============================================================ */
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-link');
-
-  const updateActiveLink = () => {
-    const scrollPos = window.scrollY + 140;
-    let currentId = '';
-
-    sections.forEach((section) => {
-      const top = section.offsetTop;
-      const height = section.clientHeight;
-      if (scrollPos >= top && scrollPos < top + height) {
-        currentId = section.getAttribute('id');
-      }
-    });
-
-    navLinks.forEach((link) => {
-      link.classList.remove('active');
-      const href = link.getAttribute('href');
-      if (href === '#' + currentId) link.classList.add('active');
-    });
-  };
-
-  window.addEventListener('scroll', updateActiveLink, { passive: true });
-  window.addEventListener('load', updateActiveLink);
 
 
   /* ============================================================
-     08. SMOOTH SCROLL FOR ANCHOR LINKS
+     05. SMOOTH SCROLL FOR ANCHOR LINKS
+     Reads the actual navbar bottom edge so the scroll position
+     accounts for the floating pill's top offset.
      ============================================================ */
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener('click', function (e) {
@@ -283,18 +226,18 @@
       if (!target) return;
 
       e.preventDefault();
-      const navHeight = navbar ? navbar.offsetHeight : 72;
-      const top = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
+      const navbar = document.getElementById('navbar');
+      const navBottom = navbar ? navbar.getBoundingClientRect().bottom : 72;
+      const top = target.getBoundingClientRect().top + window.pageYOffset - navBottom - 20;
       window.scrollTo({ top, behavior: 'smooth' });
 
-      // Update URL hash without jumping
       history.replaceState(null, '', targetId);
     });
   });
 
 
   /* ============================================================
-     09. HERO TYPING EFFECT
+     06. HERO TYPING EFFECT
      ============================================================ */
   const typedEl = document.getElementById('typed-text');
   if (typedEl) {
@@ -310,7 +253,6 @@
     let phraseIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
-    let typingTimeout;
 
     const typeLoop = () => {
       const current = phrases[phraseIndex];
@@ -326,7 +268,7 @@
       let speed = isDeleting ? 45 : 90;
 
       if (!isDeleting && charIndex === current.length) {
-        speed = 1800; // pause at end
+        speed = 1800;
         isDeleting = true;
       } else if (isDeleting && charIndex === 0) {
         isDeleting = false;
@@ -334,22 +276,23 @@
         speed = 400;
       }
 
-      typingTimeout = setTimeout(typeLoop, speed);
+      setTimeout(typeLoop, speed);
     };
 
-    // Start after preloader
     setTimeout(typeLoop, 1400);
   }
 
 
-   /* ============================================================
-     10. FADE-UP SCROLL ANIMATIONS
+  /* ============================================================
+     07. FADE-UP SCROLL ANIMATIONS
      ============================================================ */
   const fadeEls = document.querySelectorAll(
-    '.fade-up, .section-head, .service-card, .solution-card, ' +
+    '.fade-up, .section-head, .section-divider, ' +
+    '.service-card, .solution-card, ' +
     '.featured-project-card, .other-system-item, .capability-item, ' +
     '.tech-category, .why-card, .process-step, .stat-card, ' +
-    '.value-item, .contact-card, .testimonial-carousel'
+    '.value-item, .contact-card, .testimonial-carousel, ' +
+    '.eagle-readout'
   );
 
   if ('IntersectionObserver' in window) {
@@ -376,53 +319,7 @@
 
 
   /* ============================================================
-     11. STATS COUNTER ANIMATION
-     ============================================================ */
-  const statNumbers = document.querySelectorAll('.stat-number');
-  const animateStats = () => {
-    statNumbers.forEach((el) => {
-      const target = parseInt(el.getAttribute('data-target')) || 0;
-      const suffix = el.getAttribute('data-suffix') || '';
-      const duration = 1600;
-      const startTime = performance.now();
-
-      const tick = (now) => {
-        const elapsed = now - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        // easeOutCubic
-        const eased = 1 - Math.pow(1 - progress, 3);
-        const value = Math.floor(eased * target);
-        el.textContent = value + suffix;
-        if (progress < 1) requestAnimationFrame(tick);
-        else el.textContent = target + suffix;
-      };
-      requestAnimationFrame(tick);
-    });
-  };
-
-  if (statNumbers.length) {
-    if ('IntersectionObserver' in window) {
-      const statsObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              animateStats();
-              statsObserver.disconnect();
-            }
-          });
-        },
-        { threshold: 0.4 }
-      );
-      const statsGrid = document.querySelector('.stats-grid');
-      if (statsGrid) statsObserver.observe(statsGrid);
-    } else {
-      animateStats();
-    }
-  }
-
-
-  /* ============================================================
-     12. ABOUT TABS
+     08. ABOUT TABS
      ============================================================ */
   const tabBtns = document.querySelectorAll('.tab-btn');
   const tabContents = document.querySelectorAll('.tab-content');
@@ -445,7 +342,7 @@
 
 
   /* ============================================================
-     13. SERVICE DATA + MODAL
+     09. SERVICE DATA + MODAL
      ============================================================ */
   const serviceData = {
     software: {
@@ -679,7 +576,7 @@
 
 
   /* ============================================================
-     14. PROJECT DATA + MODAL
+     10. PROJECT DATA + MODAL
      ============================================================ */
   const projectData = {
     hardware: {
@@ -688,7 +585,7 @@
       status: 'Live',
       statusClass: 'status-live',
       image: 'images/projects/hardware.jpg',
-      liveUrl: '', // ← paste live URL here when available
+      liveUrl: '',
       overview: 'A management system built for hardware stores that need to manage large product catalogs, track sales and monitor stock levels without spreadsheets.',
       problem: 'Hardware stores deal with hundreds of products, varying units and fast-moving stock. Manual tracking leads to stockouts, overstocking and difficulty knowing what is actually selling.',
       solution: 'We built a system that handles inventory tracking, sales processing, purchase recording and business reporting — designed around how hardware stores actually operate.',
@@ -709,7 +606,7 @@
       status: 'Live',
       statusClass: 'status-live',
       image: 'images/projects/agrovet.jpg',
-      liveUrl: '', // ← paste live URL here when available
+      liveUrl: '',
       overview: 'A complete system for tracking sales, stock levels, purchases and inventory in agrovet businesses.',
       problem: 'Agrovet businesses struggled with manual inventory tracking, leading to stockouts, overstocking and difficulty reconciling sales and purchases.',
       solution: 'We developed a full inventory management system with real-time stock tracking, sales recording, purchase management and reporting.',
@@ -823,7 +720,7 @@
 
 
   /* ============================================================
-     15. MODAL HELPERS
+     11. MODAL HELPERS
      ============================================================ */
   let lastFocusedEl = null;
 
@@ -834,7 +731,6 @@
     modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
 
-    // Focus first focusable element
     const focusable = modal.querySelector('button, [href], input, select, textarea');
     if (focusable) setTimeout(() => focusable.focus(), 80);
   }
@@ -844,26 +740,27 @@
     modal.classList.remove('open');
     modal.setAttribute('aria-hidden', 'true');
 
-    // Only unlock scroll if no other modal is open
     const anyOpen = document.querySelector('.modal.open');
     if (!anyOpen) document.body.style.overflow = '';
 
     if (lastFocusedEl && lastFocusedEl.focus) lastFocusedEl.focus();
   }
 
-  // Close buttons inside modals (data-close attribute)
-  document.querySelectorAll('.modal').forEach((modal) => {
-    modal.querySelectorAll('[data-close]').forEach((el) => {
-      el.addEventListener('click', (e) => {
-        // If it's a link to #contact, let it scroll first
-        if (el.tagName === 'A' && el.getAttribute('href') === '#contact') {
-          closeModal(modal);
-        } else {
-          e.preventDefault();
-          closeModal(modal);
-        }
-      });
-    });
+  // Event delegation — handles [data-close] even on dynamically injected content
+  document.addEventListener('click', (e) => {
+    const closeBtn = e.target.closest('[data-close]');
+    if (!closeBtn) return;
+
+    const modal = closeBtn.closest('.modal');
+    if (!modal) return;
+
+    if (closeBtn.tagName === 'A' && closeBtn.getAttribute('href') === '#contact') {
+      closeModal(modal);
+      return;
+    }
+
+    e.preventDefault();
+    closeModal(modal);
   });
 
   // Escape key closes any open modal
@@ -875,7 +772,7 @@
 
 
   /* ============================================================
-     16. TESTIMONIAL CAROUSEL
+     12. TESTIMONIAL CAROUSEL
      ============================================================ */
   const testimonialSlides = document.querySelectorAll('.testimonial-slide');
   const testimonialDots = document.querySelectorAll('.testimonial-dots .dot');
@@ -924,8 +821,10 @@
 
     startAutoplay();
   }
-    /* ============================================================
-     17. CONTACT WIZARD — Request a System
+
+
+  /* ============================================================
+     13. CONTACT WIZARD — Request a System
      ============================================================ */
   const WIZARD_API = 'https://eaglevision-api.onrender.com/api/public/system-requests';
   const STORAGE_KEY = 'qoech_wizard_v1';
@@ -947,7 +846,6 @@
 
   if (wizardForm) {
 
-    /* ---------- Fields list for save/restore ---------- */
     const fieldNames = [
       'full_name', 'email', 'phone', 'company', 'location',
       'system_type', 'title', 'description',
@@ -955,7 +853,6 @@
       'reference_urls', 'source'
     ];
 
-    /* ---------- sessionStorage draft ---------- */
     const saveDraft = () => {
       try {
         const data = {};
@@ -983,17 +880,13 @@
       try { sessionStorage.removeItem(STORAGE_KEY); } catch (_) {}
     };
 
-    /* ---------- Step navigation ----------
-       scroll = true  → scroll to the form (user navigated)
-       scroll = false → don't scroll (initial page load)
-    ----------------------------------------- */
     const showStep = (step, direction, scroll = true) => {
       wizardSteps.forEach((el) => {
         const s = parseInt(el.dataset.step, 10);
         el.classList.remove('active', 'leaving-back');
         if (s === step) {
           el.setAttribute('aria-hidden', 'false');
-          void el.offsetWidth; // restart animation
+          void el.offsetWidth;
           el.classList.add('active');
           if (direction === 'back') el.classList.add('leaving-back');
         } else {
@@ -1014,15 +907,12 @@
 
       if (wizardProgress) wizardProgress.setAttribute('aria-valuenow', String(step));
 
-      // ⭐ Focus first field on step change — preventScroll stops the browser
-      //    from jumping the page to the input on initial load
       const activeEl = wizardForm.querySelector('.wizard-step.active');
       if (activeEl) {
         const firstInput = activeEl.querySelector('input:not(.hp-field), select, textarea');
         if (firstInput) setTimeout(() => firstInput.focus({ preventScroll: true }), 120);
       }
 
-      // Scroll form top into view — ONLY when user navigates steps
       if (scroll) {
         const formWrap = wizardForm.closest('.contact-form-wrap');
         if (formWrap) {
@@ -1032,7 +922,6 @@
       }
     };
 
-    /* ---------- Error helpers ---------- */
     const setFieldError = (name, message) => {
       const input = wizardForm.elements[name];
       const errEl = wizardForm.querySelector(`.field-error[data-error-for="${name}"]`);
@@ -1061,7 +950,6 @@
       }
     };
 
-    /* ---------- Validation ---------- */
     const isValidEmail = (v) =>
       /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v).trim());
 
@@ -1114,7 +1002,6 @@
       return ok;
     };
 
-    /* ---------- Step buttons ---------- */
     wizardForm.addEventListener('click', (e) => {
       const nextBtn = e.target.closest('.wizard-next');
       const backBtn = e.target.closest('.wizard-back');
@@ -1122,21 +1009,19 @@
       if (nextBtn) {
         if (!validateStep(currentStep)) return;
         currentStep = Math.min(currentStep + 1, TOTAL_STEPS);
-        showStep(currentStep, 'forward');   // scrolls (default true)
+        showStep(currentStep, 'forward');
         saveDraft();
       }
 
       if (backBtn) {
         currentStep = Math.max(currentStep - 1, 1);
-        showStep(currentStep, 'back');      // scrolls (default true)
+        showStep(currentStep, 'back');
       }
     });
 
-    /* ---------- Persist input changes ---------- */
     wizardForm.addEventListener('input', saveDraft);
     wizardForm.addEventListener('change', saveDraft);
 
-    /* ---------- Build payload ---------- */
     const buildPayload = () => {
       const get = (n) => {
         const el = wizardForm.elements[n];
@@ -1161,7 +1046,6 @@
       };
     };
 
-    /* ---------- Submit loading state ---------- */
     const setSubmitting = (isSubmitting) => {
       if (!wizardSubmit) return;
 
@@ -1192,7 +1076,6 @@
       wizardStatus.textContent = message;
     };
 
-    /* ---------- Success screen ---------- */
     const showSuccess = (referenceCode) => {
       wizardSteps.forEach((el) => {
         el.classList.remove('active');
@@ -1216,18 +1099,15 @@
       }
     };
 
-    /* ---------- Submit handler ---------- */
     wizardForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       clearAllErrors();
 
-      // Honeypot
       if (hpWebsite && hpWebsite.value.trim() !== '') {
         showSuccess('SYS-0000-0000');
         return;
       }
 
-      // Validate every step
       for (let s = 1; s <= TOTAL_STEPS; s++) {
         if (!validateStep(s)) {
           currentStep = s;
@@ -1279,7 +1159,6 @@
       }
     });
 
-    /* ---------- Reset to step 1 ---------- */
     if (successReset) {
       successReset.addEventListener('click', () => {
         wizardForm.reset();
@@ -1297,53 +1176,290 @@
       });
     }
 
-    /* ---------- Init ----------
-       scroll = false → don't auto-scroll to the form on page load
-    ------------------------------- */
     restoreDraft();
     showStep(1, 'forward', false);
   }
-  /* ============================================================
-     18. BACK TO TOP
-     ============================================================ */
-  const backToTop = document.getElementById('backToTop');
-  if (backToTop) {
-    const toggleBackToTop = () => {
-      if (window.scrollY > 500) backToTop.classList.add('visible');
-      else backToTop.classList.remove('visible');
-    };
-    window.addEventListener('scroll', toggleBackToTop, { passive: true });
-    toggleBackToTop();
-
-    backToTop.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  }
 
 
   /* ============================================================
-     19. FOOTER YEAR
+     14. FOOTER YEAR
      ============================================================ */
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
 
   /* ============================================================
-     20. HERO PARALLAX (subtle, desktop only)
+     15. IMAGE MODAL — full-screen gallery viewer
      ============================================================ */
-  const hero = document.querySelector('.hero');
-  if (hero && hasFinePointer) {
-    window.addEventListener(
-      'scroll',
-      () => {
-        const offset = window.scrollY;
-        if (offset < window.innerHeight) {
-          const grid = hero.querySelector('.hero-grid');
-          if (grid) grid.style.transform = `translateY(${offset * 0.15}px)`;
-        }
-      },
-      { passive: true }
-    );
+  const imageModal      = document.getElementById('imageModal');
+  const imageModalImg   = document.getElementById('imageModalImg');
+  const imageModalMeta  = document.getElementById('imageModalMeta');
+  const imageModalTitle = document.getElementById('imageModalTitle');
+  const imageModalDesc  = document.getElementById('imageModalDesc');
+  const imageModalPrev  = imageModal ? imageModal.querySelector('[data-nav="prev"]') : null;
+  const imageModalNext  = imageModal ? imageModal.querySelector('[data-nav="next"]') : null;
+
+  let imageGallery = [];
+  let imageIndex = 0;
+
+  const renderImageModal = () => {
+    if (!imageGallery.length || !imageModalImg) return;
+    const item = imageGallery[imageIndex] || {};
+
+    imageModalImg.src = item.src || '';
+    imageModalImg.alt = item.alt || item.title || '';
+
+    if (imageModalMeta)  imageModalMeta.textContent  = item.meta  || '';
+    if (imageModalTitle) imageModalTitle.textContent = item.title || '';
+    if (imageModalDesc)  imageModalDesc.textContent  = item.desc  || '';
+
+    const multi = imageGallery.length > 1;
+    if (imageModalPrev) imageModalPrev.style.display = multi ? '' : 'none';
+    if (imageModalNext) imageModalNext.style.display = multi ? '' : 'none';
+  };
+
+  const openImageModal = (images, startIndex = 0) => {
+    if (!imageModal || !images || !images.length) return;
+
+    imageGallery = Array.isArray(images) ? images : [images];
+    imageIndex = Math.max(0, Math.min(startIndex, imageGallery.length - 1));
+
+    renderImageModal();
+    openModal(imageModal);
+  };
+
+  const navigateImage = (dir) => {
+    if (imageGallery.length < 2) return;
+    imageIndex = (imageIndex + dir + imageGallery.length) % imageGallery.length;
+    renderImageModal();
+  };
+
+  if (imageModalPrev) imageModalPrev.addEventListener('click', () => navigateImage(-1));
+  if (imageModalNext) imageModalNext.addEventListener('click', () => navigateImage(1));
+
+  document.addEventListener('keydown', (e) => {
+    if (!imageModal || !imageModal.classList.contains('open')) return;
+    if (e.key === 'ArrowLeft')  navigateImage(-1);
+    if (e.key === 'ArrowRight') navigateImage(1);
+  });
+
+  if (imageModal) {
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    imageModal.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+
+    imageModal.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].screenX - touchStartX;
+      const dy = e.changedTouches[0].screenY - touchStartY;
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+        navigateImage(dx < 0 ? 1 : -1);
+      }
+    }, { passive: true });
+  }
+
+  document.querySelectorAll('.featured-project-thumb').forEach((thumb) => {
+    const img = thumb.querySelector('img');
+    if (!img) return;
+
+    thumb.style.cursor = 'zoom-in';
+    thumb.addEventListener('click', (e) => {
+      if (e.target.closest('.project-status, .featured-flag')) return;
+
+      const card    = thumb.closest('.featured-project-card');
+      const titleEl = card ? card.querySelector('h3') : null;
+      const catEl   = card ? card.querySelector('.project-category') : null;
+
+      openImageModal([{
+        src: img.getAttribute('src'),
+        alt: img.getAttribute('alt') || '',
+        meta: catEl ? catEl.textContent.trim() : 'Project',
+        title: titleEl ? titleEl.textContent.trim() : (img.getAttribute('alt') || ''),
+        desc: 'Click outside or press ESC to close.'
+      }], 0);
+    });
+  });
+
+
+  /* ============================================================
+     16. TERMINAL MODAL — code sample viewer
+     ============================================================ */
+  const terminalModal = document.getElementById('terminalModal');
+  const terminalTitle = document.getElementById('terminalTitle');
+  const terminalCode  = document.getElementById('terminalCode');
+
+  const escapeHtml = (str) => String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+
+  const openTerminalModal = ({ title = '~/qoech/project', code = '' } = {}) => {
+    if (!terminalModal) return;
+
+    if (terminalTitle) terminalTitle.textContent = title;
+    if (terminalCode)  terminalCode.innerHTML    = escapeHtml(code);
+
+    openModal(terminalModal);
+  };
+
+  document.querySelectorAll('[data-open-terminal]').forEach((el) => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      const raw = el.getAttribute('data-open-terminal') || '{}';
+      try {
+        const payload = JSON.parse(raw);
+        openTerminalModal(payload);
+      } catch (_) {
+        openTerminalModal({ code: raw });
+      }
+    });
+  });
+
+
+  /* ============================================================
+     17. PUBLIC API
+     ============================================================ */
+  window.QOECH = {
+    openImageModal,
+    openTerminalModal,
+    openModal,
+    closeModal
+  };
+
+
+  /* ============================================================
+     18. UNIFIED SCROLL LOOP
+     All scroll-driven work runs from one rAF-scheduled tick.
+     Fires at most once per animation frame — no more six
+     separate scroll listeners racing each other.
+     ============================================================ */
+
+  const scrollProgressEl = document.getElementById('scrollProgress');
+  const navbarEl         = document.getElementById('navbar');
+  const backToTopEl      = document.getElementById('backToTop');
+  const heroEl           = document.querySelector('.hero');
+  const statsGridEl      = document.querySelector('.stats-grid');
+  const statNumbersAll   = document.querySelectorAll('.stat-number');
+  const sectionList      = document.querySelectorAll('section[id]');
+  const navLinkEls       = document.querySelectorAll('.nav-link');
+
+  // ---- Progress bar ----
+  const updateProgressBar = () => {
+    if (!scrollProgressEl) return;
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    scrollProgressEl.style.width = pct + '%';
+  };
+
+  // ---- Navbar scrolled state ----
+  const updateNavbarState = () => {
+    if (!navbarEl) return;
+    navbarEl.classList.toggle('scrolled', window.scrollY > 40);
+  };
+
+  // ---- Active nav link ----
+  const updateActiveLink = () => {
+    if (!sectionList.length) return;
+    const scrollPos = window.scrollY + 160;
+    let currentId = '';
+
+    sectionList.forEach((section) => {
+      const top = section.offsetTop;
+      const height = section.clientHeight;
+      if (scrollPos >= top && scrollPos < top + height) {
+        currentId = section.getAttribute('id');
+      }
+    });
+
+    navLinkEls.forEach((link) => {
+      const href = link.getAttribute('href');
+      link.classList.toggle('active', href === '#' + currentId);
+    });
+  };
+
+  // ---- Back to top visibility ----
+  const updateBackToTop = () => {
+    if (!backToTopEl) return;
+    backToTopEl.classList.toggle('visible', window.scrollY > 500);
+  };
+
+  // ---- Subtle hero grid parallax (desktop only) ----
+  const updateHeroParallax = () => {
+    if (!heroEl || !hasFinePointer) return;
+    const offset = window.scrollY;
+    if (offset > window.innerHeight) return;
+    const grid = heroEl.querySelector('.hero-grid');
+    if (grid) grid.style.transform = `translateY(${offset * 0.15}px)`;
+  };
+
+  // ---- Stats counter (fires once) ----
+  let statsAnimated = false;
+  const runStatsAnimation = () => {
+    statNumbersAll.forEach((el) => {
+      const target = parseInt(el.getAttribute('data-target'), 10) || 0;
+      const suffix = el.getAttribute('data-suffix') || '';
+      const duration = 1600;
+      const startTime = performance.now();
+
+      const tick = (now) => {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const value = Math.floor(eased * target);
+        el.textContent = value + suffix;
+        if (progress < 1) requestAnimationFrame(tick);
+        else el.textContent = target + suffix;
+      };
+      requestAnimationFrame(tick);
+    });
+  };
+
+  const maybeAnimateStats = () => {
+    if (statsAnimated || !statsGridEl) return;
+    const rect = statsGridEl.getBoundingClientRect();
+    if (rect.top < window.innerHeight - 80) {
+      statsAnimated = true;
+      runStatsAnimation();
+    }
+  };
+
+  // ---- Single rAF-throttled scroll handler ----
+  let scrollTicking = false;
+  const handleScroll = () => {
+    if (scrollTicking) return;
+    scrollTicking = true;
+
+    window.requestAnimationFrame(() => {
+      updateProgressBar();
+      updateNavbarState();
+      updateActiveLink();
+      updateBackToTop();
+      updateHeroParallax();
+      maybeAnimateStats();
+      scrollTicking = false;
+    });
+  };
+
+  window.addEventListener('scroll', handleScroll, { passive: true });
+
+  // Run once on load so the initial state is correct
+  window.addEventListener('load', () => {
+    updateProgressBar();
+    updateNavbarState();
+    updateActiveLink();
+    updateBackToTop();
+    maybeAnimateStats();
+  });
+
+  // Back-to-top button
+  if (backToTopEl) {
+    backToTopEl.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
   }
 
 })();
