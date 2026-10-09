@@ -7,11 +7,23 @@
 
   <script>
     (function () {
+      // Prevent browser from restoring scroll on reload
       if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
+      // Strip any hash so the browser can't auto-scroll to a section
       if (window.location.hash) {
         history.replaceState(null, '', window.location.pathname + window.location.search);
       }
+
+      // Reset scroll immediately and again once the document is ready.
+      // The delayed calls catch browsers that re-scroll after parsing.
       window.scrollTo(0, 0);
+      document.addEventListener('DOMContentLoaded', function () {
+        window.scrollTo(0, 0);
+      });
+      window.addEventListener('load', function () {
+        window.scrollTo(0, 0);
+      });
     })();
   </script>
 
@@ -27,7 +39,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.qoechtechnologies.co.ke/" />
   <meta property="og:site_name" content="Qoech Technologies" />
-  <meta property="og:image" content="https://www.qoechtechnologies.co.ke/images/logo/qoech-q.png" />
+  <meta property="og:image" content="https://www.qoechtechnologies.co.ke/images/logo/qoech-logo.png" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:width" content="500" />
   <meta property="og:image:height" content="500" />
@@ -35,9 +47,9 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Qoech Technologies | Building the Future Through Technology" />
   <meta name="twitter:description" content="Innovative software, digital and ICT solutions for businesses, organizations, startups and individuals." />
-  <meta name="twitter:image" content="https://www.qoechtechnologies.co.ke/images/logo/qoech-q.png" />
+  <meta name="twitter:image" content="https://www.qoechtechnologies.co.ke/images/logo/qoech-logo.png" />
 
-  <link rel="icon" type="image/png" href="images/logo/qoech-q.png" />
+  <link rel="icon" type="image/png" href="images/logo/qoech-logo.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -47,7 +59,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js" defer></script>
 
-  <link rel="stylesheet" href="css/style.css?v=8" />
+  <link rel="stylesheet" href="css/style.css?v=23" />
 </head>
 
 <body>
@@ -57,10 +69,10 @@
   <!-- ===================== PRELOADER ===================== -->
   <div class="preloader" id="preloader">
     <div class="preloader-inner">
-            <div class="preloader-ring-wrap">
+      <div class="preloader-ring-wrap">
         <div class="preloader-ring"></div>
         <span class="preloader-q-wrap">
-          <img class="preloader-q" src="images/logo/qoech-q.png" alt="Qoech" />
+          <img class="preloader-q" src="images/logo/qoech-logo.png" alt="Qoech" />
         </span>
       </div>
       <div class="preloader-text">QOECH</div>
@@ -76,43 +88,50 @@
   <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
   <div id="particles-bg" aria-hidden="true"></div>
 
-  <!-- ===================== NAVBAR (floating pill) ===================== -->
+  <!-- ===================== NAVBAR ===================== -->
   <header class="navbar" id="navbar">
+    <img class="nav-flying-eagle" id="navFlyingEagle" src="images/logo/eagle-right.png" alt="" aria-hidden="true" />
+
+    <span class="nav-burst" id="navBurst" aria-hidden="true">
+      <span class="nav-bubble"></span>
+      <span class="nav-bubble"></span>
+      <span class="nav-bubble"></span>
+      <span class="nav-bubble"></span>
+      <span class="nav-bubble"></span>
+      <span class="nav-bubble"></span>
+      <span class="nav-bubble"></span>
+      <span class="nav-bubble"></span>
+    </span>
+
     <a href="#home" class="brand" aria-label="Qoech Technologies Home">
-            <span class="brand-top">
+      <span class="brand-top">
         <span class="brand-q-wrap" aria-hidden="true">
-          <img class="brand-q" src="images/logo/qoech-q.png" alt="" />
+          <img class="brand-q" id="brandQ" src="images/logo/qoech-logo.png" alt="" />
         </span>
         <span class="brand-letters">OECH</span>
       </span>
       <span class="brand-sub">TECHNOLOGIES</span>
     </a>
 
-    <nav class="nav-menu" id="navMenu" aria-label="Primary">
-      <button class="nav-close" id="navClose" aria-label="Close menu">
-        <i class="fas fa-times"></i>
-      </button>
+    <ul class="nav-links nav-links-desktop">
+      <li><a href="#home" class="nav-link active"><i class="fas fa-circle"></i><span>Home</span></a></li>
+      <li><a href="#about" class="nav-link"><i class="fas fa-circle"></i><span>About</span></a></li>
+      <li><a href="#services" class="nav-link"><i class="fas fa-circle"></i><span>Services</span></a></li>
+      <li><a href="#solutions" class="nav-link"><i class="fas fa-circle"></i><span>Solutions</span></a></li>
+      <li><a href="#projects" class="nav-link"><i class="fas fa-circle"></i><span>Projects</span></a></li>
+      <li><a href="#technologies" class="nav-link"><i class="fas fa-circle"></i><span>Technologies</span></a></li>
+      <li><a href="#contact" class="nav-link"><i class="fas fa-circle"></i><span>Contact</span></a></li>
+    </ul>
 
-      <ul class="nav-links">
-        <li><a href="#home" class="nav-link active"><i class="fas fa-circle"></i><span>Home</span></a></li>
-        <li><a href="#about" class="nav-link"><i class="fas fa-circle"></i><span>About</span></a></li>
-        <li><a href="#services" class="nav-link"><i class="fas fa-circle"></i><span>Services</span></a></li>
-        <li><a href="#solutions" class="nav-link"><i class="fas fa-circle"></i><span>Solutions</span></a></li>
-        <li><a href="#projects" class="nav-link"><i class="fas fa-circle"></i><span>Projects</span></a></li>
-        <li><a href="#technologies" class="nav-link"><i class="fas fa-circle"></i><span>Technologies</span></a></li>
-        <li><a href="#contact" class="nav-link"><i class="fas fa-circle"></i><span>Contact</span></a></li>
-      </ul>
+    <div class="nav-status" id="navStatus" aria-hidden="true">
+      <span class="status-dot"></span>
+      <span class="status-text">Systems Online</span>
+    </div>
 
-      <div class="nav-status" aria-hidden="true">
-        <span class="status-dot"></span>
-        <span class="status-text">Systems Online</span>
-      </div>
-
-      <a href="#contact" class="nav-cta">
-        <i class="fas fa-rocket"></i>
-        <span>Start a Project</span>
-      </a>
-    </nav>
+    <a href="#contact" class="nav-cta nav-cta-desktop">
+      <i class="fas fa-rocket"></i>
+      <span>Start a Project</span>
+    </a>
 
     <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="navMenu">
       <span class="hamburger-ring"></span>
@@ -121,6 +140,28 @@
       <span class="hamburger-line"></span>
     </button>
   </header>
+
+  <nav class="nav-menu" id="navMenu" aria-label="Primary navigation">
+    <ul class="nav-links">
+      <li><a href="#home" class="nav-link active"><i class="fas fa-circle"></i><span>Home</span></a></li>
+      <li><a href="#about" class="nav-link"><i class="fas fa-circle"></i><span>About</span></a></li>
+      <li><a href="#services" class="nav-link"><i class="fas fa-circle"></i><span>Services</span></a></li>
+      <li><a href="#solutions" class="nav-link"><i class="fas fa-circle"></i><span>Solutions</span></a></li>
+      <li><a href="#projects" class="nav-link"><i class="fas fa-circle"></i><span>Projects</span></a></li>
+      <li><a href="#technologies" class="nav-link"><i class="fas fa-circle"></i><span>Technologies</span></a></li>
+      <li><a href="#contact" class="nav-link"><i class="fas fa-circle"></i><span>Contact</span></a></li>
+    </ul>
+
+    <div class="nav-status-mobile" aria-hidden="true">
+      <span class="status-dot"></span>
+      <span class="status-text">Systems Online</span>
+    </div>
+
+    <a href="#contact" class="nav-cta">
+      <i class="fas fa-rocket"></i>
+      <span>Start a Project</span>
+    </a>
+  </nav>
 
   <div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
 
@@ -198,8 +239,8 @@
           <div class="visual-ring visual-ring-mid"></div>
           <div class="visual-ring visual-ring-inner"></div>
 
-                    <div class="visual-core">
-              <img class="visual-core-mark" src="images/logo/qoech-q.png" alt="" />
+          <div class="visual-core">
+            <img class="visual-core-mark" src="images/logo/qoech-logo.png" alt="" />
           </div>
 
           <div class="orbit orbit-1">
@@ -270,7 +311,7 @@
         <div class="about-visual">
           <div class="about-card">
             <div class="about-card-mark">
-              <img src="images/logo/qoech-q.png" alt="" />
+              <img src="images/logo/qoech-logo.png" alt="" />
             </div>
             <h3>Qoech Technologies</h3>
             <p>Technology. Innovation. Impact.</p>
@@ -597,7 +638,7 @@
       <div class="featured-projects-grid">
         <article class="featured-project-card">
           <div class="featured-project-thumb">
-            <img src="images/projects/hardware.jpg" alt="Hardware Store Management System" loading="lazy" />
+            <img src="images/projects/hardware.jpg?v=2" alt="Hardware Store Management System" loading="lazy" />
             <span class="project-status status-live"><i class="fas fa-circle"></i> Live</span>
             <span class="featured-flag"><i class="fas fa-star"></i> Featured</span>
             <span class="thumb-scan" aria-hidden="true"></span>
@@ -621,7 +662,7 @@
 
         <article class="featured-project-card">
           <div class="featured-project-thumb">
-            <img src="images/projects/agrovet.jpg" alt="Agrovet Management System" loading="lazy" />
+            <img src="images/projects/agrovet.jpg?v=2" alt="Agrovet Management System" loading="lazy" />
             <span class="project-status status-live"><i class="fas fa-circle"></i> Live</span>
             <span class="featured-flag"><i class="fas fa-star"></i> Featured</span>
             <span class="thumb-scan" aria-hidden="true"></span>
@@ -645,7 +686,7 @@
 
         <article class="featured-project-card">
           <div class="featured-project-thumb">
-            <img src="images/projects/riverview.jpg" alt="Riverview Resort Website" loading="lazy" />
+            <img src="images/projects/riverview.jpg?v=2" alt="Riverview Resort Website" loading="lazy" />
             <span class="project-status status-live"><i class="fas fa-circle"></i> Live</span>
             <span class="featured-flag"><i class="fas fa-star"></i> Featured</span>
             <span class="thumb-scan" aria-hidden="true"></span>
@@ -981,7 +1022,7 @@
     <div class="eagle-bg" aria-hidden="true"></div>
     <div class="eagle-grid" aria-hidden="true"></div>
     <div class="eagle-figure" aria-hidden="true">
-      <img src="images/logo/qoech-q.png" alt="" />
+      <img src="images/logo/qoech-logo.png" alt="" />
     </div>
 
     <div class="eagle-brackets" aria-hidden="true">
@@ -1367,7 +1408,7 @@
   </section>
 
   <!-- ===================== FOOTER ===================== -->
-    <footer class="footer">
+  <footer class="footer">
     <div class="footer-bg" aria-hidden="true"></div>
     <div class="footer-bg-overlay" aria-hidden="true"></div>
     <div class="footer-scanline" aria-hidden="true"></div>
@@ -1376,7 +1417,7 @@
         <div class="footer-brand">
           <div class="footer-logo">
             <span class="footer-top">
-              <img class="footer-q" src="images/logo/qoech-q.png" alt="" />
+              <img class="footer-q" src="images/logo/qoech-logo.png" alt="" />
               <span class="footer-letters">OECH</span>
             </span>
             <span class="footer-sub">TECHNOLOGIES</span>
@@ -1417,8 +1458,8 @@
         <div class="footer-col">
           <h4>Connect</h4>
           <div class="footer-social">
-            <a href="https://instagram.com/qoechtech" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="https://facebook.com/qoechtech" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/quoechtech?exln=MTViam9kamVzMnoydA%3D%3D&utm_source=qr" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.facebook.com/share/1DozdZCG9G/?mibextid=wwXIfr" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
             <a href="https://tiktok.com/@qoechtech" target="_blank" rel="noopener" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
             <a href="https://x.com/qoechtech" target="_blank" rel="noopener" aria-label="X"><i class="fab fa-x-twitter"></i></a>
             <a href="https://wa.me/254702900005" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
@@ -1497,7 +1538,7 @@
     </div>
   </div>
 
-  <script src="js/main.js?v=11" defer></script>
+  <script src="js/main.js?v=19" defer></script>
 
 </body>
 </html>
