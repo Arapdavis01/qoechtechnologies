@@ -21,10 +21,30 @@
    17. Public API (window.QOECH)
    18. Unified Scroll Loop — progress bar, navbar state,
        active link, back-to-top, hero parallax, stats counter
+   19. Eagle Flight Animation — full choreography
+   20. Mobile Carousel Pagination — dots + swipe hint
    ============================================================ */
 
 (function () {
   'use strict';
+
+  /* ============================================================
+     00. INITIAL SCROLL RESET
+     ------------------------------------------------------------
+     Some mobile browsers still restore a previous scroll position
+     despite `history.scrollRestoration = 'manual'`, and iOS Safari
+     sometimes scrolls to the first focused field on load. This
+     forces the page to the top on every load, and pairs with the
+     wizard's "no auto-focus on load" behaviour (see Section 13).
+     ============================================================ */
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  window.scrollTo(0, 0);
+  window.addEventListener('load', () => {
+    window.scrollTo(0, 0);
+  });
+
 
   /* ============================================================
      01. PRELOADER
@@ -285,7 +305,14 @@
 
   /* ============================================================
      07. FADE-UP SCROLL ANIMATIONS
+     ------------------------------------------------------------
+     On mobile, sections that become horizontal carousels have
+     their children marked visible immediately — otherwise cards
+     that scroll off to the right stay invisible until swiped.
      ============================================================ */
+  const CAROUSEL_PARENTS = '.services-grid, .featured-projects-grid, .process-timeline, .why-grid';
+  const isMobileLoad = window.innerWidth <= 768;
+
   const fadeEls = document.querySelectorAll(
     '.fade-up, .section-head, .section-divider, ' +
     '.service-card, .solution-card, ' +
@@ -310,6 +337,13 @@
 
     fadeEls.forEach((el, i) => {
       el.classList.add('fade-up');
+
+      // Mobile carousel children — reveal instantly, no observer
+      if (isMobileLoad && el.closest(CAROUSEL_PARENTS)) {
+        el.classList.add('visible');
+        return;
+      }
+
       el.style.transitionDelay = Math.min(i * 40, 240) + 'ms';
       fadeObserver.observe(el);
     });
@@ -584,7 +618,7 @@
       category: 'Business Management',
       status: 'Live',
       statusClass: 'status-live',
-      image: 'images/projects/hardware.jpg',
+      image: 'images/projects/hardware.jpg?v=2',
       liveUrl: '',
       overview: 'A management system built for hardware stores that need to manage large product catalogs, track sales and monitor stock levels without spreadsheets.',
       problem: 'Hardware stores deal with hundreds of products, varying units and fast-moving stock. Manual tracking leads to stockouts, overstocking and difficulty knowing what is actually selling.',
@@ -605,7 +639,7 @@
       category: 'Inventory & Sales',
       status: 'Live',
       statusClass: 'status-live',
-      image: 'images/projects/agrovet.jpg',
+      image: 'images/projects/agrovet.jpg?v=2',
       liveUrl: '',
       overview: 'A complete system for tracking sales, stock levels, purchases and inventory in agrovet businesses.',
       problem: 'Agrovet businesses struggled with manual inventory tracking, leading to stockouts, overstocking and difficulty reconciling sales and purchases.',
@@ -626,7 +660,7 @@
       category: 'Hospitality & Web',
       status: 'Live',
       statusClass: 'status-live',
-      image: 'images/projects/riverview.jpg',
+      image: 'images/projects/riverview.jpg?v=2',
       liveUrl: 'https://soyriverviewresort.com',
       overview: 'A modern, mobile-first website designed to present the resort, its rooms, amenities and location with clarity.',
       problem: 'The resort needed a professional online presence that matched the experience of the property itself — and that worked flawlessly on mobile, where most guests browse.',
@@ -880,7 +914,12 @@
       try { sessionStorage.removeItem(STORAGE_KEY); } catch (_) {}
     };
 
-    const showStep = (step, direction, scroll = true) => {
+    /* showStep(step, direction, scroll, focus)
+       - `scroll` controls whether we smooth-scroll the form into view
+       - `focus`  controls whether we auto-focus the first field
+       On initial page load we pass both as `false` so mobile browsers
+       don't scroll down to the contact section on first visit. */
+    const showStep = (step, direction, scroll = true, focus = true) => {
       wizardSteps.forEach((el) => {
         const s = parseInt(el.dataset.step, 10);
         el.classList.remove('active', 'leaving-back');
@@ -907,10 +946,12 @@
 
       if (wizardProgress) wizardProgress.setAttribute('aria-valuenow', String(step));
 
-      const activeEl = wizardForm.querySelector('.wizard-step.active');
-      if (activeEl) {
-        const firstInput = activeEl.querySelector('input:not(.hp-field), select, textarea');
-        if (firstInput) setTimeout(() => firstInput.focus({ preventScroll: true }), 120);
+      if (focus) {
+        const activeEl = wizardForm.querySelector('.wizard-step.active');
+        if (activeEl) {
+          const firstInput = activeEl.querySelector('input:not(.hp-field), select, textarea');
+          if (firstInput) setTimeout(() => firstInput.focus({ preventScroll: true }), 120);
+        }
       }
 
       if (scroll) {
@@ -1177,7 +1218,10 @@
     }
 
     restoreDraft();
-    showStep(1, 'forward', false);
+
+    // On initial load: no scroll, no focus. Prevents mobile browsers
+    // from jumping down to the contact form on first visit.
+    showStep(1, 'forward', false, false);
   }
 
 
@@ -1261,12 +1305,32 @@
     }, { passive: true });
   }
 
+  /* Thumbnails — swipe-guard prevents accidental opens when the user
+     swipes the mobile carousel and lifts their finger on a card. */
   document.querySelectorAll('.featured-project-thumb').forEach((thumb) => {
     const img = thumb.querySelector('img');
     if (!img) return;
 
     thumb.style.cursor = 'zoom-in';
+
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let didSwipe = false;
+
+    thumb.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      didSwipe = false;
+    }, { passive: true });
+
+    thumb.addEventListener('touchmove', (e) => {
+      const dx = Math.abs(e.touches[0].clientX - touchStartX);
+      const dy = Math.abs(e.touches[0].clientY - touchStartY);
+      if (dx > 10 || dy > 10) didSwipe = true;
+    }, { passive: true });
+
     thumb.addEventListener('click', (e) => {
+      if (didSwipe) { didSwipe = false; return; }
       if (e.target.closest('.project-status, .featured-flag')) return;
 
       const card    = thumb.closest('.featured-project-card');
@@ -1461,5 +1525,383 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
+
+
+  /* ============================================================
+     19. EAGLE FLIGHT ANIMATION — full choreography
+     ------------------------------------------------------------
+     Every cycle:
+       Ring shakes + bubbles → combined logo fades → empty ring
+       → eagle glides right → hover → touchdown (shockwave, sparks,
+       dot ignition, text flash, navbar flash, "Checking…") →
+       perched bob → crouch → turn → glide back → land in ring
+       → combined logo restores → repeat.
+
+     Timing (fixed, cursor-independent):
+       • First flight starts 10 seconds after page load
+       • Every subsequent flight repeats every 20 seconds
+     ============================================================ */
+  (function eagleFlight() {
+    const navbar    = document.getElementById('navbar');
+    const eagle     = document.getElementById('navFlyingEagle');
+    const burst     = document.getElementById('navBurst');
+    const brandQ    = document.getElementById('brandQ');
+    const navStatus = document.getElementById('navStatus');
+    if (!navbar || !eagle || !burst || !brandQ || !navStatus) return;
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) return;
+
+    /* ---- Timing (ms) — keep T_FLIGHT_* in sync with CSS ---- */
+    const FIRST_DELAY   = 10000;   // first flight: 10s after page load
+    const REPEAT_DELAY  = 20000;   // every flight after that: every 20s
+
+    const T_SHAKE_MS    = 600;
+    const T_SWAP_MS     = 400;
+    const T_FLIGHT_OUT  = 6000;    // CSS flyRight duration
+    const T_PILL_MS     = 2600;    // hover + perch + bob
+    const T_CROUCH_MS   = 250;
+    const T_FLIGHT_BACK = 5500;    // CSS flyLeft duration
+    const T_RESET_MS    = 600;
+
+    /* ---- State ---- */
+    let idleTimer = null;
+    let running   = false;
+    let firstRun  = true;
+
+    /* ---- Helpers ---- */
+    const computePositions = () => {
+      const nbRect   = navbar.getBoundingClientRect();
+      const ringRect = brandQ.getBoundingClientRect();
+      const pillRect = navStatus.getBoundingClientRect();
+
+      const startX = ringRect.left - nbRect.left + ringRect.width / 2;
+      const startY = ringRect.top  - nbRect.top  + ringRect.height / 2;
+      const endX   = pillRect.left - nbRect.left + pillRect.width / 2;
+      const endY   = pillRect.top  - nbRect.top  + pillRect.height / 2;
+
+      return {
+        startX, startY, endX, endY,
+        outDistance:  endX - startX,
+        backDistance: startX - endX
+      };
+    };
+
+    /* Perched eagle sits ON TOP of the pill, not inside it.
+       Offset = half eagle height (26) + half pill height (~14). */
+    const PERCH_OFFSET = 40;
+
+    const spawnSparks = (x, y, count = 7) => {
+      const container = document.createElement('div');
+      container.className = 'nav-sparks';
+      container.style.left = x + 'px';
+      container.style.top  = y + 'px';
+      navbar.appendChild(container);
+
+      for (let i = 0; i < count; i++) {
+        const spark = document.createElement('span');
+        spark.className = 'nav-spark';
+        const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.6;
+        const dist  = 24 + Math.random() * 22;
+        spark.style.setProperty('--sx', Math.cos(angle) * dist + 'px');
+        spark.style.setProperty('--sy', Math.sin(angle) * dist + 'px');
+        spark.style.setProperty('--sd', (0.55 + Math.random() * 0.35) + 's');
+        container.appendChild(spark);
+      }
+      setTimeout(() => container.remove(), 1300);
+    };
+
+    const swapStatusText = (text) => {
+      const el = navStatus.querySelector('.status-text');
+      if (!el) return;
+      el.style.transition = 'opacity 0.2s ease';
+      el.style.opacity = '0';
+      setTimeout(() => {
+        el.textContent = text;
+        el.style.opacity = '1';
+      }, 200);
+    };
+
+    /* ---- Arm the next flight ----
+       First call uses FIRST_DELAY (10s after load).
+       Subsequent calls use REPEAT_DELAY (20s). */
+    const armNext = () => {
+      if (running) return;
+      clearTimeout(idleTimer);
+      const wait = firstRun ? FIRST_DELAY : REPEAT_DELAY;
+      idleTimer = setTimeout(() => {
+        firstRun = false;
+        runSequence();
+      }, wait);
+    };
+
+    /* ---- The full sequence ---- */
+    const runSequence = () => {
+      if (running) return;
+      if (window.innerWidth <= 1024) { armNext(); return; }
+      running = true;
+
+      const pos = computePositions();
+
+      /* Initial placement */
+      eagle.style.left = pos.startX + 'px';
+      eagle.style.top  = pos.startY + 'px';
+      eagle.style.setProperty('--fly-distance', pos.outDistance + 'px');
+      eagle.src = 'images/logo/eagle-right.png';
+
+      burst.style.left = pos.startX + 'px';
+      burst.style.top  = pos.startY + 'px';
+
+      /* ---------- Phase 1: trigger — bubbles + ring shake ---------- */
+      burst.classList.add('active');
+      brandQ.classList.add('nav-ring-shake');
+
+      setTimeout(() => brandQ.classList.remove('nav-ring-shake'), T_SHAKE_MS);
+
+      /* ---------- Phase 2: combined logo fades out ---------- */
+      setTimeout(() => { brandQ.style.opacity = '0'; }, T_SHAKE_MS + 100);
+
+      /* ---------- Phase 3: empty ring, launch ---------- */
+      setTimeout(() => {
+        brandQ.src = 'images/logo/q-ring.png';
+        brandQ.style.opacity = '1';
+        eagle.classList.add('flying');
+      }, T_SHAKE_MS + 100 + T_SWAP_MS);
+
+      /* ---------- Phase 4: bubble cleanup ---------- */
+      setTimeout(() => burst.classList.remove('active'), T_SHAKE_MS + 1500);
+
+      /* ---------- Phase 5: arrival — hover → touchdown + impact ---------- */
+      const tTouchdown = T_SHAKE_MS + T_SWAP_MS + T_FLIGHT_OUT;
+
+      setTimeout(() => {
+        eagle.classList.remove('flying');
+        eagle.style.left = pos.endX + 'px';
+        eagle.style.top  = (pos.endY - PERCH_OFFSET) + 'px';
+        eagle.classList.add('perched');
+      }, tTouchdown);
+
+      /* Impact effects fire ~350ms after arrival (after hover beat) */
+      const tImpact = tTouchdown + 350;
+
+      setTimeout(() => {
+        navStatus.classList.add('systems-checking');
+        swapStatusText('Checking…');
+
+        spawnSparks(pos.endX, pos.endY);
+
+        navbar.classList.add('impact');
+        setTimeout(() => navbar.classList.remove('impact'), 500);
+      }, tImpact);
+
+      /* ---------- Phase 6: pre-departure crouch ---------- */
+      const tCrouchStart = tTouchdown + T_PILL_MS - T_CROUCH_MS;
+
+      setTimeout(() => {
+        eagle.classList.add('crouching');
+        eagle.style.transform = 'translate(-50%, calc(-50% - 0px)) scale(1.08, 0.86)';
+      }, tCrouchStart);
+
+      /* ---------- Phase 7: depart — turn around, glide back ---------- */
+      const tDepart = tTouchdown + T_PILL_MS;
+
+      setTimeout(() => {
+        navStatus.classList.remove('systems-checking');
+        swapStatusText('Systems Online');
+
+        eagle.style.transform = '';
+        eagle.style.transition = '';
+        eagle.classList.remove('crouching', 'perched');
+        eagle.src = 'images/logo/eagle-left.png';
+        eagle.style.left = pos.endX + 'px';
+        eagle.style.top  = (pos.endY - PERCH_OFFSET) + 'px';
+        eagle.style.setProperty('--fly-distance', pos.backDistance + 'px');
+        eagle.classList.add('returning');
+      }, tDepart);
+
+      /* ---------- Phase 8: land back in ring, restore combined logo ---------- */
+      const tLandBack = tDepart + T_FLIGHT_BACK;
+
+      setTimeout(() => {
+        eagle.classList.remove('returning');
+        eagle.classList.add('hidden');
+
+        brandQ.style.opacity = '0';
+        setTimeout(() => {
+          brandQ.src = 'images/logo/qoech-logo.png';
+          brandQ.style.opacity = '1';
+        }, 250);
+      }, tLandBack);
+
+      /* ---------- Phase 9: full reset + rearm ---------- */
+      setTimeout(() => {
+        eagle.classList.remove('hidden', 'perched', 'flying', 'returning', 'crouching');
+        eagle.style.left = '';
+        eagle.style.top  = '';
+        eagle.style.transform = '';
+        eagle.style.transition = '';
+        eagle.style.removeProperty('--fly-distance');
+        running = false;
+        armNext();
+      }, tLandBack + T_RESET_MS);
+    };
+
+    /* Kick off the first cycle — fires 10s after this script runs */
+    armNext();
+  })();
+
+
+  /* ============================================================
+     20. MOBILE CAROUSEL PAGINATION
+     ------------------------------------------------------------
+     On mobile (≤768px) the Services / Featured Projects / Process
+     and Why Qoech sections become horizontal snap carousels
+     (see CSS §27). This module adds:
+       • A "Swipe" hint that fades on first interaction
+       • Pagination dots that update as the user scrolls
+       • Dot clicks that scroll to the matching card
+     Disabled on desktop, cleaned up on resize back up.
+     ============================================================ */
+  (function mobileCarouselPagination() {
+    const TRACK_SELECTORS = [
+      '.services-grid',
+      '.featured-projects-grid',
+      '.process-timeline',
+      '.why-grid'
+    ];
+    const MQ = window.matchMedia('(max-width: 768px)');
+    const prefersReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduce) return;
+
+    const tracks = [];
+    TRACK_SELECTORS.forEach((sel) => {
+      document.querySelectorAll(sel).forEach((el) => tracks.push(el));
+    });
+    if (!tracks.length) return;
+
+    /* Build hint + dots container for one track */
+    const buildUI = (track) => {
+      if (track.dataset.carouselReady === '1') return;
+      track.dataset.carouselReady = '1';
+
+      const meta = document.createElement('div');
+      meta.className = 'mobile-carousel-meta';
+      meta.innerHTML =
+        '<span class="mobile-carousel-hint" aria-hidden="true">' +
+          '<i class="fas fa-hand-pointer"></i><span>Swipe</span>' +
+        '</span>' +
+        '<div class="mobile-carousel-dots" aria-hidden="true"></div>';
+
+      track.parentNode.insertBefore(meta, track.nextSibling);
+
+      const dotsWrap = meta.querySelector('.mobile-carousel-dots');
+      const hint     = meta.querySelector('.mobile-carousel-hint');
+
+      const cards = Array.from(track.children).filter(
+        (c) => c.nodeType === 1
+      );
+
+      if (cards.length < 2) {
+        meta.remove();
+        track.dataset.carouselReady = '';
+        return;
+      }
+
+      /* Create one dot per card */
+      const dots = cards.map((card, i) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'mcd-dot';
+        dot.setAttribute('aria-label', `Go to card ${i + 1}`);
+        dot.addEventListener('click', () => {
+          const targetLeft = card.offsetLeft - track.offsetLeft;
+          track.scrollTo({ left: targetLeft, behavior: 'smooth' });
+        });
+        dotsWrap.appendChild(dot);
+        return dot;
+      });
+
+      /* Update active dot based on which card is centered */
+      let rafLocked = false;
+      const updateActiveDot = () => {
+        const trackLeft = track.scrollLeft;
+        const trackWidth = track.clientWidth;
+        const viewCenter = trackLeft + trackWidth / 2;
+
+        let bestIndex = 0;
+        let bestDist = Infinity;
+
+        cards.forEach((card, i) => {
+          const cardCenter =
+            card.offsetLeft - track.offsetLeft + card.offsetWidth / 2;
+          const dist = Math.abs(cardCenter - viewCenter);
+          if (dist < bestDist) {
+            bestDist = dist;
+            bestIndex = i;
+          }
+        });
+
+        dots.forEach((d, i) =>
+          d.classList.toggle('active', i === bestIndex)
+        );
+      };
+
+      const onScroll = () => {
+        if (rafLocked) return;
+        rafLocked = true;
+        requestAnimationFrame(() => {
+          updateActiveDot();
+          rafLocked = false;
+        });
+      };
+
+      track.addEventListener('scroll', onScroll, { passive: true });
+
+      /* Fade the hint on first interaction (scroll or touch) */
+      let hintDismissed = false;
+      const dismissHint = () => {
+        if (hintDismissed) return;
+        hintDismissed = true;
+        hint.classList.add('hidden');
+        setTimeout(() => hint.remove(), 600);
+      };
+      track.addEventListener('scroll', dismissHint, { passive: true, once: true });
+      track.addEventListener('touchstart', dismissHint, { passive: true, once: true });
+      setTimeout(dismissHint, 5000);
+
+      /* Re-measure if layout changes (e.g. orientation flip) */
+      if ('ResizeObserver' in window) {
+        const ro = new ResizeObserver(() => updateActiveDot());
+        ro.observe(track);
+      }
+
+      updateActiveDot();
+    };
+
+    /* Tear down when leaving mobile */
+    const teardownUI = (track) => {
+      const meta = track.parentNode.querySelector(':scope > .mobile-carousel-meta');
+      if (meta) meta.remove();
+      track.dataset.carouselReady = '';
+    };
+
+    /* Sync all tracks based on current breakpoint */
+    const syncAll = () => {
+      const isMobile = MQ.matches;
+      tracks.forEach((track) => {
+        if (isMobile) {
+          buildUI(track);
+        } else {
+          teardownUI(track);
+        }
+      });
+    };
+
+    syncAll();
+
+    /* React to breakpoint changes */
+    if (MQ.addEventListener) MQ.addEventListener('change', syncAll);
+    else if (MQ.addListener) MQ.addListener(syncAll);
+  })();
 
 })();
