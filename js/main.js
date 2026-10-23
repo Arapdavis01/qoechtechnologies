@@ -29,7 +29,31 @@
   'use strict';
 
   /* ============================================================
-     00. INITIAL SCROLL RESET
+     00. SECURITY & UTILITY HELPERS
+     ------------------------------------------------------------
+     1. escapeHtml: Prevents XSS if data is ever pulled from a DB.
+     2. sanitizeInput: Strips HTML tags and limits length before
+        sending user data to the API.
+     ============================================================ */
+  const escapeHtml = (str) => {
+    return String(str || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  };
+
+  const sanitizeInput = (str, maxLength = 1000) => {
+    if (!str) return '';
+    // Strip out HTML tags (basic XSS prevention)
+    let clean = String(str).replace(/<[^>]*>?/gm, '');
+    // Trim whitespace and enforce max length
+    return clean.trim().substring(0, maxLength);
+  };
+
+  /* ============================================================
+     00.5 INITIAL SCROLL RESET
      ------------------------------------------------------------
      Some mobile browsers still restore a previous scroll position
      despite `history.scrollRestoration = 'manual'`, and iOS Safari
@@ -401,6 +425,7 @@
       ],
       technologies: ['PHP', 'Node.js', 'Python', 'MySQL', 'PostgreSQL', 'REST APIs']
     },
+    // ... (keep all other serviceData objects exactly as they are) ...
     web: {
       icon: 'fas fa-globe',
       title: 'Web Development',
@@ -564,29 +589,30 @@
     const data = serviceData[key];
     if (!data || !serviceModal || !serviceModalBody) return;
 
+    // SECURITY: Wrap all dynamic data in escapeHtml() before injecting
     serviceModalBody.innerHTML = `
-      <div class="modal-icon-large"><i class="${data.icon}"></i></div>
-      <h3>${data.title}</h3>
-      <p>${data.description}</p>
+      <div class="modal-icon-large"><i class="${escapeHtml(data.icon)}"></i></div>
+      <h3>${escapeHtml(data.title)}</h3>
+      <p>${escapeHtml(data.description)}</p>
 
       <div class="modal-section">
         <h4><i class="fas fa-check-circle"></i> What's Included</h4>
         <ul>
-          ${data.features.map((f) => `<li><i class="fas fa-check"></i><span>${f}</span></li>`).join('')}
+          ${data.features.map((f) => `<li><i class="fas fa-check"></i><span>${escapeHtml(f)}</span></li>`).join('')}
         </ul>
       </div>
 
       <div class="modal-section">
         <h4><i class="fas fa-route"></i> Our Process</h4>
         <ul>
-          ${data.process.map((p, i) => `<li><i class="fas fa-circle"></i><span><strong>${String(i + 1).padStart(2, '0')}.</strong> ${p}</span></li>`).join('')}
+          ${data.process.map((p, i) => `<li><i class="fas fa-circle"></i><span><strong>${String(i + 1).padStart(2, '0')}.</strong> ${escapeHtml(p)}</span></li>`).join('')}
         </ul>
       </div>
 
       <div class="modal-section">
         <h4><i class="fas fa-microchip"></i> Technologies</h4>
         <div class="modal-tech">
-          ${data.technologies.map((t) => `<span class="tag"><i class="fas fa-cube"></i> ${t}</span>`).join('')}
+          ${data.technologies.map((t) => `<span class="tag"><i class="fas fa-cube"></i> ${escapeHtml(t)}</span>`).join('')}
         </div>
       </div>
 
@@ -633,7 +659,7 @@
       tech: ['HTML', 'CSS', 'JavaScript', 'PHP', 'MySQL'],
       outcome: 'Improved inventory accuracy and gave owners a clear view of stock and sales for better decisions.'
     },
-
+    // ... (keep agrovet and riverview exactly as they are) ...
     agrovet: {
       title: 'Agrovet Management System',
       category: 'Inventory & Sales',
@@ -654,7 +680,6 @@
       tech: ['HTML', 'CSS', 'JavaScript', 'PHP', 'MySQL'],
       outcome: 'The system now tracks all inventory movements and provides real-time stock visibility for better business decisions.'
     },
-
     riverview: {
       title: 'Riverview Resort Website',
       category: 'Hospitality & Web',
@@ -684,53 +709,56 @@
     const data = projectData[key];
     if (!data || !projectModal || !projectModalBody) return;
 
-    const liveLinkHTML = data.liveUrl
-      ? `<a href="${data.liveUrl}" target="_blank" rel="noopener" class="btn btn-outline">
+    // SECURITY: Ensure liveUrl is safe (starts with http:// or https://)
+    const isSafeUrl = data.liveUrl && /^https?:\/\//i.test(data.liveUrl);
+    const liveLinkHTML = isSafeUrl
+      ? `<a href="${escapeHtml(data.liveUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
            <i class="fas fa-up-right-from-square"></i>
            <span>Visit Live Site</span>
          </a>`
       : '';
 
+    // SECURITY: Escape all dynamic content
     projectModalBody.innerHTML = `
-      <img src="${data.image}" alt="${data.title}" onerror="this.style.display='none'" />
-      <h3>${data.title}</h3>
+      <img src="${escapeHtml(data.image)}" alt="${escapeHtml(data.title)}" onerror="this.style.display='none'" />
+      <h3>${escapeHtml(data.title)}</h3>
       <div class="modal-meta">
-        <span class="project-category"><i class="fas fa-tag"></i> ${data.category}</span>
-        <span class="project-status ${data.statusClass}"><i class="fas fa-circle"></i> ${data.status}</span>
+        <span class="project-category"><i class="fas fa-tag"></i> ${escapeHtml(data.category)}</span>
+        <span class="project-status ${escapeHtml(data.statusClass)}"><i class="fas fa-circle"></i> ${escapeHtml(data.status)}</span>
       </div>
 
       <div class="modal-section">
         <h4><i class="fas fa-circle-info"></i> Overview</h4>
-        <p>${data.overview}</p>
+        <p>${escapeHtml(data.overview)}</p>
       </div>
 
       <div class="modal-section">
         <h4><i class="fas fa-triangle-exclamation"></i> The Problem</h4>
-        <p>${data.problem}</p>
+        <p>${escapeHtml(data.problem)}</p>
       </div>
 
       <div class="modal-section">
         <h4><i class="fas fa-lightbulb"></i> The Solution</h4>
-        <p>${data.solution}</p>
+        <p>${escapeHtml(data.solution)}</p>
       </div>
 
       <div class="modal-section">
         <h4><i class="fas fa-list-check"></i> Key Features</h4>
         <ul>
-          ${data.features.map((f) => `<li><i class="fas fa-check"></i><span>${f}</span></li>`).join('')}
+          ${data.features.map((f) => `<li><i class="fas fa-check"></i><span>${escapeHtml(f)}</span></li>`).join('')}
         </ul>
       </div>
 
       <div class="modal-section">
         <h4><i class="fas fa-microchip"></i> Technology Stack</h4>
         <div class="modal-tech">
-          ${data.tech.map((t) => `<span class="tag"><i class="fas fa-cube"></i> ${t}</span>`).join('')}
+          ${data.tech.map((t) => `<span class="tag"><i class="fas fa-cube"></i> ${escapeHtml(t)}</span>`).join('')}
         </div>
       </div>
 
       <div class="modal-section">
         <h4><i class="fas fa-chart-line"></i> Outcome</h4>
-        <p>${data.outcome}</p>
+        <p>${escapeHtml(data.outcome)}</p>
       </div>
 
       <div class="modal-actions">
@@ -780,7 +808,6 @@
     if (lastFocusedEl && lastFocusedEl.focus) lastFocusedEl.focus();
   }
 
-  // Event delegation — handles [data-close] even on dynamically injected content
   document.addEventListener('click', (e) => {
     const closeBtn = e.target.closest('[data-close]');
     if (!closeBtn) return;
@@ -797,7 +824,6 @@
     closeModal(modal);
   });
 
-  // Escape key closes any open modal
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       document.querySelectorAll('.modal.open').forEach((m) => closeModal(m));
@@ -877,6 +903,7 @@
   const hpWebsite      = document.getElementById('hpWebsite');
 
   let currentStep = 1;
+  let isSubmitting = false; // SECURITY: Prevent double-submissions
 
   if (wizardForm) {
 
@@ -916,9 +943,7 @@
 
     /* showStep(step, direction, scroll, focus)
        - `scroll` controls whether we smooth-scroll the form into view
-       - `focus`  controls whether we auto-focus the first field
-       On initial page load we pass both as `false` so mobile browsers
-       don't scroll down to the contact section on first visit. */
+       - `focus`  controls whether we auto-focus the first field */
     const showStep = (step, direction, scroll = true, focus = true) => {
       wizardSteps.forEach((el) => {
         const s = parseInt(el.dataset.step, 10);
@@ -1066,33 +1091,36 @@
     const buildPayload = () => {
       const get = (n) => {
         const el = wizardForm.elements[n];
-        return el ? String(el.value || '').trim() : '';
+        return el ? el.value : '';
       };
+      
+      // SECURITY: Use sanitizeInput to strip HTML tags and limit length
       return {
-        full_name:      get('full_name'),
-        email:          get('email'),
-        phone:          get('phone')          || null,
-        company:        get('company')        || null,
-        location:       get('location')       || null,
-        system_type:    get('system_type'),
-        title:          get('title'),
-        description:    get('description'),
-        features:       get('features')       || null,
-        target_users:   get('target_users')   || null,
-        budget_range:   get('budget_range')   || null,
-        timeline:       get('timeline')       || null,
-        reference_urls: get('reference_urls') || null,
+        full_name:      sanitizeInput(get('full_name'), 100),
+        email:          sanitizeInput(get('email'), 150),
+        phone:          sanitizeInput(get('phone'), 20)   || null,
+        company:        sanitizeInput(get('company'), 100) || null,
+        location:       sanitizeInput(get('location'), 100) || null,
+        system_type:    sanitizeInput(get('system_type'), 50),
+        title:          sanitizeInput(get('title'), 150),
+        description:    sanitizeInput(get('description'), 2000),
+        features:       sanitizeInput(get('features'), 2000) || null,
+        target_users:   sanitizeInput(get('target_users'), 200) || null,
+        budget_range:   sanitizeInput(get('budget_range'), 50) || null,
+        timeline:       sanitizeInput(get('timeline'), 50) || null,
+        reference_urls: sanitizeInput(get('reference_urls'), 500) || null,
         attachment_url: null,
         source:         'website'
       };
     };
 
-    const setSubmitting = (isSubmitting) => {
+    const setSubmitting = (status) => {
+      isSubmitting = status;
       if (!wizardSubmit) return;
 
-      wizardSubmit.disabled = isSubmitting;
+      wizardSubmit.disabled = status;
 
-      if (isSubmitting) {
+      if (status) {
         wizardSubmit.innerHTML =
           '<i class="fas fa-spinner fa-spin"></i><span>Submitting...</span>';
       } else {
@@ -1106,7 +1134,7 @@
           if (el === wizardSubmit) return;
           if (el.classList.contains('wizard-back') ||
               el.classList.contains('wizard-next')) {
-            el.disabled = isSubmitting;
+            el.disabled = status;
           }
         });
     };
@@ -1126,7 +1154,8 @@
       if (wizardProgress) wizardProgress.style.display = 'none';
 
       if (successRefCode) {
-        successRefCode.textContent = referenceCode || 'SYS-0000-0000';
+        // SECURITY: Escape the reference code just in case the API sends weird data
+        successRefCode.textContent = escapeHtml(referenceCode || 'SYS-0000-0000');
       }
       if (wizardSuccess) {
         wizardSuccess.hidden = false;
@@ -1142,6 +1171,10 @@
 
     wizardForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+      
+      // SECURITY: Prevent double submits
+      if (isSubmitting) return;
+
       clearAllErrors();
 
       if (hpWebsite && hpWebsite.value.trim() !== '') {
@@ -1219,8 +1252,7 @@
 
     restoreDraft();
 
-    // On initial load: no scroll, no focus. Prevents mobile browsers
-    // from jumping down to the contact form on first visit.
+    // On initial load: no scroll, no focus.
     showStep(1, 'forward', false, false);
   }
 
@@ -1253,6 +1285,7 @@
     imageModalImg.src = item.src || '';
     imageModalImg.alt = item.alt || item.title || '';
 
+    // SECURITY: Escape text content for safety
     if (imageModalMeta)  imageModalMeta.textContent  = item.meta  || '';
     if (imageModalTitle) imageModalTitle.textContent = item.title || '';
     if (imageModalDesc)  imageModalDesc.textContent  = item.desc  || '';
@@ -1305,8 +1338,6 @@
     }, { passive: true });
   }
 
-  /* Thumbnails — swipe-guard prevents accidental opens when the user
-     swipes the mobile carousel and lifts their finger on a card. */
   document.querySelectorAll('.featured-project-thumb').forEach((thumb) => {
     const img = thumb.querySelector('img');
     if (!img) return;
@@ -1355,11 +1386,6 @@
   const terminalTitle = document.getElementById('terminalTitle');
   const terminalCode  = document.getElementById('terminalCode');
 
-  const escapeHtml = (str) => String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
-
   const openTerminalModal = ({ title = '~/qoech/project', code = '' } = {}) => {
     if (!terminalModal) return;
 
@@ -1396,9 +1422,6 @@
 
   /* ============================================================
      18. UNIFIED SCROLL LOOP
-     All scroll-driven work runs from one rAF-scheduled tick.
-     Fires at most once per animation frame — no more six
-     separate scroll listeners racing each other.
      ============================================================ */
 
   const scrollProgressEl = document.getElementById('scrollProgress');
@@ -1410,7 +1433,6 @@
   const sectionList      = document.querySelectorAll('section[id]');
   const navLinkEls       = document.querySelectorAll('.nav-link');
 
-  // ---- Progress bar ----
   const updateProgressBar = () => {
     if (!scrollProgressEl) return;
     const scrollTop = window.scrollY;
@@ -1419,13 +1441,11 @@
     scrollProgressEl.style.width = pct + '%';
   };
 
-  // ---- Navbar scrolled state ----
   const updateNavbarState = () => {
     if (!navbarEl) return;
     navbarEl.classList.toggle('scrolled', window.scrollY > 40);
   };
 
-  // ---- Active nav link ----
   const updateActiveLink = () => {
     if (!sectionList.length) return;
     const scrollPos = window.scrollY + 160;
@@ -1445,13 +1465,11 @@
     });
   };
 
-  // ---- Back to top visibility ----
   const updateBackToTop = () => {
     if (!backToTopEl) return;
     backToTopEl.classList.toggle('visible', window.scrollY > 500);
   };
 
-  // ---- Subtle hero grid parallax (desktop only) ----
   const updateHeroParallax = () => {
     if (!heroEl || !hasFinePointer) return;
     const offset = window.scrollY;
@@ -1460,7 +1478,6 @@
     if (grid) grid.style.transform = `translateY(${offset * 0.15}px)`;
   };
 
-  // ---- Stats counter (fires once) ----
   let statsAnimated = false;
   const runStatsAnimation = () => {
     statNumbersAll.forEach((el) => {
@@ -1491,7 +1508,6 @@
     }
   };
 
-  // ---- Single rAF-throttled scroll handler ----
   let scrollTicking = false;
   const handleScroll = () => {
     if (scrollTicking) return;
@@ -1510,7 +1526,6 @@
 
   window.addEventListener('scroll', handleScroll, { passive: true });
 
-  // Run once on load so the initial state is correct
   window.addEventListener('load', () => {
     updateProgressBar();
     updateNavbarState();
@@ -1519,7 +1534,6 @@
     maybeAnimateStats();
   });
 
-  // Back-to-top button
   if (backToTopEl) {
     backToTopEl.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1529,17 +1543,6 @@
 
   /* ============================================================
      19. EAGLE FLIGHT ANIMATION — full choreography
-     ------------------------------------------------------------
-     Every cycle:
-       Ring shakes + bubbles → combined logo fades → empty ring
-       → eagle glides right → hover → touchdown (shockwave, sparks,
-       dot ignition, text flash, navbar flash, "Checking…") →
-       perched bob → crouch → turn → glide back → land in ring
-       → combined logo restores → repeat.
-
-     Timing (fixed, cursor-independent):
-       • First flight starts 10 seconds after page load
-       • Every subsequent flight repeats every 20 seconds
      ============================================================ */
   (function eagleFlight() {
     const navbar    = document.getElementById('navbar');
@@ -1552,24 +1555,21 @@
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduce) return;
 
-    /* ---- Timing (ms) — keep T_FLIGHT_* in sync with CSS ---- */
-    const FIRST_DELAY   = 10000;   // first flight: 10s after page load
-    const REPEAT_DELAY  = 20000;   // every flight after that: every 20s
+    const FIRST_DELAY   = 10000;
+    const REPEAT_DELAY  = 20000;
 
     const T_SHAKE_MS    = 600;
     const T_SWAP_MS     = 400;
-    const T_FLIGHT_OUT  = 6000;    // CSS flyRight duration
-    const T_PILL_MS     = 2600;    // hover + perch + bob
+    const T_FLIGHT_OUT  = 6000;
+    const T_PILL_MS     = 2600;
     const T_CROUCH_MS   = 250;
-    const T_FLIGHT_BACK = 5500;    // CSS flyLeft duration
+    const T_FLIGHT_BACK = 5500;
     const T_RESET_MS    = 600;
 
-    /* ---- State ---- */
     let idleTimer = null;
     let running   = false;
     let firstRun  = true;
 
-    /* ---- Helpers ---- */
     const computePositions = () => {
       const nbRect   = navbar.getBoundingClientRect();
       const ringRect = brandQ.getBoundingClientRect();
@@ -1587,8 +1587,6 @@
       };
     };
 
-    /* Perched eagle sits ON TOP of the pill, not inside it.
-       Offset = half eagle height (26) + half pill height (~14). */
     const PERCH_OFFSET = 40;
 
     const spawnSparks = (x, y, count = 7) => {
@@ -1622,9 +1620,6 @@
       }, 200);
     };
 
-    /* ---- Arm the next flight ----
-       First call uses FIRST_DELAY (10s after load).
-       Subsequent calls use REPEAT_DELAY (20s). */
     const armNext = () => {
       if (running) return;
       clearTimeout(idleTimer);
@@ -1635,7 +1630,6 @@
       }, wait);
     };
 
-    /* ---- The full sequence ---- */
     const runSequence = () => {
       if (running) return;
       if (window.innerWidth <= 1024) { armNext(); return; }
@@ -1643,7 +1637,6 @@
 
       const pos = computePositions();
 
-      /* Initial placement */
       eagle.style.left = pos.startX + 'px';
       eagle.style.top  = pos.startY + 'px';
       eagle.style.setProperty('--fly-distance', pos.outDistance + 'px');
@@ -1652,26 +1645,21 @@
       burst.style.left = pos.startX + 'px';
       burst.style.top  = pos.startY + 'px';
 
-      /* ---------- Phase 1: trigger — bubbles + ring shake ---------- */
       burst.classList.add('active');
       brandQ.classList.add('nav-ring-shake');
 
       setTimeout(() => brandQ.classList.remove('nav-ring-shake'), T_SHAKE_MS);
 
-      /* ---------- Phase 2: combined logo fades out ---------- */
       setTimeout(() => { brandQ.style.opacity = '0'; }, T_SHAKE_MS + 100);
 
-      /* ---------- Phase 3: empty ring, launch ---------- */
       setTimeout(() => {
         brandQ.src = 'images/logo/q-ring.png';
         brandQ.style.opacity = '1';
         eagle.classList.add('flying');
       }, T_SHAKE_MS + 100 + T_SWAP_MS);
 
-      /* ---------- Phase 4: bubble cleanup ---------- */
       setTimeout(() => burst.classList.remove('active'), T_SHAKE_MS + 1500);
 
-      /* ---------- Phase 5: arrival — hover → touchdown + impact ---------- */
       const tTouchdown = T_SHAKE_MS + T_SWAP_MS + T_FLIGHT_OUT;
 
       setTimeout(() => {
@@ -1681,7 +1669,6 @@
         eagle.classList.add('perched');
       }, tTouchdown);
 
-      /* Impact effects fire ~350ms after arrival (after hover beat) */
       const tImpact = tTouchdown + 350;
 
       setTimeout(() => {
@@ -1694,7 +1681,6 @@
         setTimeout(() => navbar.classList.remove('impact'), 500);
       }, tImpact);
 
-      /* ---------- Phase 6: pre-departure crouch ---------- */
       const tCrouchStart = tTouchdown + T_PILL_MS - T_CROUCH_MS;
 
       setTimeout(() => {
@@ -1702,7 +1688,6 @@
         eagle.style.transform = 'translate(-50%, calc(-50% - 0px)) scale(1.08, 0.86)';
       }, tCrouchStart);
 
-      /* ---------- Phase 7: depart — turn around, glide back ---------- */
       const tDepart = tTouchdown + T_PILL_MS;
 
       setTimeout(() => {
@@ -1719,7 +1704,6 @@
         eagle.classList.add('returning');
       }, tDepart);
 
-      /* ---------- Phase 8: land back in ring, restore combined logo ---------- */
       const tLandBack = tDepart + T_FLIGHT_BACK;
 
       setTimeout(() => {
@@ -1733,7 +1717,6 @@
         }, 250);
       }, tLandBack);
 
-      /* ---------- Phase 9: full reset + rearm ---------- */
       setTimeout(() => {
         eagle.classList.remove('hidden', 'perched', 'flying', 'returning', 'crouching');
         eagle.style.left = '';
@@ -1746,21 +1729,12 @@
       }, tLandBack + T_RESET_MS);
     };
 
-    /* Kick off the first cycle — fires 10s after this script runs */
     armNext();
   })();
 
 
   /* ============================================================
      20. MOBILE CAROUSEL PAGINATION
-     ------------------------------------------------------------
-     On mobile (≤768px) the Services / Featured Projects / Process
-     and Why Qoech sections become horizontal snap carousels
-     (see CSS §27). This module adds:
-       • A "Swipe" hint that fades on first interaction
-       • Pagination dots that update as the user scrolls
-       • Dot clicks that scroll to the matching card
-     Disabled on desktop, cleaned up on resize back up.
      ============================================================ */
   (function mobileCarouselPagination() {
     const TRACK_SELECTORS = [
@@ -1779,7 +1753,6 @@
     });
     if (!tracks.length) return;
 
-    /* Build hint + dots container for one track */
     const buildUI = (track) => {
       if (track.dataset.carouselReady === '1') return;
       track.dataset.carouselReady = '1';
@@ -1807,7 +1780,6 @@
         return;
       }
 
-      /* Create one dot per card */
       const dots = cards.map((card, i) => {
         const dot = document.createElement('button');
         dot.type = 'button';
@@ -1821,7 +1793,6 @@
         return dot;
       });
 
-      /* Update active dot based on which card is centered */
       let rafLocked = false;
       const updateActiveDot = () => {
         const trackLeft = track.scrollLeft;
@@ -1857,7 +1828,6 @@
 
       track.addEventListener('scroll', onScroll, { passive: true });
 
-      /* Fade the hint on first interaction (scroll or touch) */
       let hintDismissed = false;
       const dismissHint = () => {
         if (hintDismissed) return;
@@ -1869,7 +1839,6 @@
       track.addEventListener('touchstart', dismissHint, { passive: true, once: true });
       setTimeout(dismissHint, 5000);
 
-      /* Re-measure if layout changes (e.g. orientation flip) */
       if ('ResizeObserver' in window) {
         const ro = new ResizeObserver(() => updateActiveDot());
         ro.observe(track);
@@ -1878,14 +1847,12 @@
       updateActiveDot();
     };
 
-    /* Tear down when leaving mobile */
     const teardownUI = (track) => {
       const meta = track.parentNode.querySelector(':scope > .mobile-carousel-meta');
       if (meta) meta.remove();
       track.dataset.carouselReady = '';
     };
 
-    /* Sync all tracks based on current breakpoint */
     const syncAll = () => {
       const isMobile = MQ.matches;
       tracks.forEach((track) => {
@@ -1899,7 +1866,6 @@
 
     syncAll();
 
-    /* React to breakpoint changes */
     if (MQ.addEventListener) MQ.addEventListener('change', syncAll);
     else if (MQ.addListener) MQ.addListener(syncAll);
   })();
