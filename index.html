@@ -59,10 +59,12 @@
 
   <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js" defer></script>
 
-  <link rel="stylesheet" href="css/style.css?v=23" />
+  <link rel="stylesheet" href="css/style.css?v=24" />
 </head>
 
 <body>
+
+  <a class="skip-link" href="#main">Skip to main content</a>
 
   <div class="grain-overlay" aria-hidden="true"></div>
 
@@ -164,6 +166,8 @@
   </nav>
 
   <div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
+
+  <main id="main" tabindex="-1">
 
   <!-- ===================== HERO ===================== -->
   <section class="hero" id="home">
@@ -334,25 +338,25 @@
         </div>
 
         <div class="about-content">
-          <div class="about-tabs" role="tablist">
-            <button class="tab-btn active" data-tab="story" role="tab"><i class="fas fa-book-open"></i><span>Story</span></button>
-            <button class="tab-btn" data-tab="mission" role="tab"><i class="fas fa-bullseye"></i><span>Mission</span></button>
-            <button class="tab-btn" data-tab="values" role="tab"><i class="fas fa-gem"></i><span>Values</span></button>
-            <button class="tab-btn" data-tab="approach" role="tab"><i class="fas fa-route"></i><span>Approach</span></button>
+          <div class="about-tabs" role="tablist" aria-label="About Qoech Technologies">
+            <button type="button" class="tab-btn active" data-tab="story" role="tab" id="tab-story" aria-controls="story-content" aria-selected="true"><i class="fas fa-book-open"></i><span>Story</span></button>
+            <button type="button" class="tab-btn" data-tab="mission" role="tab" id="tab-mission" aria-controls="mission-content" aria-selected="false" tabindex="-1"><i class="fas fa-bullseye"></i><span>Mission</span></button>
+            <button type="button" class="tab-btn" data-tab="values" role="tab" id="tab-values" aria-controls="values-content" aria-selected="false" tabindex="-1"><i class="fas fa-gem"></i><span>Values</span></button>
+            <button type="button" class="tab-btn" data-tab="approach" role="tab" id="tab-approach" aria-controls="approach-content" aria-selected="false" tabindex="-1"><i class="fas fa-route"></i><span>Approach</span></button>
           </div>
 
           <div class="about-tab-contents">
-            <div class="tab-content active" id="story-content">
+            <div class="tab-content active" id="story-content" role="tabpanel" aria-labelledby="tab-story">
               <p>Qoech Technologies was founded on a simple belief — that technology should solve real problems, not create new ones. We build software, systems and digital infrastructure that help businesses operate with clarity, speed and confidence.</p>
               <p>From custom management systems to modern web platforms and cloud deployments, every solution we deliver is designed around the people who use it, the data it manages, and the future it must scale into.</p>
             </div>
 
-            <div class="tab-content" id="mission-content">
+            <div class="tab-content" id="mission-content" role="tabpanel" aria-labelledby="tab-mission">
               <p>Our mission is to empower businesses, organizations, startups and individuals with reliable, scalable and secure technology that drives measurable results.</p>
               <p>We combine engineering discipline with design thinking — so our solutions are not only functional, but intuitive, maintainable and built to grow.</p>
             </div>
 
-            <div class="tab-content" id="values-content">
+            <div class="tab-content" id="values-content" role="tabpanel" aria-labelledby="tab-values">
               <div class="values-grid">
                 <div class="value-item"><i class="fas fa-eye"></i><div><h4>Vision</h4><p>We think beyond today's problems.</p></div></div>
                 <div class="value-item"><i class="fas fa-bolt"></i><div><h4>Innovation</h4><p>We use modern technologies to create better solutions.</p></div></div>
@@ -363,7 +367,7 @@
               </div>
             </div>
 
-            <div class="tab-content" id="approach-content">
+            <div class="tab-content" id="approach-content" role="tabpanel" aria-labelledby="tab-approach">
               <p>We follow a disciplined process — understand the problem, design the right solution, build it carefully, test it rigorously, deploy it confidently, and support it long-term.</p>
               <p>Every project begins with listening. We ask questions, map workflows, and translate business needs into technical architecture before a single line of code is written.</p>
             </div>
@@ -1407,6 +1411,8 @@
     </div>
   </section>
 
+  </main>
+
   <!-- ===================== FOOTER ===================== -->
   <footer class="footer">
     <div class="footer-bg" aria-hidden="true"></div>
@@ -1505,7 +1511,7 @@
     </div>
   </div>
 
-  <div class="modal modal--image" id="imageModal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="modal modal--image" id="imageModal" role="dialog" aria-modal="true" aria-label="Project image viewer" aria-hidden="true">
     <div class="modal-overlay" data-close></div>
     <div class="modal-content modal-content--image">
       <button class="modal-close modal-close--light" data-close aria-label="Close"><i class="fas fa-times"></i></button>
@@ -1522,7 +1528,7 @@
     </div>
   </div>
 
-  <div class="modal modal--terminal" id="terminalModal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="modal modal--terminal" id="terminalModal" role="dialog" aria-modal="true" aria-label="Code sample" aria-hidden="true">
     <div class="modal-overlay" data-close></div>
     <div class="modal-content modal-content--terminal">
       <div class="terminal-chrome">
@@ -1538,7 +1544,7 @@
     </div>
   </div>
 
-  <script src="js/main.js?v=19" defer></script>
+  <script src="js/main.js?v=20" defer></script>
 
 </body>
 </html>
