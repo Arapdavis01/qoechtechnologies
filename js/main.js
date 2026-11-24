@@ -46,11 +46,19 @@
 
   const sanitizeInput = (str, maxLength = 1000) => {
     if (!str) return '';
-    // Strip out HTML tags (basic XSS prevention)
-    let clean = String(str).replace(/<[^>]*>?/gm, '');
+    // Strip real HTML tags/comments only (e.g. <b>, </div>, <script ...>, <!-- -->).
+    // A lone "<" such as "<50 staff" or "a < b" is kept, so no text is lost.
+    // The API must still validate and escape on its side; this is a convenience.
+    let clean = String(str)
+      .replace(/<!--[\s\S]*?-->/g, '')
+      .replace(/<\/?[a-zA-Z][^>]*>/g, '')
+      .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '');
     // Trim whitespace and enforce max length
     return clean.trim().substring(0, maxLength);
   };
+
+  const prefersReducedMotion =
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ============================================================
      00.5 INITIAL SCROLL RESET
@@ -119,6 +127,9 @@
   const initParticles = () => {
     if (typeof tsParticles === 'undefined') return;
     if (!document.getElementById('particles-bg')) return;
+    if (prefersReducedMotion) return;
+    // Very small phones: skip the particle canvas (saves battery, avoids jank)
+    if (window.innerWidth <= 480) return;
 
     const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
@@ -298,6 +309,10 @@
     let charIndex = 0;
     let isDeleting = false;
 
+    if (prefersReducedMotion) {
+      typedEl.textContent = phrases[0];
+    }
+
     const typeLoop = () => {
       const current = phrases[phraseIndex];
 
@@ -323,7 +338,7 @@
       setTimeout(typeLoop, speed);
     };
 
-    setTimeout(typeLoop, 1400);
+    if (!prefersReducedMotion) setTimeout(typeLoop, 1400);
   }
 
 
@@ -382,12 +397,38 @@
   const tabBtns = document.querySelectorAll('.tab-btn');
   const tabContents = document.querySelectorAll('.tab-content');
 
+  // Keyboard support for the tabs: arrows, Home and End move between them
+  const tabList = document.querySelector('.about-tabs');
+  if (tabList) {
+    tabList.addEventListener('keydown', (e) => {
+      const keys = ['ArrowLeft', 'ArrowRight', 'Home', 'End'];
+      if (!keys.includes(e.key)) return;
+      const tabs = Array.from(tabBtns);
+      const current = tabs.indexOf(document.activeElement);
+      if (current === -1) return;
+      e.preventDefault();
+      let next = current;
+      if (e.key === 'ArrowRight') next = (current + 1) % tabs.length;
+      if (e.key === 'ArrowLeft')  next = (current - 1 + tabs.length) % tabs.length;
+      if (e.key === 'Home') next = 0;
+      if (e.key === 'End')  next = tabs.length - 1;
+      tabs[next].click();
+      tabs[next].focus();
+    });
+  }
+
   tabBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
       const tab = btn.getAttribute('data-tab');
 
-      tabBtns.forEach((b) => b.classList.remove('active'));
+      tabBtns.forEach((b) => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+        b.setAttribute('tabindex', '-1');
+      });
       btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      btn.removeAttribute('tabindex');
 
       tabContents.forEach((content) => {
         content.classList.remove('active');
@@ -588,6 +629,7 @@
   const openServiceModal = (key) => {
     const data = serviceData[key];
     if (!data || !serviceModal || !serviceModalBody) return;
+    serviceModal.setAttribute('aria-label', data.title);
 
     // SECURITY: Wrap all dynamic data in escapeHtml() before injecting
     serviceModalBody.innerHTML = `
@@ -708,6 +750,7 @@
   const openProjectModal = (key) => {
     const data = projectData[key];
     if (!data || !projectModal || !projectModalBody) return;
+    projectModal.setAttribute('aria-label', data.title);
 
     // SECURITY: Ensure liveUrl is safe (starts with http:// or https://)
     const isSafeUrl = data.liveUrl && /^https?:\/\//i.test(data.liveUrl);
@@ -830,6 +873,36 @@
     }
   });
 
+  // Keep Tab / Shift+Tab inside the open modal
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab') return;
+    const modal = document.querySelector('.modal.open');
+    if (!modal) return;
+
+    const focusables = Array.from(
+      modal.querySelectorAll(
+        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      )
+    ).filter((el) => el.offsetParent !== null);
+
+    if (!focusables.length) { e.preventDefault(); return; }
+
+    const first = focusables[0];
+    const last  = focusables[focusables.length - 1];
+    const active = document.activeElement;
+
+    if (!modal.contains(active)) {
+      e.preventDefault();
+      first.focus();
+    } else if (e.shiftKey && active === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && active === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  });
+
 
   /* ============================================================
      12. TESTIMONIAL CAROUSEL
@@ -857,6 +930,7 @@
 
     const startAutoplay = () => {
       stopAutoplay();
+      if (prefersReducedMotion) return;
       autoplayTimer = setInterval(nextSlide, 6000);
     };
 
@@ -877,6 +951,11 @@
     if (testimonialCarousel) {
       testimonialCarousel.addEventListener('mouseenter', stopAutoplay);
       testimonialCarousel.addEventListener('mouseleave', startAutoplay);
+      // Touch and keyboard users: pause while interacting, resume after
+      testimonialCarousel.addEventListener('touchstart', stopAutoplay, { passive: true });
+      testimonialCarousel.addEventListener('touchend', startAutoplay, { passive: true });
+      testimonialCarousel.addEventListener('focusin', stopAutoplay);
+      testimonialCarousel.addEventListener('focusout', startAutoplay);
     }
 
     startAutoplay();
@@ -902,8 +981,22 @@
   const successReset   = document.getElementById('successReset');
   const hpWebsite      = document.getElementById('hpWebsite');
 
+  const SUBMIT_TIMEOUT_MS = 60000;   // free hosting can take ~50s to wake
+  const SLOW_NOTICE_MS    = 5000;    // tell the visitor we are still working
+
   let currentStep = 1;
   let isSubmitting = false; // SECURITY: Prevent double-submissions
+  let apiWarmed = false;
+
+  // Free-tier hosts sleep when idle. Poke the API once when the visitor
+  // starts filling the form so it is awake by the time they submit.
+  const warmApi = () => {
+    if (apiWarmed) return;
+    apiWarmed = true;
+    try {
+      fetch(new URL(WIZARD_API).origin + '/', { mode: 'no-cors', cache: 'no-store' }).catch(() => {});
+    } catch (_) {}
+  };
 
   if (wizardForm) {
 
@@ -1085,6 +1178,7 @@
       }
     });
 
+    wizardForm.addEventListener('focusin', warmApi, { once: true });
     wizardForm.addEventListener('input', saveDraft);
     wizardForm.addEventListener('change', saveDraft);
 
@@ -1154,8 +1248,9 @@
       if (wizardProgress) wizardProgress.style.display = 'none';
 
       if (successRefCode) {
-        // SECURITY: Escape the reference code just in case the API sends weird data
-        successRefCode.textContent = escapeHtml(referenceCode || 'SYS-0000-0000');
+        // textContent is already safe against HTML injection; escaping here
+        // would show "&amp;" literally. Limit the length instead.
+        successRefCode.textContent = String(referenceCode || 'SYS-0000-0000').slice(0, 40);
       }
       if (wizardSuccess) {
         wizardSuccess.hidden = false;
@@ -1193,6 +1288,12 @@
 
       setSubmitting(true);
 
+      const controller = new AbortController();
+      const abortTimer = setTimeout(() => controller.abort(), SUBMIT_TIMEOUT_MS);
+      const slowTimer  = setTimeout(() => {
+        showStatus('info', 'Still working… our server may be waking up. Please keep this page open.');
+      }, SLOW_NOTICE_MS);
+
       try {
         const response = await fetch(WIZARD_API, {
           method: 'POST',
@@ -1200,8 +1301,11 @@
             'Content-Type': 'application/json',
             'Accept': 'application/json'
           },
-          body: JSON.stringify(buildPayload())
+          body: JSON.stringify(buildPayload()),
+          signal: controller.signal
         });
+        clearTimeout(slowTimer);
+        if (wizardStatus && wizardStatus.classList.contains('info')) showStatus('', '');
 
         if (response.status === 201) {
           const data = await response.json().catch(() => ({}));
@@ -1226,9 +1330,12 @@
         showStatus('error',
           'Something went wrong. Please try again or email qoechtech@gmail.com.');
       } catch (err) {
-        showStatus('error',
-          'Network error. Please try again or email qoechtech@gmail.com.');
+        showStatus('error', err && err.name === 'AbortError'
+          ? 'The server took too long to respond. Your answers are saved - please try again, or email qoechtech@gmail.com.'
+          : 'Network error. Please try again or email qoechtech@gmail.com.');
       } finally {
+        clearTimeout(abortTimer);
+        clearTimeout(slowTimer);
         setSubmitting(false);
       }
     });
