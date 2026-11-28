@@ -1,0 +1,531 @@
+/* ============================================================
+   27. RESPONSIVE BREAKPOINTS
+   ============================================================
+   Ordering: widest → narrowest, so narrower breakpoints override
+   wider ones (CSS uses source order for equal specificity).
+
+   Mobile strategy (≤ 768px):
+     • Wide-card sections — Services, Featured Projects, Process,
+       Why Qoech — become horizontal swipe carousels with snap
+       points. The next card peeks in from the right.
+     • Compact-item sections — Solutions, Technologies, Values,
+       Capabilities — become 2-column dense grids.
+     • Vertical list (Other Systems) stays vertical.
+     • iOS input zoom is prevented (16px minimum on inputs).
+     • Hover-lift effects are disabled to prevent sticky states.
+     • JS Section 20 injects `.mobile-carousel-meta` after each
+       carousel for the swipe hint + pagination dots.
+
+   Two positioning rules to remember:
+     1. The navbar (Section 09) is centered with left/right +
+        margin:auto. To resize it, override the left/right insets
+        — never set `width`.
+     2. The mobile menu panel (Section 10) is a viewport-fixed
+        sibling of the navbar. It relies on the navbar NOT
+        creating a containing block (no transform, no
+        backdrop-filter on the navbar itself — those live on
+        .navbar::before instead).
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   1100px — tablet landscape
+   ------------------------------------------------------------ */
+@media (max-width: 1100px) {
+  .hero-container { grid-template-columns: 1fr; gap: 3.5rem; text-align: center; }
+  .hero-content { max-width: 100%; margin: 0 auto; }
+  .hero-actions, .hero-trust { justify-content: center; }
+  .hero-description { margin-left: auto; margin-right: auto; }
+  .hero-visual { order: -1; }
+  .visual-stage { width: 340px; height: 340px; }
+  .hero-brackets { inset: calc(var(--nav-height) + 2.5rem) 1.5rem 6rem; }
+
+  .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .about-visual { position: static; }
+
+  .services-grid { grid-template-columns: repeat(3, 1fr); }
+  .solutions-grid { grid-template-columns: repeat(2, 1fr); }
+  .tech-grid { grid-template-columns: repeat(2, 1fr); }
+  .why-grid { grid-template-columns: repeat(3, 1fr); }
+
+  .process-timeline { grid-template-columns: repeat(3, 1fr); row-gap: 2.5rem; }
+  .process-timeline::before { display: none; }
+
+  .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+
+  .featured-projects-grid { grid-template-columns: 1fr 1fr; }
+  .featured-projects-grid .featured-project-card:last-child {
+    grid-column: 1 / -1;
+    max-width: 620px;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+
+
+/* ------------------------------------------------------------
+   850px — tablet portrait
+   ------------------------------------------------------------ */
+@media (max-width: 850px) {
+  .section { padding: 5.5rem 0; }
+  .section-title { font-size: clamp(1.625rem, 5vw, 2.125rem); }
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+  .values-grid { grid-template-columns: 1fr 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; text-align: center; }
+
+  .hero-ticker { gap: 1.25rem; padding: 0.75rem 1rem; }
+  .ticker-item:nth-child(n+4) { display: none; }
+
+  .eagle-section { padding: 7rem 0; }
+  .eagle-readout { padding: 0.85rem 1.25rem; gap: 1rem; }
+}
+
+
+/* ------------------------------------------------------------
+   768px — mobile base
+   ------------------------------------------------------------
+   Carousels + compact 2-column grids + swipe-hint/dots styling.
+   ------------------------------------------------------------ */
+@media (max-width: 768px) {
+
+  /* Align container padding with the carousel bleed offset */
+  .container { padding: 0 1.25rem; }
+
+  /* ---------- Carousels: services, projects, process, why ---------- */
+  .services-grid,
+  .featured-projects-grid,
+  .process-timeline,
+  .why-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 0.9rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scroll-padding-left: 1.25rem;
+    padding: 0.5rem 1.25rem 1.35rem;
+    margin: 0 -1.25rem;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overscroll-behavior-x: contain;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .services-grid::-webkit-scrollbar,
+  .featured-projects-grid::-webkit-scrollbar,
+  .process-timeline::-webkit-scrollbar,
+  .why-grid::-webkit-scrollbar { display: none; }
+
+  /* Card width — next card peeks ≈ 18% */
+  .services-grid > *,
+  .process-timeline > *,
+  .why-grid > * {
+    flex: 0 0 82%;
+    max-width: 82%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  /* Projects carry a 16:10 image — give them more width */
+  .featured-projects-grid > * {
+    flex: 0 0 88%;
+    max-width: 88%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  /* Reset the desktop-only centering on the last featured card */
+  .featured-projects-grid .featured-project-card:last-child {
+    grid-column: auto;
+    max-width: none;
+    width: auto;
+    margin: 0;
+  }
+
+  /* The grid's own bottom margin is replaced by the meta element */
+  .featured-projects-grid { margin-bottom: 0; }
+
+  /* No connector line in a carousel */
+  .process-timeline::before { display: none; }
+  .process-step { justify-content: flex-start; }
+
+  /* Why cards already center text — a touch more padding */
+  .why-card { padding: 1.75rem 1.25rem; }
+
+  /* Text selection inside cards, but not on the scroll track */
+  .services-grid .service-card,
+  .featured-projects-grid .featured-project-card,
+  .process-timeline .process-card,
+  .why-grid .why-card {
+    user-select: text;
+    -webkit-user-select: text;
+  }
+
+  /* ---------- Mobile carousel meta — swipe hint + dots ---------- */
+  .mobile-carousel-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 0.35rem 0 2.5rem;
+    min-height: 22px;
+  }
+
+  .mobile-carousel-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    opacity: 1;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .mobile-carousel-hint i {
+    color: var(--primary);
+    font-size: 0.7rem;
+    animation: hintNudge 1.8s ease-in-out infinite;
+  }
+  .mobile-carousel-hint.hidden {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  @keyframes hintNudge {
+    0%, 100% { transform: translateX(0); }
+    50%      { transform: translateX(3px); }
+  }
+
+  .mobile-carousel-dots {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-left: auto;
+  }
+  .mcd-dot {
+    width: 6px;
+    height: 6px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: #E2E8F0;
+    transition: background 0.25s ease, width 0.25s ease;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .mcd-dot.active {
+    width: 22px;
+    border-radius: 100px;
+    background: linear-gradient(90deg, var(--primary), var(--gold));
+  }
+
+  /* ---------- Compact 2-column grids ---------- */
+  .solutions-grid,
+  .tech-grid,
+  .values-grid,
+  .capabilities-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.65rem;
+  }
+
+  .solution-card { padding: 1.25rem 1rem; }
+  .solution-icon { width: 40px; height: 40px; font-size: 0.95rem; margin-bottom: 0.9rem; border-radius: 10px; }
+  .solution-card h3 { font-size: 0.9rem; margin-bottom: 0.4rem; }
+  .solution-card > p { font-size: 0.775rem; line-height: 1.55; margin-bottom: 0.85rem; }
+  .solution-list li { font-size: 0.72rem; }
+
+  .tech-category { padding: 1.15rem 1rem; }
+  .tech-category-head { padding-bottom: 0.7rem; margin-bottom: 0.85rem; gap: 0.55rem; }
+  .tech-category-head i { width: 26px; height: 26px; font-size: 0.7rem; }
+  .tech-category-head h3 { font-size: 0.65rem; letter-spacing: 0.08em; }
+  .tech-chip { padding: 0.32rem 0.6rem; font-size: 0.65rem; gap: 0.3rem; }
+  .tech-chip i { font-size: 0.7rem; }
+
+  .value-item { padding: 0.9rem 0.8rem; gap: 0.6rem; }
+  .value-item i { font-size: 0.95rem; }
+  .value-item h4 { font-size: 0.8rem; }
+  .value-item p { font-size: 0.7rem; line-height: 1.45; }
+
+  .capability-item { padding: 0.7rem 0.85rem; font-size: 0.775rem; gap: 0.55rem; }
+  .capability-item i { font-size: 0.8rem; width: 16px; }
+
+  /* ---------- Other systems: vertical, tighten ---------- */
+  .other-system-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.85rem;
+    padding: 1rem 1.1rem;
+  }
+  .other-system-meta { justify-content: flex-start; }
+  .other-system-info { gap: 0.85rem; }
+  .other-system-info h4 { font-size: 0.875rem; }
+  .other-system-info p { font-size: 0.75rem; }
+
+  /* ---------- Capabilities panel ---------- */
+  .capabilities { padding: 2rem 1.35rem; }
+
+  /* ---------- Stats grid: 3-across compressed ---------- */
+  .stats-grid { gap: 0.5rem; }
+  .stat-card {
+    padding: 0.85rem 0.75rem;
+    gap: 0.55rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .stat-icon { width: 34px; height: 34px; font-size: 0.8rem; }
+  .stat-number { font-size: 1.15rem; }
+  .stat-label { font-size: 0.55rem; }
+
+  /* ---------- About card ---------- */
+  .about-card { padding: 1.65rem 1.4rem; }
+  .about-card-mark { width: 56px; height: 56px; }
+
+  /* ---------- Kill hover-lift on touch ---------- */
+  .service-card:hover,
+  .solution-card:hover,
+  .featured-project-card:hover,
+  .tech-category:hover,
+  .why-card:hover,
+  .process-step:hover .process-number,
+  .value-item:hover,
+  .stat-card:hover,
+  .capability-item:hover,
+  .other-system-item:hover,
+  .contact-card:hover {
+    transform: none;
+  }
+  .service-card:hover .service-icon,
+  .solution-card:hover .solution-icon,
+  .why-card:hover .why-icon { transform: none; }
+  .featured-project-card:hover .featured-project-thumb img { transform: none; }
+  .featured-project-card:hover .thumb-scan { left: -100%; }
+}
+
+
+/* ------------------------------------------------------------
+   640px — mobile portrait
+   ------------------------------------------------------------ */
+@media (max-width: 640px) {
+  :root { --nav-height: 64px; }
+
+  /* Navbar — override insets only.
+     Do NOT set `width` — the navbar is centered via
+     left/right + margin:auto (Section 09). Setting width would
+     fight those insets and offset the hamburger. */
+  .navbar {
+    top: 12px;
+    left: 0.75rem;
+    right: 0.75rem;
+    padding: 0 1rem;
+    height: 60px;
+  }
+  .navbar.scrolled { top: 8px; }
+
+  /* Brand */
+  .brand-q-wrap { width: 30px; height: 30px; transform: translateY(-2px); }
+  .brand-q { transform: scale(1.7); }
+  .brand:hover .brand-q { transform: scale(1.7) rotate(-4deg); }
+  .brand-letters { font-size: 1.15rem; letter-spacing: 0.12em; }
+  .brand-sub { font-size: 0.5rem; letter-spacing: 0.28em; margin-left: calc(30px + 0.05rem); }
+
+  /* Preloader */
+  .preloader-text { font-size: 1.3rem; }
+  .preloader-q { transform: scale(1.7); }
+  .preloader-readout { font-size: 0.6rem; }
+
+  /* Hero */
+  .hero { padding: calc(var(--nav-height) + 4rem) 0 5rem; }
+  .hero-content { padding: 1.5rem 1.5rem 1.25rem; }
+  .hero-title { font-size: clamp(1.875rem, 8vw, 2.5rem); }
+  .hero-description { font-size: 0.9375rem; }
+  .hero-typing { font-size: 0.85rem; }
+  .hero-actions .btn { flex: 1; justify-content: center; }
+  .visual-stage { width: 260px; height: 260px; }
+  .visual-core { width: 170px; height: 170px; }
+  .visual-core-mark { width: 100%; height: 100%; transform: scale(1.7); }
+  .visual-pulse { width: 170px; height: 170px; }
+  .orbit-node { width: 32px; height: 32px; font-size: 0.8rem; top: -16px; }
+  .trust-divider { display: none; }
+  .hero-trust { gap: 1.75rem; }
+  .hero-brackets { inset: calc(var(--nav-height) + 1.5rem) 0.75rem 5rem; }
+  .bracket { width: 28px; height: 28px; }
+  .stage-readout { font-size: 0.5rem; padding: 0.15rem 0.4rem; }
+  .stage-readout-tl, .stage-readout-bl { left: -2%; }
+  .stage-readout-tr, .stage-readout-br { right: -2%; }
+
+  .hero-ticker { display: none; }
+  .scroll-down { bottom: 2rem; }
+
+  /* About / footer marks */
+  .about-card { padding: 1.5rem 1.25rem; }
+  .about-card-mark { width: 48px; height: 48px; }
+  .footer-q { height: 28px; width: 28px; transform: scale(1.5); }
+
+  /* Section head */
+  .section-head { margin-bottom: 2.75rem; }
+  .section-label { font-size: 0.6rem; padding: 0.35rem 0.85rem; }
+
+  /* Carousels — slightly wider cards on narrower screens */
+  .services-grid > *,
+  .process-timeline > *,
+  .why-grid > * { flex-basis: 85%; max-width: 85%; }
+  .featured-projects-grid > * { flex-basis: 90%; max-width: 90%; }
+
+  /* Compact grids — tighter */
+  .solutions-grid,
+  .tech-grid,
+  .values-grid,
+  .capabilities-grid { gap: 0.55rem; }
+
+  .solution-card { padding: 1.1rem 0.9rem; }
+  .solution-icon { width: 36px; height: 36px; font-size: 0.85rem; }
+  .solution-card h3 { font-size: 0.85rem; }
+  .solution-card > p { font-size: 0.72rem; }
+  .solution-list li { font-size: 0.68rem; }
+
+  .tech-category { padding: 1rem 0.85rem; }
+  .tech-chip { padding: 0.28rem 0.55rem; font-size: 0.62rem; }
+  .tech-chip i { font-size: 0.65rem; }
+
+  .value-item { padding: 0.8rem 0.7rem; }
+  .value-item i { font-size: 0.85rem; margin-top: 1px; }
+  .value-item h4 { font-size: 0.75rem; }
+  .value-item p { font-size: 0.65rem; }
+
+  .capability-item { padding: 0.6rem 0.7rem; font-size: 0.72rem; }
+
+  /* Stats — smaller */
+  .stats-grid { gap: 0.4rem; }
+  .stat-card { padding: 0.7rem 0.6rem; }
+  .stat-icon { width: 30px; height: 30px; font-size: 0.75rem; border-radius: 8px; }
+  .stat-number { font-size: 1rem; }
+  .stat-label { font-size: 0.5rem; letter-spacing: 0.04em; }
+
+  /* Process / Why cards */
+  .process-number { width: 60px; height: 60px; font-size: 0.9rem; }
+  .process-card p { font-size: 0.7rem; }
+  .why-card { padding: 1.4rem 1rem; }
+  .why-icon { width: 44px; height: 44px; font-size: 0.95rem; }
+  .why-card h3 { font-size: 0.875rem; }
+  .why-card p { font-size: 0.72rem; }
+
+  /* Service card inner sizing */
+  .service-card { padding: 1.4rem 1.2rem 1.2rem; }
+  .service-icon { width: 42px; height: 42px; font-size: 1rem; margin-bottom: 0.9rem; border-radius: 10px; }
+  .service-card h3 { font-size: 0.9375rem; }
+  .service-card > p { font-size: 0.7875rem; }
+  .service-points li { font-size: 0.72rem; }
+
+  /* Featured project card body */
+  .featured-project-body { padding: 1.25rem 1.25rem 1.35rem; }
+  .featured-project-body h3 { font-size: 0.9375rem; }
+  .featured-project-body > p { font-size: 0.7875rem; }
+
+  /* iOS input zoom fix — 16px minimum prevents auto-zoom */
+  .form-group input,
+  .form-group select,
+  .form-group textarea,
+  .wizard-form input,
+  .wizard-form select,
+  .wizard-form textarea {
+    font-size: 16px;
+  }
+
+  /* Testimonial dots — bigger tap target */
+  .dot {
+    width: 10px;
+    height: 10px;
+    padding: 8px;
+    box-sizing: content-box;
+    background-clip: content-box;
+    border-radius: 50%;
+  }
+  .dot.active {
+    width: 22px;
+    padding: 8px 6px;
+  }
+
+  /* Eagle section */
+  .eagle-section { padding: 5.5rem 0; }
+  .eagle-figure { width: 340px; height: 340px; }
+  .eagle-readout { gap: 0.75rem; padding: 0.75rem 1rem; flex-direction: column; }
+  .readout-item { font-size: 0.55rem; }
+
+  /* Testimonials */
+  .testimonial-carousel { padding: 2rem 1.5rem; }
+  .testimonial-slide p { font-size: 0.9375rem; }
+
+  /* Contact form */
+  .form-row { grid-template-columns: 1fr; }
+  .contact-form-wrap { padding: 1.75rem 1.4rem; }
+
+  /* Modals */
+  .modal-body { padding: 0 1.5rem 1.75rem; }
+  .modal-body h3 { font-size: 1.2rem; }
+  .modal-body img { max-height: 180px; }
+
+  /* Back to top */
+  .back-to-top { bottom: 1.25rem; right: 1.25rem; width: 42px; height: 42px; font-size: 0.85rem; }
+}
+
+
+/* ------------------------------------------------------------
+   520px — small phones
+   ------------------------------------------------------------ */
+@media (max-width: 520px) {
+  .capabilities-grid { grid-template-columns: 1fr; }
+}
+
+
+/* ------------------------------------------------------------
+   480px — extra small phones
+   ------------------------------------------------------------ */
+@media (max-width: 480px) {
+  .values-grid { grid-template-columns: 1fr; }
+
+  .services-grid > *,
+  .process-timeline > *,
+  .why-grid > * { flex-basis: 88%; max-width: 88%; }
+  .featured-projects-grid > * { flex-basis: 92%; max-width: 92%; }
+
+  .solutions-grid,
+  .tech-grid { gap: 0.5rem; }
+
+  .stats-grid { grid-template-columns: 1fr; gap: 0.5rem; }
+  .stat-card { flex-direction: row; align-items: center; }
+}
+
+
+/* ------------------------------------------------------------
+   420px — very small phones
+   ------------------------------------------------------------ */
+@media (max-width: 420px) {
+  .process-timeline > * { flex-basis: 90%; max-width: 90%; }
+  .hero-actions { flex-direction: column; }
+  .hero-actions .btn { width: 100%; }
+  .about-actions { flex-direction: column; }
+  .about-actions .btn { width: 100%; }
+}
+
+
+/* ------------------------------------------------------------
+   prefers-reduced-motion — kill all animations
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .fade-up { opacity: 1; transform: none; }
+  .thumb-scan { display: none; }
+  .footer-scanline { display: none; }
+  .mobile-carousel-hint i { animation: none; }
+}
