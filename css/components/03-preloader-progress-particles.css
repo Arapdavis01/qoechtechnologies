@@ -1,0 +1,143 @@
+/* ============================================================
+   05. PRELOADER
+   ============================================================ */
+.preloader {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-body);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+.preloader.hidden { opacity: 0; visibility: hidden; }
+
+.preloader-inner {
+  position: relative;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.preloader-ring-wrap {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.preloader-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: var(--primary);
+  border-right-color: var(--gold);
+  animation: preloaderSpin 1.4s linear infinite;
+  box-shadow: 0 0 30px var(--primary-glow), inset 0 0 20px var(--primary-soft);
+}
+
+.preloader-q-wrap {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.preloader-q {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: scale(1.7);
+  transform-origin: center;
+  filter: drop-shadow(0 4px 12px rgba(22, 163, 74, 0.22));
+  animation: preloaderPulse 2s ease-in-out infinite;
+}
+
+.preloader-text {
+  margin-top: 2rem;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  color: var(--text-heading);
+  line-height: 1;
+  padding-left: 0.32em;
+}
+
+.preloader-tagline {
+  margin-top: 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.preloader-readout {
+  margin-top: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+  animation: preloaderReadout 2s ease-in-out infinite;
+}
+.readout-line { display: inline-flex; gap: 0.6rem; justify-content: center; }
+.readout-key { color: var(--primary-dark); font-weight: 600; }
+.readout-val { color: var(--text-muted); }
+
+@keyframes preloaderReadout {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes preloaderSpin { 100% { transform: rotate(360deg); } }
+@keyframes preloaderPulse {
+  0%, 100% { transform: scale(1.7); }
+  50% { transform: scale(1.73); }
+}
+
+/* ============================================================
+   06. SCROLL PROGRESS BAR
+   ============================================================ */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background: linear-gradient(90deg, var(--primary), var(--gold));
+  z-index: 10000;
+  transition: width 0.08s linear;
+}
+
+/* ============================================================
+   07. CURSOR GLOW (hidden)
+   ============================================================ */
+.cursor-glow { display: none; }
+
+/* ============================================================
+   08. PARTICLES BACKGROUND
+   ============================================================ */
+#particles-bg {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
