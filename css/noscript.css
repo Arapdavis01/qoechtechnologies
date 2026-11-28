@@ -1,0 +1,4 @@
+/* Loaded only when JavaScript is off: show the page instead of the preloader. */
+.preloader { display: none !important; }
+.fade-up { opacity: 1 !important; transform: none !important; }
+#particles-bg { display: none; }
