@@ -1,0 +1,254 @@
+/* ============================================================
+   32. EAGLE FLIGHT ANIMATION — full choreography
+   ============================================================ */
+
+.brand { position: relative; z-index: 6; }
+
+.brand-q.nav-ring-shake {
+  animation: ringShake 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+@keyframes ringShake {
+  0%, 100% { transform: scale(1.7) translateX(0) rotate(0); }
+  10%      { transform: scale(1.72) translateX(-3px) rotate(-4deg); }
+  20%      { transform: scale(1.70) translateX(3px) rotate(4deg); }
+  30%      { transform: scale(1.72) translateX(-2px) rotate(-3deg); }
+  45%      { transform: scale(1.70) translateX(2px) rotate(3deg); }
+  60%      { transform: scale(1.71) translateX(-2px) rotate(-2deg); }
+  75%      { transform: scale(1.70) translateX(1px) rotate(1deg); }
+  90%      { transform: scale(1.70) translateX(-1px) rotate(-1deg); }
+}
+
+.nav-flying-eagle {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 52px;
+  height: auto;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 5;
+  filter: drop-shadow(0 6px 14px rgba(15, 23, 42, 0.22));
+  will-change: transform, opacity;
+}
+.nav-flying-eagle.flying {
+  animation: flyRight 6s cubic-bezier(0.42, 0, 0.58, 1) forwards;
+}
+.nav-flying-eagle.returning {
+  animation: flyLeft 5.5s cubic-bezier(0.42, 0, 0.58, 1) forwards;
+}
+.nav-flying-eagle.perched {
+  opacity: 1;
+  animation: perchedLand 2600ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.nav-flying-eagle.hidden { opacity: 0; }
+.nav-flying-eagle.crouching {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes flyRight {
+  0%   { opacity: 0; transform: translate(-50%, -50%) translateX(0) translateY(0) rotate(0) scale(0.65); }
+  10%  { opacity: 1; }
+  16%  { transform: translate(-50%, -50%) translateX(calc(var(--fly-distance) * 0.16)) translateY(-22px) rotate(-7deg) scale(0.76); }
+  32%  { transform: translate(-50%, -50%) translateX(calc(var(--fly-distance) * 0.32)) translateY(16px)  rotate(6deg)  scale(0.84); }
+  48%  { transform: translate(-50%, -50%) translateX(calc(var(--fly-distance) * 0.48)) translateY(-20px) rotate(-6deg) scale(0.92); }
+  64%  { transform: translate(-50%, -50%) translateX(calc(var(--fly-distance) * 0.64)) translateY(14px)  rotate(5deg)  scale(0.98); }
+  78%  { transform: translate(-50%, -50%) translateX(calc(var(--fly-distance) * 0.78)) translateY(-12px) rotate(-4deg) scale(1.02); }
+  90%  { transform: translate(-50%, -50%) translateX(calc(var(--fly-distance) * 0.90)) translateY(6px)   rotate(2deg)  scale(0.92); }
+  100% { transform: translate(-50%, -50%) translateX(var(--fly-distance)) translateY(0) rotate(0) scale(0.88); opacity: 1; }
+}
+
+@keyframes flyLeft {
+  0%   { opacity: 1; transform: translate(-50%, -50%) translateX(0) translateY(0) rotate(0) scale(0.88); }
+  14%  { transform: translate(-50%, -50%) translateX(calc(var(--fly-distance) * 0.14)) translateY(-20px) rotate(6deg)  scale(0.92); }
+  30%  { transform: translate(-50%, -50%) translateX(calc(var(--fly-distance) * 0.30)) translateY(15px)  rotate(-6deg) scale(0.95); }
+  46%  { transform: translate(-50%, -50%) translateX(calc(var(--fly-distance) * 0.46)) translateY(-18px) rotate(5deg)  scale(0.98); }
+  62%  { transform: translate(-50%, -50%) translateX(calc(var(--fly-distance) * 0.62)) translateY(14px)  rotate(-5deg) scale(0.96); }
+  78%  { transform: translate(-50%, -50%) translateX(calc(var(--fly-distance) * 0.78)) translateY(-12px) rotate(3deg)  scale(0.82); }
+  92%  { transform: translate(-50%, -50%) translateX(calc(var(--fly-distance) * 0.92)) translateY(4px)   rotate(-2deg) scale(0.72); opacity: 1; }
+  100% { transform: translate(-50%, -50%) translateX(var(--fly-distance)) translateY(0) rotate(0) scale(0.6); opacity: 0; }
+}
+
+@keyframes perchedLand {
+  0%   { transform: translate(-50%, calc(-50% - 26px)) scale(0.90); }
+  13%  { transform: translate(-50%, calc(-50% - 24px)) scale(0.94); }
+  20%  { transform: translate(-50%, calc(-50% - 6px))  scale(1.10); }
+  26%  { transform: translate(-50%, calc(-50% - 4px))  scale(1.05, 0.88); }
+  36%  { transform: translate(-50%, calc(-50% - 2px))  scale(1.02, 0.96); }
+  48%  { transform: translate(-50%, calc(-50% - 0px))  scale(1); }
+  64%  { transform: translate(-50%, calc(-50% - 3px))  scale(1); }
+  78%  { transform: translate(-50%, calc(-50% - 0px))  scale(1); }
+  90%  { transform: translate(-50%, calc(-50% - 2px))  scale(1); }
+  100% { transform: translate(-50%, calc(-50% - 0px))  scale(1); }
+}
+
+#brandQ { transition: opacity 0.4s ease; }
+
+.nav-status { position: relative; }
+
+.nav-status::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  border: 2px solid rgba(34, 197, 94, 0.55);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.nav-status.systems-checking::before {
+  animation: landingRing 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes landingRing {
+  0%   { opacity: 0.9; transform: scale(1);   border-width: 2px; }
+  100% { opacity: 0;   transform: scale(1.9); border-width: 1px; }
+}
+
+.nav-status::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  background: radial-gradient(circle at center,
+    rgba(34, 197, 94, 0.35) 0%,
+    rgba(34, 197, 94, 0.10) 45%,
+    transparent 75%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+.nav-status.systems-checking::after {
+  animation: landingFlash 0.9s ease-out forwards;
+}
+@keyframes landingFlash {
+  0%   { opacity: 0; transform: scale(0.8); }
+  20%  { opacity: 1; transform: scale(1.05); }
+  100% { opacity: 0; transform: scale(1.35); }
+}
+
+.nav-status.systems-checking .status-dot {
+  animation: dotIgnite 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes dotIgnite {
+  0%   { transform: scale(1);   box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.9); }
+  18%  { transform: scale(1.8); box-shadow: 0 0 0 8px rgba(34, 197, 94, 0.45); }
+  45%  { transform: scale(1.1); box-shadow: 0 0 0 14px rgba(34, 197, 94, 0); }
+  100% { transform: scale(1);   box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+}
+
+.nav-status.systems-checking .status-text {
+  animation: textFlash 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes textFlash {
+  0%   { color: var(--text-muted); }
+  22%  { color: var(--primary-dark); letter-spacing: 0.14em; }
+  100% { color: var(--text-muted); }
+}
+
+.nav-status.systems-checking {
+  animation: pillShake 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97),
+             pillPulse 2.5s ease-in-out;
+}
+@keyframes pillShake {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  10%      { transform: translateX(-3px) rotate(-1deg); }
+  20%      { transform: translateX(3px) rotate(1deg); }
+  30%      { transform: translateX(-2px) rotate(-0.6deg); }
+  45%      { transform: translateX(2px) rotate(0.6deg); }
+  60%      { transform: translateX(-1px) rotate(-0.3deg); }
+  80%      { transform: translateX(1px) rotate(0.3deg); }
+}
+@keyframes pillPulse {
+  0%, 100% { border-color: var(--border-subtle); box-shadow: var(--shadow-xs); }
+  50%      { border-color: rgba(34, 197, 94, 0.60);
+             box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.16),
+                         0 0 22px rgba(34, 197, 94, 0.40); }
+}
+
+.nav-sparks {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 7;
+}
+.nav-spark {
+  position: absolute;
+  top: 0; left: 0;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%,
+    #FFFFFF 0%, #22C55E 55%, rgba(34, 197, 94, 0) 100%);
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.9);
+  transform: translate(-50%, -50%) scale(0);
+  animation: sparkFly var(--sd, 0.7s) cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes sparkFly {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0); }
+  15%  { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--sx)), calc(-50% + var(--sy))) scale(0.3); }
+}
+
+.navbar.impact {
+  animation: navbarImpact 0.5s ease-out;
+}
+@keyframes navbarImpact {
+  0%   { box-shadow: 0 4px 20px -8px rgba(15, 23, 42, 0.08); }
+  20%  { box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.22),
+                     0 4px 20px -8px rgba(15, 23, 42, 0.08); }
+  100% { box-shadow: 0 4px 20px -8px rgba(15, 23, 42, 0.08); }
+}
+
+.nav-burst {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 4;
+  opacity: 0;
+}
+.nav-burst.active { opacity: 1; }
+
+.nav-bubble {
+  position: absolute;
+  top: 0; left: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 30%,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(34, 197, 94, 0.55) 45%,
+    rgba(34, 197, 94, 0.15) 75%,
+    transparent 100%);
+  border: 1px solid rgba(34, 197, 94, 0.45);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.2);
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.4),
+              inset 0 0 4px rgba(255, 255, 255, 0.6);
+  animation: bubbleRise 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes bubbleRise {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.2); }
+  20%  { opacity: 1; transform: translate(calc(-50% + var(--bx) * 0.15), calc(-50% - 12px)) scale(0.85); }
+  60%  { opacity: 0.85; transform: translate(calc(-50% + var(--bx) * 0.65), calc(-50% - 42px)) scale(1); }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--bx)), calc(-50% - 72px)) scale(1.15); }
+}
+
+.nav-bubble:nth-child(1) { width: 10px; height: 10px; --bx: -22px; animation-delay: 0.00s; }
+.nav-bubble:nth-child(2) { width: 14px; height: 14px; --bx: -10px; animation-delay: 0.08s; }
+.nav-bubble:nth-child(3) { width:  8px; height:  8px; --bx:   2px; animation-delay: 0.16s; }
+.nav-bubble:nth-child(4) { width: 16px; height: 16px; --bx:  14px; animation-delay: 0.06s; }
+.nav-bubble:nth-child(5) { width: 11px; height: 11px; --bx:  26px; animation-delay: 0.14s; }
+.nav-bubble:nth-child(6) { width:  7px; height:  7px; --bx: -18px; animation-delay: 0.22s; }
+.nav-bubble:nth-child(7) { width: 13px; height: 13px; --bx:   6px; animation-delay: 0.11s; }
+.nav-bubble:nth-child(8) { width:  9px; height:  9px; --bx:  20px; animation-delay: 0.19s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-flying-eagle,
+  .nav-burst,
+  .nav-sparks { display: none !important; }
+  .navbar.impact { animation: none; }
+}
+@media (max-width: 1024px) {
+  .nav-flying-eagle,
+  .nav-burst,
+  .nav-sparks { display: none !important; }
+}
