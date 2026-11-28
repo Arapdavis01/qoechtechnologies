@@ -4,28 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#FFFFFF" />
+  <meta name="color-scheme" content="light" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <!-- Fallback Content-Security-Policy for hosts that cannot send headers.
+       Keep in sync with the headers in .htaccess / _headers / vercel.json. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https://images.unsplash.com; connect-src 'self' https://eaglevision-api.onrender.com; object-src 'none'; base-uri 'self'; form-action 'self'" />
 
-  <script>
-    (function () {
-      // Prevent browser from restoring scroll on reload
-      if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-
-      // Strip any hash so the browser can't auto-scroll to a section
-      if (window.location.hash) {
-        history.replaceState(null, '', window.location.pathname + window.location.search);
-      }
-
-      // Reset scroll immediately and again once the document is ready.
-      // The delayed calls catch browsers that re-scroll after parsing.
-      window.scrollTo(0, 0);
-      document.addEventListener('DOMContentLoaded', function () {
-        window.scrollTo(0, 0);
-      });
-      window.addEventListener('load', function () {
-        window.scrollTo(0, 0);
-      });
-    })();
-  </script>
+  <script src="js/boot.js"></script>
 
   <title>Qoech Technologies | Building the Future Through Technology</title>
   <meta name="description" content="Qoech Technologies delivers innovative software, digital and ICT solutions that help businesses operate smarter, faster and more efficiently. Software Development, Web Development, Mobile Apps, Networking, Cybersecurity, Database, Cloud and AI Solutions." />
@@ -55,11 +40,128 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" data-sri />
 
-  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js" defer crossorigin="anonymous" referrerpolicy="no-referrer" data-sri></script>
 
-  <link rel="stylesheet" href="css/style.css?v=24" />
+  <!-- Site CSS. ORDER MATTERS: later files override earlier ones. See css/README.md -->
+  <link rel="stylesheet" href="css/base/01-tokens-reset-typography.css" />
+  <link rel="stylesheet" href="css/base/02-utilities.css" />
+  <link rel="stylesheet" href="css/components/03-preloader-progress-particles.css" />
+  <link rel="stylesheet" href="css/components/04-navbar-menu.css" />
+  <link rel="stylesheet" href="css/sections/05-hero.css" />
+  <link rel="stylesheet" href="css/sections/06-about.css" />
+  <link rel="stylesheet" href="css/sections/07-services-solutions.css" />
+  <link rel="stylesheet" href="css/sections/08-projects.css" />
+  <link rel="stylesheet" href="css/sections/09-technologies-process-why.css" />
+  <link rel="stylesheet" href="css/sections/10-eagle-testimonials.css" />
+  <link rel="stylesheet" href="css/sections/11-contact.css" />
+  <link rel="stylesheet" href="css/sections/12-footer.css" />
+  <link rel="stylesheet" href="css/components/13-backtotop-modals-fade-mark.css" />
+  <link rel="stylesheet" href="css/responsive/14-breakpoints.css" />
+  <link rel="stylesheet" href="css/components/15-contact-wizard.css" />
+  <link rel="stylesheet" href="css/components/16-digital-layer.css" />
+  <link rel="stylesheet" href="css/components/17-modal-variants.css" />
+  <link rel="stylesheet" href="css/components/18-refinements.css" />
+  <link rel="stylesheet" href="css/components/19-eagle-flight.css" />
+  <link rel="stylesheet" href="css/responsive/20-small-phones.css" />
+  <link rel="stylesheet" href="css/components/21-form-status.css" />
+  <link rel="stylesheet" href="css/base/22-accessibility.css" />
+  <link rel="stylesheet" href="css/components/23-faq.css" />
+  <link rel="stylesheet" href="css/components/24-whatsapp-float.css" />
+  <noscript><link rel="stylesheet" href="css/noscript.css" /></noscript>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Qoech Technologies",
+  "url": "https://www.qoechtechnologies.co.ke/",
+  "logo": "https://www.qoechtechnologies.co.ke/images/logo/qoech-logo.png",
+  "email": "qoechtech@gmail.com",
+  "telephone": "+254702900005",
+  "description": "Innovative software, digital and ICT solutions for businesses, organizations, startups and individuals.",
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "KE"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer support",
+    "telephone": "+254702900005",
+    "email": "qoechtech@gmail.com"
+  },
+  "sameAs": [
+    "https://www.instagram.com/quoechtech",
+    "https://www.facebook.com/share/1DozdZCG9G/",
+    "https://tiktok.com/@qoechtech",
+    "https://x.com/qoechtech"
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What does Qoech Technologies do?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We build software, web platforms and mobile apps, and we also handle networking, cybersecurity, databases, cloud deployment and AI and automation for businesses, organizations, startups and individuals."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where are you based, and can you work remotely?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We are based in Kenya and work with clients remotely, worldwide."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I request a system?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use the Request a System form in the Contact section. It is a short four-step form, and you receive a reference code when you submit. We get back to you within 24 hours."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can you build something around how my business already works?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Our custom systems are built around your exact workflows. We start by gathering requirements, then design, build, test and deploy, with regular check-ins along the way."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you support the system after it goes live?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Our services include deployment and staff training, followed by ongoing maintenance, support and improvements."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which technologies do you use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It depends on the project. Common choices include PHP, Node.js, Python, React, MySQL and PostgreSQL, Android with Java or Kotlin, and cloud tools such as AWS, Docker and Vercel."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does a project cost?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Cost depends on the scope. The request form has a budget field, so tell us what you need and your range, and we will get back to you within 24 hours."
+      }
+    }
+  ]
+}
+  </script>
 </head>
 
 <body>
@@ -87,7 +189,6 @@
   </div>
 
   <div class="scroll-progress" id="scrollProgress"></div>
-  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
   <div id="particles-bg" aria-hidden="true"></div>
 
   <!-- ===================== NAVBAR ===================== -->
@@ -1112,13 +1213,68 @@
     </div>
   </section>
 
-  <!-- ===================== CONTACT ===================== -->
-  <section class="section" id="contact">
+  <!-- ===================== FAQ ===================== -->
+  <section class="section section-alt" id="faq">
     <div class="section-watermark" aria-hidden="true">09</div>
     <div class="container">
       <div class="section-head">
         <span class="section-label">
           <span class="label-index">09</span>
+          <i class="fas fa-circle-question"></i>
+          FAQ
+        </span>
+        <h2 class="section-title">Questions, <span class="highlight">Answered.</span></h2>
+        <p class="section-sub">
+          Quick answers about working with Qoech Technologies.
+        </p>
+        <div class="title-divider" aria-hidden="true"></div>
+      </div>
+
+      <div class="faq-list">
+        <details class="faq-item" name="faq">
+          <summary>What does Qoech Technologies do?</summary>
+          <div class="faq-answer"><p>We build software, web platforms and mobile apps, and we also handle networking, cybersecurity, databases, cloud deployment and AI and automation for businesses, organizations, startups and individuals.</p></div>
+        </details>
+        <details class="faq-item" name="faq">
+          <summary>Where are you based, and can you work remotely?</summary>
+          <div class="faq-answer"><p>We are based in Kenya and work with clients remotely, worldwide.</p></div>
+        </details>
+        <details class="faq-item" name="faq">
+          <summary>How do I request a system?</summary>
+          <div class="faq-answer"><p>Use the Request a System form in the Contact section. It is a short four-step form, and you receive a reference code when you submit. We get back to you within 24 hours.</p></div>
+        </details>
+        <details class="faq-item" name="faq">
+          <summary>Can you build something around how my business already works?</summary>
+          <div class="faq-answer"><p>Yes. Our custom systems are built around your exact workflows. We start by gathering requirements, then design, build, test and deploy, with regular check-ins along the way.</p></div>
+        </details>
+        <details class="faq-item" name="faq">
+          <summary>Do you support the system after it goes live?</summary>
+          <div class="faq-answer"><p>Yes. Our services include deployment and staff training, followed by ongoing maintenance, support and improvements.</p></div>
+        </details>
+        <details class="faq-item" name="faq">
+          <summary>Which technologies do you use?</summary>
+          <div class="faq-answer"><p>It depends on the project. Common choices include PHP, Node.js, Python, React, MySQL and PostgreSQL, Android with Java or Kotlin, and cloud tools such as AWS, Docker and Vercel.</p></div>
+        </details>
+        <details class="faq-item" name="faq">
+          <summary>What does a project cost?</summary>
+          <div class="faq-answer"><p>Cost depends on the scope. The request form has a budget field, so tell us what you need and your range, and we will get back to you within 24 hours.</p></div>
+        </details>
+      </div>
+
+      <div class="faq-cta">
+        <p>Still have a question?</p>
+        <a href="#contact" class="btn btn-primary"><i class="fas fa-paper-plane"></i><span>Ask Us Directly</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CONTACT ===================== -->
+  <section class="section" id="contact">
+    <div class="section-watermark" aria-hidden="true">10</div>
+    <div class="container">
+      <div class="section-head">
+        <span class="section-label">
+          <span class="label-index">10</span>
           <i class="fas fa-paper-plane"></i>
           Contact
         </span>
@@ -1446,6 +1602,7 @@
             <li><a href="#about">About</a></li>
             <li><a href="#services">Services</a></li>
             <li><a href="#projects">Projects</a></li>
+            <li><a href="#faq">FAQ</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
         </div>
@@ -1489,6 +1646,12 @@
       </div>
     </div>
   </footer>
+
+  <a class="whatsapp-float" href="https://wa.me/254702900005?text=Hello%20Qoech%20Technologies%2C%20I%27d%20like%20to%20discuss%20a%20project."
+     target="_blank" rel="noopener noreferrer" aria-label="Chat with Qoech Technologies on WhatsApp">
+    <i class="fab fa-whatsapp" aria-hidden="true"></i>
+    <span class="whatsapp-label">Chat with us</span>
+  </a>
 
   <button class="back-to-top" id="backToTop" aria-label="Back to top">
     <i class="fas fa-arrow-up"></i>
@@ -1544,7 +1707,7 @@
     </div>
   </div>
 
-  <script src="js/main.js?v=20" defer></script>
+  <script type="module" src="js/main.js"></script>
 
 </body>
 </html>
