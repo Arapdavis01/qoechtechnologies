@@ -1,0 +1,79 @@
+/* ============================================================
+   23. FAQ — native <details> accordion (no JavaScript needed)
+   Written mobile-first: base rules are for phones, the
+   min-width query below adds roomier spacing for larger screens.
+   ============================================================ */
+.faq-list {
+  position: relative;
+  z-index: 2;
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.faq-item {
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-xs);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.faq-item[open] {
+  border-color: var(--border-brand);
+  box-shadow: var(--shadow-md);
+}
+
+.faq-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 56px;                 /* comfortable thumb target */
+  padding: 0.95rem 1.05rem;
+  list-style: none;
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: var(--text-heading);
+  -webkit-tap-highlight-color: transparent;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+
+.faq-item summary::after {          /* chevron */
+  content: '';
+  flex: none;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-right: 2px solid var(--primary-dark);
+  border-bottom: 2px solid var(--primary-dark);
+  transform: rotate(45deg) translateY(-2px);
+  transition: transform var(--transition);
+}
+.faq-item[open] summary::after { transform: rotate(-135deg) translate(-2px, -2px); }
+
+.faq-answer { padding: 0 1.05rem 1.1rem; }
+.faq-answer p {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  max-width: 62ch;
+}
+
+.faq-cta {
+  position: relative;
+  z-index: 2;
+  margin-top: 2rem;
+  text-align: center;
+}
+.faq-cta p { margin-bottom: 0.9rem; }
+
+@media (min-width: 641px) {
+  .faq-list { gap: 0.85rem; }
+  .faq-item summary { padding: 1.1rem 1.4rem; font-size: 1rem; }
+  .faq-answer { padding: 0 1.4rem 1.3rem; }
+  .faq-answer p { font-size: 0.9375rem; }
+}
