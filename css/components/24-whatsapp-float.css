@@ -1,25 +1,28 @@
 /* ============================================================
    24. WHATSAPP FLOATING BUTTON
-   Mobile-first: a round icon button on phones; a labelled pill
-   from 641px up. Uses the site green (white text on it passes
-   the AA contrast rule; WhatsApp's own brand green does not).
-   The back-to-top button is moved up so the two never overlap.
+   Mobile-first.
+   Phones:  WhatsApp (round, 48px) and back-to-top (round, 42px) sit
+            side by side in one low strip, so they cover one line of
+            text instead of a tall stack.
+   641px+:  a labelled WhatsApp pill with back-to-top stacked above it.
+   Uses the site green (white on it passes AA contrast; WhatsApp's own
+   brand green does not).
    ============================================================ */
 .whatsapp-float {
   position: fixed;
-  right: 1.25rem;
-  bottom: 1.25rem;
+  right: 1rem;
+  bottom: 1rem;
   z-index: 800;                      /* below the menu (1000) and modals (2000) */
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.55rem;
-  width: 52px;
-  height: 52px;
+  width: 48px;
+  height: 48px;
   border-radius: var(--radius-pill);
   background: var(--primary-dark);
   color: #FFFFFF;
-  font-size: 1.55rem;
+  font-size: 1.45rem;
   box-shadow: var(--shadow-brand), var(--shadow-md);
   transition: transform var(--transition), background var(--transition-fast);
   -webkit-tap-highlight-color: transparent;
@@ -36,17 +39,30 @@
   white-space: nowrap;
 }
 
-/* Back-to-top sits above the WhatsApp button */
-.back-to-top { bottom: calc(1.25rem + 52px + 0.75rem); }
+/* Phones: back-to-top sits to the LEFT of the WhatsApp button, vertically centred on it */
+.back-to-top {
+  right: calc(1rem + 48px + 0.6rem);
+  bottom: calc(1rem + 3px);
+  width: 42px;
+  height: 42px;
+}
 
 @media (min-width: 641px) {
   .whatsapp-float {
     right: 2rem;
     bottom: 2rem;
     width: auto;
+    height: 52px;
     padding: 0 1.2rem 0 1.05rem;
     font-size: 1.3rem;
   }
   .whatsapp-label { display: inline; }
-  .back-to-top { right: 2rem; bottom: calc(2rem + 52px + 0.75rem); }
+
+  /* Larger screens: back-to-top stacked above the pill */
+  .back-to-top {
+    right: 2rem;
+    bottom: calc(2rem + 52px + 0.75rem);
+    width: 46px;
+    height: 46px;
+  }
 }
