@@ -247,7 +247,9 @@ html {
   .trust-item .status-dot { display: none; }
 
   /* ---- Tighter vertical rhythm ---- */
-  .section { padding: 4rem 0; }
+  .section { padding: 3.25rem 0; }
+  /* Dots under a swipeable carousel: less dead space before the next section */
+  .mobile-carousel-meta { margin-bottom: 0.75rem; }
   .section-head { margin-bottom: 2.25rem; }
   .section-title { font-size: clamp(1.5rem, 7vw, 1.875rem); }
   .section-sub { font-size: 0.9rem; }
@@ -306,4 +308,35 @@ html {
   .footer-grid { gap: 1.75rem 1rem; }
   .contact-form-wrap { padding: 1.4rem 1rem; }
   .btn { padding: 0.8rem 1.2rem; }
+}
+
+
+/* ------------------------------------------------------------
+   I. Round 2 fixes (from a real iPhone screenshot)
+   ------------------------------------------------------------ */
+
+/* The closed slide-in menu sits just off-screen at the right edge, but its
+   shadow was still painted into view as a grey band down the right side.
+   Hide the panel completely while closed (this also removes its links from
+   the keyboard Tab order), and bring it back instantly when it opens. */
+@media (max-width: 1024px) {
+  .nav-menu {
+    visibility: hidden;
+    box-shadow: none;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                visibility 0s linear 0.45s,
+                box-shadow 0s linear 0.45s;
+  }
+  .nav-menu.open {
+    visibility: visible;
+    box-shadow: -24px 0 60px rgba(15, 23, 42, 0.10);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                visibility 0s,
+                box-shadow 0.45s ease;
+  }
+}
+
+/* Keep the copyright line clear of the floating buttons */
+@media (max-width: 640px) {
+  .footer-bottom { padding-bottom: 3.5rem; }
 }
