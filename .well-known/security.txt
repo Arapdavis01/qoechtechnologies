@@ -1,0 +1,6 @@
+# Fill in the Contact line below with the address where people should
+# report security problems, then delete these two comment lines.
+Contact: mailto:REPLACE-WITH-SECURITY-CONTACT
+Expires: 2027-11-28T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://www.qoechtechnologies.co.ke/.well-known/security.txt
