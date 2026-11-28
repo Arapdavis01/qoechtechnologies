@@ -1,0 +1,47 @@
+/* ------------------------------------------------------------
+   H. Keyboard accessibility (batch 2)
+   ------------------------------------------------------------
+   The site had no visible focus indicator for keyboard users.
+   :focus-visible shows the ring for keyboard navigation only,
+   so mouse and touch users see no change.
+   ------------------------------------------------------------ */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+/* Containers that scroll or clip would cut the ring, so draw it inside */
+.tab-btn:focus-visible,
+.mcd-dot:focus-visible,
+.dot:focus-visible,
+.service-btn:focus-visible,
+.project-btn:focus-visible {
+  outline-offset: -2px;
+  border-radius: var(--radius-pill);
+}
+
+/* The skip link target should not show a ring when focused by the link */
+main:focus { outline: none; }
+
+/* "Skip to main content": hidden until a keyboard user tabs to it */
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 10001;
+  padding: 0.7rem 1.1rem;
+  background: var(--text-heading);
+  color: #FFFFFF;
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  transform: translateY(-200%);
+  transition: transform var(--transition-fast);
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
