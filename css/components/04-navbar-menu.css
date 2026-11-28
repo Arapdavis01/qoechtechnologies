@@ -1,0 +1,485 @@
+/* ============================================================
+   09. NAVBAR — floating pill + letter-Q brand
+   ============================================================
+   HTML structure (see index.html):
+     <header class="navbar">        ← desktop chrome
+       …brand, .nav-links-desktop, .nav-status, .nav-cta-desktop, .hamburger
+     </header>
+     <nav class="nav-menu">         ← mobile panel (SIBLING, not child)
+       …ul.nav-links, .nav-status-mobile, .nav-cta
+     </nav>
+     <div class="nav-overlay">      ← dark backdrop
+
+   Why the panel is a sibling:
+     A `transform` / `backdrop-filter` / `filter` / `contain` on an
+     ancestor creates a containing block for `position: fixed`
+     descendants. If .nav-menu lived inside the navbar (which has
+     backdrop-filter), it would anchor to the navbar instead of the
+     viewport — breaking its slide-off animation and height.
+
+   Because the panel is now a sibling, the navbar CAN have
+   backdrop-filter again. But we still keep it on ::before so
+   future edits can't accidentally reintroduce the bug.
+   ============================================================ */
+.navbar {
+  position: fixed;
+  top: 20px;
+  left: 2rem;
+  right: 2rem;
+  margin: 0 auto;
+  max-width: 1280px;
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-pill);
+  z-index: 900;
+  transition: top var(--transition);
+}
+
+/* Glass background + border + shadow — safe place for backdrop-filter */
+.navbar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(20px) saturate(1.6);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 4px 20px -8px rgba(15, 23, 42, 0.08),
+              inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  pointer-events: none;
+  z-index: -1;
+  transition: background var(--transition),
+              border-color var(--transition),
+              box-shadow var(--transition);
+}
+.navbar.scrolled { top: 12px; }
+.navbar.scrolled::before {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: var(--border-dim);
+  box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.12),
+              0 2px 8px -2px rgba(15, 23, 42, 0.04),
+              inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* ---- Brand: the Q logo tucks into "OECH" as one wordmark ---- */
+.brand {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  text-decoration: none;
+  line-height: 1;
+  padding: 2px 0;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+.brand-top {
+  display: inline-flex;
+  align-items: flex-end;
+  line-height: 1;
+  gap: 0.05rem;
+}
+.brand-q-wrap {
+  display: inline-block;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  overflow: hidden;
+  transform: translateY(-2px);
+}
+.brand-q {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: scale(1.7);
+  transform-origin: center;
+  transition: transform var(--transition);
+  -webkit-user-drag: none;
+  user-select: none;
+}
+.brand:hover .brand-q { transform: scale(1.7) rotate(-4deg); }
+.brand-letters {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.35rem;
+  letter-spacing: 0.14em;
+  color: var(--text-heading);
+  line-height: 1;
+}
+.brand-sub {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  color: var(--primary-dark);
+  margin-left: calc(36px + 0.05rem);
+  line-height: 1;
+}
+
+/* ---- Desktop-only nav links (inside the navbar) ---- */
+.nav-links-desktop {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* ---- Shared nav-link styles (used by desktop links AND panel links) ---- */
+.nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--text-secondary);
+  padding: 0.5rem 0;
+  transition: color var(--transition-fast);
+}
+.nav-link > i {
+  font-size: 0.5rem;
+  color: var(--primary);
+  opacity: 0;
+  max-width: 0;
+  overflow: hidden;
+  transform: translateX(-6px);
+  transition: opacity var(--transition-fast),
+              max-width var(--transition),
+              transform var(--transition),
+              margin var(--transition);
+  pointer-events: none;
+}
+.nav-link:hover > i,
+.nav-link.active > i {
+  opacity: 1;
+  max-width: 14px;
+  transform: translateX(0);
+  margin-right: 0.45rem;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--primary);
+  transition: width var(--transition);
+}
+.nav-link:hover { color: var(--text-heading); }
+.nav-link:hover::after { width: 100%; }
+.nav-link.active { color: var(--primary-dark); font-weight: 600; }
+.nav-link.active::after { width: 100%; }
+
+/* ---- Desktop Systems-online pill ---- */
+.nav-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.75rem;
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  box-shadow: var(--shadow-xs);
+  position: relative;
+  z-index: 1;
+}
+.nav-status .status-dot { width: 6px; height: 6px; }
+.nav-status .status-text { line-height: 1; }
+
+/* ---- Nav CTA (used in both desktop navbar and mobile panel) ---- */
+.nav-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  background: var(--text-heading);
+  border: 1px solid var(--text-heading);
+  border-radius: var(--radius-pill);
+  color: #FFFFFF;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+.nav-cta i { font-size: 0.75rem; }
+.nav-cta:hover {
+  background: var(--primary-dark);
+  border-color: var(--primary-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-brand);
+}
+
+/* ---- Mobile-only status pill (inside the panel) ----
+   Hidden by default (desktop). Shown only in the mobile panel. */
+.nav-status-mobile {
+  display: none;
+}
+
+/* ============================================================
+   10. HAMBURGER + MOBILE MENU PANEL
+   ============================================================
+   The hamburger stays visible at all times — including when
+   the menu is open — and morphs into an X. Tapping it again
+   closes the menu.
+
+   The mobile panel (.nav-menu) is a SIBLING of the navbar in
+   the HTML, so it can safely `position: fixed` against the
+   viewport regardless of what the navbar does.
+   ============================================================ */
+
+/* ---- Base hamburger ---- */
+.hamburger {
+  display: none;
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--border-dim);
+  z-index: 1001;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.2s ease;
+}
+.hamburger:active { transform: scale(0.94); }
+
+/* Rotating conic ring — only on real pointer devices */
+.hamburger-ring {
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent, var(--primary), transparent 40%);
+  opacity: 0;
+  transition: opacity var(--transition);
+  animation: hamburgerSpin 3s linear infinite;
+  z-index: -1;
+  pointer-events: none;
+}
+.hamburger-ring::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--bg-body);
+}
+
+.hamburger-line {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--text-heading);
+  border-radius: 4px;
+  transform-origin: center;
+  pointer-events: none;
+  will-change: transform;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.2s ease,
+              background 0.2s ease;
+}
+
+/* Hover styles gated behind real pointers — prevents the ring
+   from getting stuck "on" after a tap on touch devices */
+@media (hover: hover) {
+  .hamburger:hover { border-color: var(--border-hover); }
+  .hamburger:hover .hamburger-ring { opacity: 1; }
+  .hamburger:hover .hamburger-line { background: var(--primary); }
+}
+
+/* ---- Open state — X only, no glowing ring ---- */
+.hamburger.open { border-color: var(--primary); }
+.hamburger.open .hamburger-line { background: var(--primary); }
+.hamburger.open .hamburger-line:nth-child(2) {
+  transform: translateY(7px) rotate(45deg);
+}
+.hamburger.open .hamburger-line:nth-child(3) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+.hamburger.open .hamburger-line:nth-child(4) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+@keyframes hamburgerSpin { 100% { transform: rotate(360deg); } }
+
+/* ---- Dark overlay behind the panel ---- */
+.nav-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 18, 32, 0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--transition);
+  z-index: 950;
+}
+.nav-overlay.open { opacity: 1; visibility: visible; }
+
+/* When the menu is open, the navbar's glass background hides so
+   only the hamburger + X sit above the panel */
+body.menu-open .navbar { z-index: 1002; }
+body.menu-open .navbar::before {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* The in-panel close button is not used — the hamburger X closes */
+.nav-close { display: none !important; }
+
+/* The mobile panel is display:none by default (desktop) */
+.nav-menu { display: none; }
+
+
+/* ============================================================
+   Mobile & tablet (≤ 1024px)
+   ============================================================ */
+@media (max-width: 1024px) {
+
+  .navbar {
+    left: 1rem;
+    right: 1rem;
+    padding: 0 1.25rem;
+  }
+
+  /* Hide the desktop-only pieces on the navbar */
+  .nav-links-desktop,
+  .navbar .nav-status,
+  .nav-cta-desktop {
+    display: none !important;
+  }
+
+  /* Hamburger visible at all times — closed AND open */
+  .hamburger { display: flex; }
+
+  /* ---- Slide-in menu panel (viewport-fixed sibling of the navbar) ---- */
+  .nav-menu {
+    display: flex;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 82%;
+    max-width: 360px;
+    height: 100vh;
+    height: 100dvh;
+    padding: 5.5rem 2rem 3rem;
+    background: #FFFFFF;
+    border-left: 1px solid var(--border-subtle);
+    border-radius: 0;
+    box-shadow: -24px 0 60px rgba(15, 23, 42, 0.10);
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 1.5rem;
+    transform: translateX(100%);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 1000;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .nav-menu.open { transform: translateX(0); }
+
+  /* ---- Links inside the panel ---- */
+  .nav-menu .nav-links {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    width: 100%;
+    list-style: none;
+  }
+  .nav-menu .nav-links li {
+    width: 100%;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .nav-menu .nav-link {
+    display: flex;
+    align-items: center;
+    padding: 1.1rem 0.2rem;
+    font-size: 0.9375rem;
+    width: 100%;
+    letter-spacing: 0;
+  }
+  .nav-menu .nav-link > i { display: none; }
+  .nav-menu .nav-link::after { display: none; }
+  .nav-menu .nav-link.active {
+    color: var(--primary-dark);
+    padding-left: 0.9rem;
+    font-weight: 600;
+  }
+  .nav-menu .nav-link.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 18px;
+    background: var(--primary);
+    border-radius: 4px;
+  }
+
+  /* ---- Mobile status pill inside the panel ---- */
+  .nav-status-mobile {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.4rem 0.75rem;
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .nav-status-mobile .status-dot { width: 6px; height: 6px; }
+  .nav-status-mobile .status-text { line-height: 1; }
+
+  /* ---- Full-width CTA inside the panel ---- */
+  .nav-menu .nav-cta {
+    width: 100%;
+    justify-content: center;
+    padding: 0.9rem 1.3rem;
+    font-size: 0.75rem;
+  }
+}
